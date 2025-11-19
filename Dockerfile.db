@@ -1,0 +1,10 @@
+FROM mysql:8.0
+
+# Copy initialization script
+COPY mysql/init.sql /docker-entrypoint-initdb.d/
+
+# Set default environment variables
+ENV MYSQL_ROOT_PASSWORD=MB_R00t_P@ss_2024!
+ENV MYSQL_DATABASE=mbti_employees
+ENV MYSQL_USER=mbti_admin
+ENV MYSQL_PASSWORD=Training_DB_2024

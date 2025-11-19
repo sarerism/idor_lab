@@ -1,0 +1,174 @@
+<?php
+// Manager Review Page - Zimmer Dan's interface to review employee reports
+// VULNERABILITY: This page displays report content WITHOUT sanitization - STORED XSS!
+
+error_reporting(0);
+session_start();
+
+// Database connection
+require_once('../portal/config.php');
+
+// Simple auth check for manager (Zimmer Dan - MBTI2024999)
+if (!isset($_SESSION['employee_id'])) {
+    // Auto-login for demonstration (simulate manager clicking link from email)
+    $_SESSION['employee_id'] = 'MBTI2024999';
+    $_SESSION['full_name'] = 'Zimmer Dan';
+    $_SESSION['email'] = 'zimmer.dan@mbti.local';
+}
+
+// Fetch pending reports
+$stmt = $conn->prepare("SELECT id, employee_id, employee_name, report_title, report_content, submitted_at FROM weekly_reports WHERE status = 'pending' ORDER BY submitted_at DESC");
+$stmt->execute();
+$result = $stmt->get_result();
+$pending_reports = $result->fetch_all(MYSQLI_ASSOC);
+$stmt->close();
+
+// Handle report review
+if (isset($_POST['review_report'])) {
+    $report_id = $_POST['report_id'];
+    $stmt = $conn->prepare("UPDATE weekly_reports SET status = 'reviewed', reviewed_at = NOW() WHERE id = ?");
+    $stmt->bind_param("i", $report_id);
+    $stmt->execute();
+    $stmt->close();
+    header('Location: review_reports.php');
+    exit();
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Employee Reports - Manager Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #f5f5f5;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            margin-bottom: 0.5rem;
+        }
+        .report-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+        .report-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c2c2c;
+        }
+        .report-meta {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        .report-content {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 6px;
+            margin: 1rem 0;
+            line-height: 1.6;
+            color: #2c2c2c;
+        }
+        .approve-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .approve-btn:hover {
+            background: #218838;
+        }
+        .no-reports {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Manager Report Review</h1>
+            <p>Welcome, <?php echo $_SESSION['full_name']; ?> | Pending Reports: <?php echo count($pending_reports); ?></p>
+        </div>
+        
+        <?php if (empty($pending_reports)): ?>
+        <div class="report-card">
+            <div class="no-reports">
+                <h3>✅ All caught up!</h3>
+                <p>No pending reports to review at this time.</p>
+            </div>
+        </div>
+        <?php else: ?>
+            <?php foreach ($pending_reports as $report): ?>
+            <div class="report-card">
+                <div class="report-header">
+                    <div>
+                        <div class="report-title">
+                            <?php 
+                            // VULNERABILITY: NO htmlspecialchars() - STORED XSS!
+                            echo $report['report_title']; 
+                            ?>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="report-meta">
+                    <span>👤 <strong><?php echo htmlspecialchars($report['employee_name']); ?></strong></span>
+                    <span>🆔 <?php echo htmlspecialchars($report['employee_id']); ?></span>
+                    <span>📅 <?php echo date('F d, Y H:i', strtotime($report['submitted_at'])); ?></span>
+                </div>
+                
+                <div class="report-content">
+                    <?php 
+                    // VULNERABILITY: NO htmlspecialchars() - STORED XSS PAYLOAD EXECUTED HERE!
+                    echo $report['report_content']; 
+                    ?>
+                </div>
+                
+                <form method="POST" style="margin-top: 1rem;">
+                    <input type="hidden" name="report_id" value="<?php echo $report['id']; ?>">
+                    <button type="submit" name="review_report" class="approve-btn">
+                        ✓ Mark as Reviewed
+                    </button>
+                </form>
+            </div>
+            <?php endforeach; ?>
+        <?php endif; ?>
+    </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+services:
+  mbti_db:
+    image: sareer/mbti-db:latest
+    container_name: mbti_db
+    networks:
+      - mbti_net
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  mbti_portal:
+    image: sareer/mbti-employee-portal:latest
+    container_name: mbti_portal
+    depends_on:
+      mbti_db:
+        condition: service_healthy
+    networks:
+      - mbti_net
+    ports:
+      - "80:80"
+    restart: unless-stopped
+
+networks:
+  mbti_net:
+    driver: bridge
