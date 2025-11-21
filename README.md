@@ -14,10 +14,25 @@ A deliberately vulnerable web application designed for penetration testing train
 ### Prerequisites
 - Docker and Docker Compose installed
 - Basic understanding of web application security
+- Hosts file access (for subdomain configuration)
 
-### Deployment
+### Setup
 
-**Option 1: Using Docker Compose (Recommended)**
+**Step 1: Configure Hosts File (Required)**
+
+Add these entries to your hosts file:
+```bash
+# Linux/macOS: sudo nano /etc/hosts
+# Windows: C:\Windows\System32\drivers\etc\hosts
+
+127.0.0.1 localhost
+127.0.0.1 portal.localhost
+127.0.0.1 dev.localhost
+```
+
+See [SUBDOMAIN_SETUP.md](SUBDOMAIN_SETUP.md) for detailed instructions.
+
+**Step 2: Deploy with Docker Compose**
 ```bash
 docker-compose up -d
 ```
@@ -42,10 +57,12 @@ docker run -d --name mbti_portal --network mbti_net -p 80:80 sareer/mbti-employe
 ```
 
 ### Access the Application
-- URL: `http://localhost/portal/login.php`
-- Default Credentials:
-  - Employee ID: `MBTI2024837`
+- Landing Page: `http://localhost`
+- Portal Subdomain: `http://portal.localhost`
+- Default Password (requires brute force to find Employee ID):
   - Password: `MBTI1337`
+  - Employee ID Format: `MBTI2024XXX` (must be discovered)
+  - Valid Account: `MBTI2024837` (found via brute force)
 
 ## 🔍 Lab Details
 
@@ -59,20 +76,28 @@ docker run -d --name mbti_portal --network mbti_net -p 80:80 sareer/mbti-employe
 
 This lab contains intentional security vulnerabilities for educational purposes:
 
-1. **Primary IDOR**: User ID parameter manipulation
-2. **Secondary IDOR**: Report ID enumeration
-3. Additional misconfigurations for discovery
+1. **Primary IDOR**: Report ID enumeration (report_id parameter)
+2. **Information Disclosure**: Default credentials document on landing page
+3. **Weak Authentication**: Default password with brute-forceable Employee ID
+4. **Subdomain Enumeration**: Predictable subdomain structure
+5. Additional misconfigurations for discovery
 
-**Note**: Detailed exploitation steps are intentionally omitted. Use this lab to practice your own reconnaissance and exploitation techniques.
+**Note**: Detailed exploitation steps are in [ATTACK_FLOW.md](ATTACK_FLOW.md). The intended attack path requires:
+- Finding default credentials on landing page
+- Discovering portal subdomain via enumeration
+- Brute forcing Employee ID to login
+- Exploiting IDOR on report_id parameter
 
 ## 📊 Lab Environment
 
 ### Database Contents
 - **7 employees** across different departments and roles
+  - Only MBTI2024837 has the default password (must be brute forced)
+  - All other accounts have complex, unguessable passwords
 - **511 weekly reports** (IDs 1-511)
   - Reports 1-500: Standard dummy data
   - Reports 501-511: Detailed realistic reports
-  - Report 502: Contains sensitive information
+  - **Report 502**: Contains CONFIDENTIAL infrastructure credentials (Target)
 
 ### User Roles
 - Regular Employees

@@ -9,46 +9,24 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 // Include database connection for all pages
 require_once 'config.php';
 
-// VULNERABILITY: IDOR - Insecure Direct Object Reference
-// The uid parameter allows accessing other users' dashboards without authorization!
+// FIXED: Removed UID-based IDOR vulnerability
+// The uid parameter is now only used for display purposes and validated against session
 $uid = $_GET['uid'] ?? null;
 $report_id = $_GET['report_id'] ?? null;
 
-// If uid is provided, fetch that user's data (NO AUTHORIZATION CHECK!)
-if ($uid !== null) {
-    $stmt = $conn->prepare("SELECT employee_id, full_name, email, department, role FROM employees WHERE employee_id = ?");
-    $stmt->bind_param("s", $uid);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    
-    if ($user = $result->fetch_assoc()) {
-        // Display this user's dashboard (VULNERABLE - no authorization check!)
-        $employee_id = $user['employee_id'];
-        $full_name = $user['full_name'];
-        $email = $user['email'];
-        $department = $user['department'];
-        $role = $user['role'];
-        
-        // Show manager portal if viewing manager's uid
-        $is_manager_view = ($user['role'] === 'Department Manager' || $user['department'] === 'Management');
-    } else {
-        // Invalid uid
-        $employee_id = 'Unknown';
-        $full_name = 'User Not Found';
-        $email = '';
-        $department = '';
-        $role = '';
-        $is_manager_view = false;
-    }
-    $stmt->close();
-} else {
-    // No uid provided - use session data (normal flow)
-    $employee_id = $_SESSION['employee_id'] ?? 'Unknown';
-    $full_name = $_SESSION['full_name'] ?? 'Employee';
-    $email = $_SESSION['email'] ?? '';
-    $department = $_SESSION['department'] ?? '';
-    $role = $_SESSION['role'] ?? '';
-    $is_manager_view = ($role === 'Department Manager' || $department === 'Management');
+// SECURITY: Always use session data, uid parameter must match logged-in user
+$employee_id = $_SESSION['employee_id'] ?? 'Unknown';
+$full_name = $_SESSION['full_name'] ?? 'Employee';
+$email = $_SESSION['email'] ?? '';
+$department = $_SESSION['department'] ?? '';
+$role = $_SESSION['role'] ?? '';
+$is_manager_view = ($role === 'Department Manager' || $department === 'Management');
+
+// Validate uid parameter matches session (prevent unauthorized access)
+if ($uid !== null && $uid !== $employee_id) {
+    // Attempted unauthorized access - redirect to own dashboard
+    header('Location: dashboard.php?page=home&uid=' . $employee_id);
+    exit();
 }
 
 // Handle password change

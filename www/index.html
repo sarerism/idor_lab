@@ -4,311 +4,665 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mercedes-Benz Tech Innovation - Empowering Tomorrow's Mobility</title>
-    <link href="./css/styles.css" rel="stylesheet">
+    <title>Mercedes-Benz Tech Innovation - Defining the Future</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .beams-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            background-image: url('images/mercedes-avatar.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(1.1);
+        }
+
+        .beams-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 100%);
+        }
+
+        .beam {
+            position: absolute;
+            bottom: -10%;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.15), transparent);
+            opacity: 0;
+            animation: beamRise 8s infinite ease-in-out;
+            transform-origin: bottom;
+        }
+
+        @keyframes beamRise {
+            0% {
+                transform: translateY(100%) scaleY(0);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-100%) scaleY(1.5);
+                opacity: 0;
+            }
+        }
+
+        .beam:nth-child(1) {
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .beam:nth-child(2) {
+            left: 20%;
+            animation-delay: 1.5s;
+        }
+
+        .beam:nth-child(3) {
+            left: 30%;
+            animation-delay: 3s;
+        }
+
+        .beam:nth-child(4) {
+            left: 40%;
+            animation-delay: 0.8s;
+        }
+
+        .beam:nth-child(5) {
+            left: 50%;
+            animation-delay: 2.2s;
+        }
+
+        .beam:nth-child(6) {
+            left: 60%;
+            animation-delay: 4s;
+        }
+
+        .beam:nth-child(7) {
+            left: 70%;
+            animation-delay: 1.2s;
+        }
+
+        .beam:nth-child(8) {
+            left: 80%;
+            animation-delay: 2.8s;
+        }
+
+        .beam:nth-child(9) {
+            left: 90%;
+            animation-delay: 0.5s;
+        }
+
+        /* Gradient Overlay */
+        .gradient-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.4) 100%);
+            pointer-events: none;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-logo {
+            height: 40px;
+            width: auto;
+            filter: brightness(1.2);
+            object-fit: contain;
+        }
+
+        .nav-pills {
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 0.25rem;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-link {
+            padding: 0.5rem 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6rem 2rem 4rem;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 6rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.03em;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #ffffff 0%, #a0a0a0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.125rem, 2vw, 1.5rem);
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            animation: fadeInUp 0.8s ease-out 0.6s both;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 4rem;
+            animation: fadeInUp 0.8s ease-out 0.8s both;
+        }
+
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 10px 40px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 50px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 3rem;
+            max-width: 800px;
+            margin: 0 auto;
+            animation: fadeInUp 0.8s ease-out 1s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-pills {
+                display: none;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .hero {
+                padding: 5rem 1.5rem 3rem;
+            }
+
+            .stats {
+                gap: 2rem;
+            }
+        }
+
+        /* Arrow Icon */
+        .arrow-icon {
+            display: inline-block;
+            width: 1.25rem;
+            height: 1.25rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover .arrow-icon {
+            transform: translateX(4px);
+        }
+
+        /* Content Sections */
+        .section {
+            position: relative;
+            z-index: 10;
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 700px;
+            margin: 0 auto 4rem;
+            line-height: 1.6;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .card-description {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .tech-item h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-item p {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Animated Background Particles -->
-    <div class="particles-container">
-        <canvas id="particles"></canvas>
+    <!-- Animated Beams Background -->
+    <div class="beams-background">
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
+        <div class="beam"></div>
     </div>
 
+    <!-- Gradient Overlay -->
+    <div class="gradient-overlay"></div>
+
+    <!-- Navigation -->
     <nav class="navbar">
-        <div class="nav-content">
-            <div class="logo animate-fade-in">
-                <img src="./images/mercedes-logo.png" alt="Mercedes-Benz" class="logo-img">
-                <span class="mb-text">Mercedes-Benz Tech Innovation</span>
+        <div class="nav-container">
+            <div class="brand">
+                <img src="images/mercedes-logo-silver.png" alt="Mercedes-Benz" class="brand-logo">
+                <span>Mercedes-Benz Tech Innovation</span>
             </div>
-            <div class="nav-links">
-                <a href="#about" class="nav-link">About</a>
-                <a href="#programs" class="nav-link">Training Programs</a>
-                <a href="#testimonials" class="nav-link">Our People</a>
-                <a href="#contact" class="nav-link">Contact</a>
-                <a href="./portal/" class="portal-link glow-effect">Employee Portal →</a>
+
+            <div class="nav-pills">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/about" class="nav-link">About</a>
+                <a href="/innovation" class="nav-link">Innovation</a>
+                <a href="/contact" class="nav-link">Contact</a>
             </div>
         </div>
     </nav>
 
+    <!-- Hero Section -->
     <section class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-particles"></div>
         <div class="hero-content">
-            <div class="hero-badge animate-slide-up">
-                <span>Innovation Excellence</span>
+            <div class="badge">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon
+                        points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                    </polygon>
+                </svg>
+                Trusted by industry leaders
             </div>
-            <h1 class="hero-title glitch" data-text="DEFINING THE FUTURE">DEFINING THE FUTURE</h1>
-            <div class="hero-lines">
-                <span class="line"></span>
-                <span class="line"></span>
-                <span class="line"></span>
-            </div>
-            <p class="hero-subtitle typewriter">Where cutting-edge technology meets automotive excellence. Building
-                tomorrow's digital mobility solutions today.</p>
-            <div class="hero-buttons">
-                <a href="#programs" class="hero-button primary-btn">
-                    <span>Explore Programs</span>
-                    <svg class="btn-arrow" viewBox="0 0 24 24" width="20" height="20">
-                        <path fill="currentColor"
-                            d="M13.025 1l-2.847 2.828 6.176 6.176h-16.354v3.992h16.354l-6.176 6.176 2.847 2.828 10.975-11z" />
+
+            <h1 class="hero-title">
+                Defining the <span class="gradient-text">future</span><br />
+                of digital mobility
+            </h1>
+
+            <p class="hero-subtitle">
+                Where cutting-edge technology meets automotive excellence. Building tomorrow's digital mobility
+                solutions today.
+            </p>
+
+            <div class="cta-buttons">
+                <a href="#explore" class="btn btn-primary">
+                    Explore Innovation
+                    <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
                     </svg>
                 </a>
-                <a href="./portal/" class="hero-button secondary-btn">
-                    <span>Employee Portal</span>
+                <a href="#learn" class="btn btn-secondary">
+                    Learn More
+                </a>
+            </div>
+
+            <div class="stats">
+                <div class="stat-item">
+                    <div class="stat-number">2,200+</div>
+                    <div class="stat-label">Tech Innovators</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">45+</div>
+                    <div class="stat-label">Countries</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Digital Focus</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Innovation Areas Section -->
+    <section class="section">
+        <h2 class="section-title">Innovation That Drives Tomorrow</h2>
+        <p class="section-subtitle">
+            Pioneering technologies that redefine automotive intelligence and connected mobility experiences.
+        </p>
+
+        <div class="grid">
+            <div class="card">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 16v-4"></path>
+                    <path d="M12 8h.01"></path>
+                </svg>
+                <h3 class="card-title">Autonomous Systems</h3>
+                <p class="card-description">
+                    Advanced AI-powered autonomous driving systems that prioritize safety and seamless integration with
+                    urban infrastructure.
+                </p>
+            </div>
+
+            <div class="card">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="8" rx="2"></rect>
+                    <rect x="2" y="14" width="20" height="8" rx="2"></rect>
+                    <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                    <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                </svg>
+                <h3 class="card-title">Cloud Architecture</h3>
+                <p class="card-description">
+                    Scalable cloud-native solutions enabling real-time vehicle connectivity and over-the-air updates for
+                    enhanced performance.
+                </p>
+            </div>
+
+            <div class="card">
+                <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                    </path>
+                    <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                    <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+                <h3 class="card-title">Data Intelligence</h3>
+                <p class="card-description">
+                    Machine learning models processing billions of data points to deliver predictive insights and
+                    personalized experiences.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack Section -->
+    <section class="section">
+        <h2 class="section-title">Technology Excellence</h2>
+        <p class="section-subtitle">
+            Leveraging cutting-edge technologies to build the future of mobility.
+        </p>
+
+        <div class="tech-grid">
+            <div class="tech-item">
+                <h3>Artificial Intelligence</h3>
+                <p>Deep learning & neural networks</p>
+            </div>
+            <div class="tech-item">
+                <h3>IoT Integration</h3>
+                <p>Connected vehicle ecosystems</p>
+            </div>
+            <div class="tech-item">
+                <h3>5G Networks</h3>
+                <p>Ultra-low latency communication</p>
+            </div>
+            <div class="tech-item">
+                <h3>Cybersecurity</h3>
+                <p>End-to-end encryption & protection</p>
+            </div>
+            <div class="tech-item">
+                <h3>Blockchain</h3>
+                <p>Secure transaction ledgers</p>
+            </div>
+            <div class="tech-item">
+                <h3>Edge Computing</h3>
+                <p>Real-time processing power</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Join Us Section -->
+    <section class="section">
+        <div style="text-align: center;">
+            <h2 class="section-title">Join Our Innovation Journey</h2>
+            <p class="section-subtitle" style="margin: 0 auto 2rem;">
+                Be part of a team that's shaping the future of mobility. We're looking for passionate innovators,
+                engineers, and visionaries.
+            </p>
+            <div class="cta-buttons">
+                <a href="#careers" class="btn btn-primary">
+                    Explore Careers
+                    <svg class="arrow-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+                <a href="#contact" class="btn btn-secondary">
+                    Get In Touch
                 </a>
             </div>
         </div>
     </section>
-
-    <section id="about">
-        <div class="section-content">
-            <div class="section-header reveal-fade">
-                <span class="section-tag">Who We Are</span>
-                <h2 class="section-title">Innovation Excellence</h2>
-                <div class="title-underline"></div>
-            </div>
-            <p class="section-intro reveal-fade">Mercedes-Benz Tech Innovation is a 100% tech company and 100%
-                Mercedes-Benz subsidiary.
-                As a strategic partner and driver of innovation, we develop digital products and software solutions
-                exclusively for Mercedes-Benz. We build the foundation for innovations, new digital products, and
-                advanced software solutions, driving the transformation towards 100% digital automotive excellence.</p>
-
-            <div class="stats">
-                <div class="stat-item reveal-scale" data-count="2200">
-                    <div class="stat-icon">👥</div>
-                    <h3 class="stat-number">0+</h3>
-                    <p class="stat-label">Tech Innovators</p>
-                    <div class="stat-progress"></div>
-                </div>
-                <div class="stat-item reveal-scale" data-count="45">
-                    <div class="stat-icon">🌍</div>
-                    <h3 class="stat-number">0+</h3>
-                    <p class="stat-label">Countries Represented</p>
-                    <div class="stat-progress"></div>
-                </div>
-                <div class="stat-item reveal-scale" data-count="100">
-                    <div class="stat-icon">⭐</div>
-                    <h3 class="stat-number">0%</h3>
-                    <p class="stat-label">Digital Focus</p>
-                    <div class="stat-progress"></div>
-                </div>
-                <div class="stat-item reveal-scale" data-count="1">
-                    <div class="stat-icon">💡</div>
-                    <h3 class="stat-number">0</h3>
-                    <p class="stat-label">Strategic Partner</p>
-                    <div class="stat-progress"></div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="programs">
-        <div class="section-content">
-            <div class="section-header reveal-fade">
-                <span class="section-tag">What We Do</span>
-                <h2 class="section-title">Our Tech Solutions</h2>
-                <div class="title-underline"></div>
-            </div>
-            <div class="programs-grid">
-                <div class="program-card reveal-slide-left">
-                    <div class="card-glow"></div>
-                    <div class="program-icon-wrapper">
-                        <div class="program-icon">💻</div>
-                    </div>
-                    <h3>Digital Product Development</h3>
-                    <p>We develop innovative digital products and software solutions exclusively for Mercedes-Benz.
-                        From concept to deployment, our team creates cutting-edge automotive software that defines
-                        the future of mobility.</p>
-                    <div class="program-tags">
-                        <span class="tag">Software</span>
-                        <span class="tag">Innovation</span>
-                        <span class="tag">Digital</span>
-                    </div>
-                    <a href="#" class="program-link">Learn More →</a>
-                </div>
-                <div class="program-card reveal-slide-up">
-                    <div class="card-glow"></div>
-                    <div class="program-icon-wrapper">
-                        <div class="program-icon">🚗</div>
-                    </div>
-                    <h3>Strategic Car Software</h3>
-                    <p>As an experienced and trustworthy partner in strategic car software development, we build
-                        advanced solutions that power Mercedes-Benz vehicles. We think ahead, question the status quo,
-                        and break new ground.</p>
-                    <div class="program-tags">
-                        <span class="tag">Automotive</span>
-                        <span class="tag">Innovation</span>
-                        <span class="tag">Software</span>
-                    </div>
-                    <a href="#" class="program-link">Learn More →</a>
-                </div>
-                <div class="program-card reveal-slide-right">
-                    <div class="card-glow"></div>
-                    <div class="program-icon-wrapper">
-                        <div class="program-icon">⚡</div>
-                    </div>
-                    <h3>Digital Transformation</h3>
-                    <p>We drive the transformation towards 100% digital automotive solutions. Our team of 2,200
-                        tech innovators from 45+ countries develops the foundation for tomorrow's mobility innovations.
-                    </p>
-                    <div class="program-tags">
-                        <span class="tag">Digital</span>
-                        <span class="tag">Tech</span>
-                        <span class="tag">Future</span>
-                    </div>
-                    <a href="#" class="program-link">Learn More →</a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="testimonials">
-        <div class="section-content">
-            <div class="section-header reveal-fade">
-                <span class="section-tag">Beyond The Code</span>
-                <h2 class="section-title">Our Tech Innovators</h2>
-                <div class="title-underline"></div>
-            </div>
-            <div class="testimonials-slider">
-                <div class="testimonials-track">
-                    <div class="testimonial-card reveal-scale">
-                        <div class="quote-icon">"</div>
-                        <p class="testimonial-text">"We strongly believe innovation and pioneering spirit arise where
-                            every person and every day is different. In an environment where we actively live and
-                            encourage
-                            inclusion and diversity."</p>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">TM</div>
-                            <div class="author-info">
-                                <strong>Thomas Müller</strong><br>
-                                <span class="author-title">Software Developer, Digital Products</span><br>
-                                <span class="author-email">thomas.mueller@mbti.local</span>
-                            </div>
-                        </div>
-                        <div class="card-shine"></div>
-                    </div>
-                    <div class="testimonial-card reveal-scale">
-                        <div class="quote-icon">"</div>
-                        <p class="testimonial-text">"Together, we are 2,200 employees from around 45 different
-                            countries.
-                            Each individual perspective enriches our work on the software solutions of tomorrow – as
-                            well
-                            as our personal growth."</p>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">SS</div>
-                            <div class="author-info">
-                                <strong>Sarah Schmidt</strong><br>
-                                <span class="author-title">Tech Innovator, Strategic Solutions</span><br>
-                                <span class="author-email">sarah.schmidt@mbti.local</span>
-                            </div>
-                        </div>
-                        <div class="card-shine"></div>
-                    </div>
-                    <div class="testimonial-card reveal-scale">
-                        <div class="quote-icon">"</div>
-                        <p class="testimonial-text">"We love tech and our work in the dynamic automotive environment.
-                            As a Mercedes-Benz subsidiary, we enjoy great trust and take on responsibility to build
-                            the foundation for innovations."</p>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">MW</div>
-                            <div class="author-info">
-                                <strong>Michael Weber</strong><br>
-                                <span class="author-title">Senior Developer, Car Software</span><br>
-                                <span class="author-email">michael.weber@mbti.local</span>
-                            </div>
-                        </div>
-                        <div class="card-shine"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact">
-        <div class="section-content">
-            <div class="section-header reveal-fade">
-                <span class="section-tag">Connect With Us</span>
-                <h2 class="section-title">Get in Touch</h2>
-                <div class="title-underline"></div>
-            </div>
-            <div class="contact-grid">
-                <div class="contact-info reveal-slide-left">
-                    <h3>Contact Information</h3>
-                    <p>Have questions about our training programs or career opportunities? Our team is here to help you
-                        navigate the future of automotive innovation.</p>
-                    <div class="contact-details">
-                        <div class="contact-item">
-                            <span class="contact-icon">📍</span>
-                            <span>Mercedes-Platz 1, 70372 Stuttgart, Germany</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">📞</span>
-                            <span>+49 711 17 0</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">📧</span>
-                            <span>training@mbti.local</span>
-                        </div>
-                        <div class="contact-item">
-                            <span class="contact-icon">⬇️</span>
-                            <a href="./guides/Employee_Portal_Guide.pdf" download="Employee_Portal_Guide.pdf"
-                                class="help-link">Download Employee Portal
-                                Guide</a>
-                        </div>
-                    </div>
-                </div>
-                <form class="contact-form reveal-slide-right">
-                    <div class="form-group">
-                        <input type="text" placeholder="Your Name" required>
-                        <span class="input-focus"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="email" placeholder="Your Email" required>
-                        <span class="input-focus"></span>
-                    </div>
-                    <div class="form-group">
-                        <textarea rows="5" placeholder="Your Message" required></textarea>
-                        <span class="input-focus"></span>
-                    </div>
-                    <button type="submit" class="submit-button">
-                        <span>Send Message</span>
-                        <div class="button-ripple"></div>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-brand">
-                <img src="./images/mercedes-logo.png" alt="Mercedes-Benz" class="footer-logo">
-                <p>Mercedes-Benz Tech Innovation</p>
-                <p class="footer-tagline">Driving the Future of Mobility</p>
-            </div>
-            <div class="footer-links">
-                <h4>Quick Links</h4>
-                <a href="#about">About Us</a>
-                <a href="#programs">Programs</a>
-                <a href="#testimonials">Testimonials</a>
-                <a href="#contact">Contact</a>
-                <a href="./portal/">Employee Portal</a>
-            </div>
-            <div class="footer-social">
-                <h4>Follow Us</h4>
-                <div class="social-links">
-                    <a href="#" class="social-link" title="LinkedIn">in</a>
-                    <a href="#" class="social-link" title="Twitter">𝕏</a>
-                    <a href="#" class="social-link" title="Instagram">📷</a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2025 Mercedes-Benz Tech Innovation. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="./js/scripts.js"></script>
 </body>
 
 </html>

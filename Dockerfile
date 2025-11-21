@@ -17,6 +17,9 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache modules
 RUN a2enmod php8.1 rewrite
 
+# Copy Apache virtual host configuration
+COPY www/apache-vhosts.conf /etc/apache2/sites-available/000-default.conf
+
 # Create flags
 RUN mkdir -p /home/www-data && \
     echo "MBTI{3mpl0y33_p0rt4l_4cc3ss_gr4nt3d}" > /home/www-data/user.txt && \
@@ -40,10 +43,13 @@ RUN echo "www-data ALL=(ALL) NOPASSWD: /usr/bin/nano" >> /etc/sudoers
 
 # Copy application files into the image
 COPY www/ /var/www/html/
+COPY portal/ /var/www/portal/
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && \
-    chmod -R 755 /var/www/html
+    chmod -R 755 /var/www/html && \
+    chown -R www-data:www-data /var/www/portal && \
+    chmod -R 755 /var/www/portal
 
 # Set working directory
 WORKDIR /var/www/html

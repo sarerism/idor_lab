@@ -14,20 +14,20 @@ CREATE TABLE IF NOT EXISTS employees (
 -- VULNERABILITY: User MBTI2024837 still has default password MBTI1337
 
 INSERT INTO employees (employee_id, full_name, email, password_hash, department, role) VALUES
-('MBTI2024001', 'Thomas Müller', 'thomas.mueller@mbti.local', '5f4dcc3b5aa765d61d8327deb882cf99', 'Automotive Engineering', 'Senior Engineer'),
-('MBTI2024002', 'Sarah Schmidt', 'sarah.schmidt@mbti.local', 'b59c67bf196a4758191e42f76670ceba', 'EV Technology', 'Lead Researcher'),
-('MBTI2024003', 'Michael Weber', 'michael.weber@mbti.local', '4d186321c1a7f0f354b297e8914ab240', 'Manufacturing', 'Production Manager'),
-('MBTI2024004', 'Anna Fischer', 'anna.fischer@mbti.local', 'e10adc3949ba59abbe56e057f20f883e', 'IT Security', 'Security Analyst'),
-('MBTI2024005', 'Lars Hoffmann', 'lars.hoffmann@mbti.local', '8d969eef6ecad3c29a3a629280e686cf', 'Training & Development', 'Training Coordinator'),
+('MBTI2024001', 'Thomas Müller', 'thomas.mueller@mbti.local', 'a1b2c3d4e5f6789abcdef1234567890abc', 'Automotive Engineering', 'Senior Engineer'),
+('MBTI2024002', 'Sarah Schmidt', 'sarah.schmidt@mbti.local', '9f8e7d6c5b4a321fedcba9876543210fed', 'EV Technology', 'Lead Researcher'),
+('MBTI2024003', 'Michael Weber', 'michael.weber@mbti.local', '1a2b3c4d5e6f7890abcd1234567890abcd', 'Manufacturing', 'Production Manager'),
+('MBTI2024004', 'Anna Fischer', 'anna.fischer@mbti.local', '8g9h0i1j2k3l4567mnop8901234567mnop', 'IT Security', 'Security Analyst'),
+('MBTI2024005', 'Lars Hoffmann', 'lars.hoffmann@mbti.local', '7q8r9s0t1u2v3456wxyz7890123456wxyz', 'Training & Development', 'Training Coordinator'),
 ('MBTI2024837', 'Julia Schneider', 'julia.schneider@mbti.local', '3712a6c780db54f4c056955eb7835599', 'Software Development', 'Junior Developer');
 
 -- Password reference (for testing only - REMOVE IN PRODUCTION):
--- thomas.mueller@mbti.local : password (5f4dcc3b5aa765d61d8327deb882cf99)
--- sarah.schmidt@mbti.local : letmein (b59c67bf196a4758191e42f76670ceba)
--- michael.weber@mbti.local : Innovation! (4d186321c1a7f0f354b297e8914ab240)
--- anna.fischer@mbti.local : 123456 (e10adc3949ba59abbe56e057f20f883e)
--- lars.hoffmann@mbti.local : 123456 (8d969eef6ecad3c29a3a629280e686cf)
--- julia.schneider@mbti.local : MBTI1337 (3712a6c780db54f4c056955eb7835599) <- DEFAULT PASSWORD!
+-- thomas.mueller@mbti.local : [COMPLEX - NOT GUESSABLE]
+-- sarah.schmidt@mbti.local : [COMPLEX - NOT GUESSABLE]
+-- michael.weber@mbti.local : [COMPLEX - NOT GUESSABLE]
+-- anna.fischer@mbti.local : [COMPLEX - NOT GUESSABLE]
+-- lars.hoffmann@mbti.local : [COMPLEX - NOT GUESSABLE]
+-- julia.schneider@mbti.local : MBTI1337 (3712a6c780db54f4c056955eb7835599) <- DEFAULT PASSWORD! (ONLY BRUTEFORCEABLE ACCOUNT)
 
 -- Create weekly_reports table (VULNERABLE TO IDOR!)
 CREATE TABLE IF NOT EXISTS weekly_reports (
@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS weekly_reports (
 
 -- Insert manager account (Zimmer Dan) who will review reports
 INSERT INTO employees (employee_id, full_name, email, password_hash, department, role) VALUES
-('MBTI2024999', 'Zimmer Dan', 'zimmer.dan@mbti.local', '5d41402abc4b2a76b9719d911017c592', 'Management', 'Department Manager');
--- zimmer.dan@mbti.local : hello (5d41402abc4b2a76b9719d911017c592)
+('MBTI2024999', 'Zimmer Dan', 'zimmer.dan@mbti.local', '6e5d4c3b2a1098fedcba7654321fedcba', 'Management', 'Department Manager');
+-- zimmer.dan@mbti.local : [COMPLEX - NOT GUESSABLE]
 
 -- Insert sample reports for employees (reports 1-511)
 -- Reports 1-500: Dummy placeholder reports (older historical data)

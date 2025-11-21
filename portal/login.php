@@ -30,9 +30,8 @@ if (isset($_POST['login'])) {
             $_SESSION['department'] = $user['department'];
             $_SESSION['role'] = $user['role'];
             
-            // REDIRECT WITH UID PARAMETER (full employee ID - IDOR vulnerability)
-            // report_id will only appear when user clicks on Reports page
-            header('Location: dashboard.php?uid=' . $user['employee_id']);
+            // Redirect to dashboard with uid parameter for display
+            header('Location: dashboard.php?page=home&uid=' . $user['employee_id']);
             exit();
         } else {
             $error_message = 'Invalid employee ID or password.';
@@ -223,7 +222,7 @@ if (isset($_POST['login'])) {
 <body>
     <div class="login-container">
         <div class="portal-header">
-            <img src="../images/mercedes-logo.png" alt="Mercedes-Benz" class="portal-logo">
+            <img src="./images/mercedes-logo.png" alt="Mercedes-Benz" class="portal-logo">
             <h1>Employee Portal</h1>
             <p>Please log in with your employee credentials</p>
         </div>
