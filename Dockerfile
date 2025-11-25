@@ -24,9 +24,12 @@ COPY www/apache-vhosts.conf /etc/apache2/sites-available/000-default.conf
 RUN apt-get update && apt-get install -y \
     sudo \
     nano \
+    vim \
+    python3 \
     cron \
     curl \
     wget \
+    nfs-kernel-server \
     && rm -rf /var/lib/apt/lists/*
 
 # Create developer user for privilege escalation training
@@ -51,10 +54,29 @@ RUN chown -R www-data:www-data /var/www/html && \
     chown -R www-data:www-data /var/www/portal && \
     chmod -R 755 /var/www/portal
 
+# Setup NFS share for portal guide
+RUN mkdir -p /var/nfs/portal-docs && \
+    mv /var/www/html/guides/portal-guide.html /var/nfs/portal-docs/ && \
+    chmod 755 /var/nfs/portal-docs && \
+    chmod 644 /var/nfs/portal-docs/portal-guide.html && \
+    echo "/var/nfs/portal-docs *(ro,sync,no_subtree_check,no_root_squash,fsid=0)" >> /etc/exports
+
+# Configure NFS and start services
+RUN mkdir -p /var/lib/nfs/rpc_pipefs && \
+    echo "rpcbind : ALL" >> /etc/hosts.allow
+
 # Set working directory
 WORKDIR /var/www/html
 
-EXPOSE 80
+EXPOSE 80 2049 111
 
-# Start Apache in foreground
-CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
+# Start script for both Apache and NFS
+RUN echo '#!/bin/bash\n\
+    /usr/sbin/rpcbind\n\
+    /usr/sbin/rpc.nfsd 8\n\
+    /usr/sbin/rpc.mountd\n\
+    exportfs -ra\n\
+    exec /usr/sbin/apache2ctl -D FOREGROUND' > /start.sh && \
+    chmod +x /start.sh
+
+CMD ["/start.sh"]

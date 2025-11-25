@@ -12,9 +12,7 @@ services:
     restart: unless-stopped
 
   mbti_portal:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: sareer/mbti-employee-portal:latest
     container_name: mbti_portal
     depends_on:
       mbti_db:
@@ -23,8 +21,18 @@ services:
       - mbti_net
     ports:
       - "80:80"
+      - "2049:2049"
+      - "111:111"
+    volumes:
+      - nfs_share:/var/nfs/portal-docs
     restart: unless-stopped
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
 
 networks:
   mbti_net:
     driver: bridge
+
+volumes:
+  nfs_share:
