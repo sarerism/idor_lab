@@ -59,8 +59,39 @@ if (isset($_POST['change_password'])) {
     }
 }
 
-// VULNERABLE: Local File Inclusion (LFI)
+// CRITICAL: Enforce UID parameter - must match session
+// If uid is missing or doesn't match session, redirect with proper uid
+$required_uid = $_SESSION['employee_id'] ?? null;
+if (!$required_uid) {
+    // No session, redirect to login
+    header('Location: login.php');
+    exit();
+}
+
+$provided_uid = $_GET['uid'] ?? null;
+if (!$provided_uid || $provided_uid !== $required_uid) {
+    // Missing or mismatched uid - redirect to proper URL with uid
+    $page = $_GET['page'] ?? 'home';
+    $report_id = $_GET['report_id'] ?? null;
+    
+    $redirect_url = 'dashboard.php?page=' . urlencode($page) . '&uid=' . urlencode($required_uid);
+    if ($report_id) {
+        $redirect_url .= '&report_id=' . urlencode($report_id);
+    }
+    header('Location: ' . $redirect_url);
+    exit();
+}
+
+// VULNERABLE: Local File Inclusion (LFI) - Intentional for training
+// Whitelist allowed pages to prevent unintended exposure
+$allowed_pages = ['home', 'projects', 'tasks', 'timesheet', 'team', 'reports', 'profile', 'messages'];
 $page = $_GET['page'] ?? 'home';
+
+if (!in_array($page, $allowed_pages)) {
+    // Invalid page, redirect to home
+    header('Location: dashboard.php?page=home&uid=' . urlencode($required_uid));
+    exit();
+}
 
 $employee_id = $_SESSION['employee_id'] ?? 'Unknown';
 $full_name = $_SESSION['full_name'] ?? 'Employee';
@@ -79,224 +110,362 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #e5e5e5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2d1b4e 100%);
             display: flex;
             min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(0, 170, 239, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
+            animation: gradientShift 20s ease infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes gradientShift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(5%, 5%); }
         }
         
         /* Sidebar */
         .sidebar {
-            width: 250px;
-            background: #2c2c2c;
+            width: 280px;
+            background: rgba(15, 20, 40, 0.8);
+            backdrop-filter: blur(20px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
             color: white;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
+            z-index: 100;
+            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
         }
         
         .sidebar-header {
-            padding: 1.5rem;
-            background: #1a1a1a;
-            font-size: 1.2rem;
-            font-weight: 600;
+            padding: 2rem 1.5rem;
+            background: linear-gradient(135deg, rgba(0, 170, 239, 0.2), rgba(102, 126, 234, 0.2));
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .nav-menu {
             list-style: none;
-            padding: 1rem 0;
+            padding: 1.5rem 0;
         }
         
         .nav-item {
-            padding: 0.9rem 1.5rem;
+            padding: 1rem 1.5rem;
+            margin: 0.3rem 1rem;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-            color: #c9c9c9;
+            gap: 1rem;
+            color: rgba(255, 255, 255, 0.7);
             text-decoration: none;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: linear-gradient(135deg, #00adef, #667eea);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
         }
         
         .nav-item:hover {
-            background: #3d3d3d;
+            background: rgba(255, 255, 255, 0.08);
             color: white;
+            transform: translateX(5px);
+        }
+        
+        .nav-item:hover::before {
+            transform: scaleY(1);
         }
         
         .nav-item.active {
-            background: #4169e1;
+            background: linear-gradient(135deg, rgba(0, 173, 239, 0.2), rgba(102, 126, 234, 0.2));
             color: white;
+            box-shadow: 0 4px 15px rgba(0, 173, 239, 0.3);
+        }
+        
+        .nav-item.active::before {
+            transform: scaleY(1);
         }
         
         .nav-icon {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
+            font-size: 1.2rem;
         }
         
         .nav-separator {
-            border-top: 1px solid #404040;
-            margin: 0.5rem 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin: 1rem 1.5rem;
         }
         
         /* Main Content */
         .main-content {
-            margin-left: 250px;
+            margin-left: 280px;
             flex: 1;
             padding: 0;
+            position: relative;
+            z-index: 1;
         }
         
         .top-bar {
-            background: white;
-            padding: 1rem 2rem;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem 2.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
         }
         
         .page-title {
-            font-size: 1.8rem;
-            color: #2c2c2c;
-            font-weight: 300;
+            font-size: 2rem;
+            color: white;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff, #00adef);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
         
         .user-badge {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.7rem 1.2rem;
+            border-radius: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .user-avatar {
-            width: 36px;
-            height: 36px;
-            background: #4169e1;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #00adef, #667eea);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 4px 15px rgba(0, 173, 239, 0.4);
         }
         
         .user-name {
             font-size: 0.95rem;
-            color: #555;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
         }
         
         .content-area {
-            padding: 2rem;
-            max-width: 1400px;
+            padding: 2.5rem;
+            max-width: 1600px;
         }
         
         .dashboard-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 1.5rem;
+            gap: 1.8rem;
+            margin-top: 2rem;
         }
         
         .card {
-            background: white;
-            border-radius: 8px;
-            padding: 1.8rem;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00adef, #667eea, #764ba2);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 173, 239, 0.2);
+            border-color: rgba(0, 173, 239, 0.3);
+        }
+        
+        .card:hover::before {
+            opacity: 1;
         }
         
         .card-header {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #2c2c2c;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
             margin-bottom: 1.5rem;
-            padding-bottom: 0.8rem;
-            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .card-header::before {
+            content: '';
+            width: 4px;
+            height: 24px;
+            background: linear-gradient(135deg, #00adef, #667eea);
+            border-radius: 2px;
         }
         
         .message-item, .assignment-item, .notice-item {
-            padding: 1rem 0;
-            border-bottom: 1px solid #f0f0f0;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .message-item:hover, .assignment-item:hover, .notice-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(0, 173, 239, 0.3);
+            transform: translateX(5px);
         }
         
         .message-item:last-child, .assignment-item:last-child, .notice-item:last-child {
-            border-bottom: none;
+            margin-bottom: 0;
         }
         
         .item-title {
             font-weight: 600;
-            color: #333;
-            margin-bottom: 0.3rem;
+            color: rgba(255, 255, 255, 0.95);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
         }
         
         .item-meta {
             font-size: 0.85rem;
-            color: #777;
-            margin-bottom: 0.4rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 0.5rem;
         }
         
         .item-content {
             font-size: 0.9rem;
-            color: #555;
-            line-height: 1.4;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
         }
         
         .assignment-due {
             font-size: 0.85rem;
-            color: #555;
-            margin-top: 0.3rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 0.5rem;
         }
         
         .assignment-course {
             font-size: 0.85rem;
-            color: #777;
+            color: rgba(255, 255, 255, 0.5);
         }
         
         .notice-posted {
             font-size: 0.85rem;
-            color: #777;
-            margin-top: 0.3rem;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 0.5rem;
         }
         
         .notice-author {
             font-size: 0.85rem;
-            color: #888;
+            color: rgba(255, 255, 255, 0.4);
         }
         
         .view-all-link {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
             margin-top: 1rem;
-            color: #4169e1;
+            color: #00adef;
             text-decoration: none;
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
         
         .view-all-link:hover {
-            text-decoration: underline;
+            color: #667eea;
+            transform: translateX(5px);
+        }
+        
+        .view-all-link::after {
+            content: '→';
+            transition: transform 0.3s ease;
+        }
+        
+        .view-all-link:hover::after {
+            transform: translateX(3px);
         }
         
         .status-badge {
             display: inline-block;
-            padding: 0.25rem 0.6rem;
-            border-radius: 12px;
+            padding: 0.35rem 0.8rem;
+            border-radius: 20px;
             font-size: 0.75rem;
-            font-weight: 600;
+            font-weight: 700;
             margin-left: 0.5rem;
+            letter-spacing: 0.3px;
         }
         
         .status-active {
-            background: #d4edda;
-            color: #155724;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.2));
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
         }
         
         .status-overdue {
-            background: #f8d7da;
-            color: #721c24;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(248, 113, 113, 0.2));
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
         }
         
         /* Flag Notice */
         .flag-card {
             grid-column: 1 / -1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(102, 126, 234, 0.4);
             color: white;
             padding: 2rem;
         }
@@ -362,12 +531,6 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
         </div>
 
         <div class="content-area">
-            <?php
-            // Include page content based on the 'page' parameter
-            // VULNERABLE: No validation on $page variable!
-            @include($page);
-            ?>
-            
             <?php if ($page === 'home' || !isset($_GET['page'])): ?>
 
             <div class="dashboard-grid">
@@ -395,7 +558,7 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
                         <div class="item-meta">From: anna.fischer@mbti.local • Sent: Nov 09, 2025</div>
                     </div>
                     
-                    <a href="?page=messages" class="view-all-link">View All Messages →</a>
+                    <a href="?page=messages&uid=<?php echo htmlspecialchars($employee_id); ?>" class="view-all-link">View All Messages →</a>
                 </div>
 
                 <!-- Active Projects -->
@@ -466,7 +629,7 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
                         <div class="notice-author">By: HR Department</div>
                     </div>
                     
-                    <a href="?page=announcements" class="view-all-link">View All Announcements →</a>
+                    <a href="?page=announcements&uid=<?php echo htmlspecialchars($employee_id); ?>" class="view-all-link">View All Announcements →</a>
                 </div>
             </div>
             <?php endif; ?>

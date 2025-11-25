@@ -20,15 +20,6 @@ RUN a2enmod php8.1 rewrite
 # Copy Apache virtual host configuration
 COPY www/apache-vhosts.conf /etc/apache2/sites-available/000-default.conf
 
-# Create flags
-RUN mkdir -p /home/www-data && \
-    echo "MBTI{3mpl0y33_p0rt4l_4cc3ss_gr4nt3d}" > /home/www-data/user.txt && \
-    chmod 600 /home/www-data/user.txt && \
-    chown www-data:www-data /home/www-data/user.txt
-
-RUN echo "MBTI{r00t_4cc3ss_m3rc3d3s_b3nz_syst3m}" > /root/root.txt && \
-    chmod 600 /root/root.txt
-
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     sudo \
@@ -38,8 +29,17 @@ RUN apt-get update && apt-get install -y \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Install sudo rule for privilege escalation
-RUN echo "www-data ALL=(ALL) NOPASSWD: /usr/bin/nano" >> /etc/sudoers
+# Create developer user for privilege escalation training
+RUN useradd -m -s /bin/bash developer && \
+    echo 'developer:cD$j$v8kFq67C1D' | chpasswd
+
+# Copy privilege escalation script
+COPY manage_containers.py /usr/local/bin/manage_containers.py
+RUN chmod 755 /usr/local/bin/manage_containers.py && \
+    chown root:root /usr/local/bin/manage_containers.py
+
+# Allow www-data to run the script as developer user
+RUN echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/manage_containers.py" >> /etc/sudoers
 
 # Copy application files into the image
 COPY www/ /var/www/html/

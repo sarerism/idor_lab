@@ -12,7 +12,9 @@ services:
     restart: unless-stopped
 
   mbti_portal:
-    image: sareer/mbti-employee-portal:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: mbti_portal
     depends_on:
       mbti_db:

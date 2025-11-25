@@ -1,4 +1,4 @@
 mysql_data/
 *.log
 .DS_Store
-.env
+.envs
