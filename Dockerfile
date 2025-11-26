@@ -30,11 +30,15 @@ RUN apt-get update && apt-get install -y \
     curl \
     wget \
     nfs-kernel-server \
+    slapd \
+    ldap-utils \
     && rm -rf /var/lib/apt/lists/*
 
-# Create developer user for privilege escalation training
+# Create users for privilege escalation training
 RUN useradd -m -s /bin/bash developer && \
-    echo 'developer:cD$j$v8kFq67C1D' | chpasswd
+    echo 'developer:cD$j$v8kFq67C1D' | chpasswd && \
+    useradd -m -s /bin/bash john.doe && \
+    echo 'john.doe:tekelomuxo' | chpasswd
 
 # Copy privilege escalation script
 COPY manage_containers.py /usr/local/bin/manage_containers.py
@@ -65,17 +69,34 @@ RUN mkdir -p /var/nfs/portal-docs && \
 RUN mkdir -p /var/lib/nfs/rpc_pipefs && \
     echo "rpcbind : ALL" >> /etc/hosts.allow
 
+# Configure LDAP
+COPY ldap_init.ldif /tmp/ldap_init.ldif
+RUN mkdir -p /etc/ldap/slapd.d /var/lib/ldap && \
+    chown -R openldap:openldap /etc/ldap/slapd.d /var/lib/ldap && \
+    echo -e "slapd slapd/internal/generated_adminpw password admin\nslapd slapd/internal/adminpw password admin\nslapd slapd/password2 password admin\nslapd slapd/password1 password admin\nslapd slapd/dump_database_destdir string /var/backups/slapd-VERSION\nslapd slapd/domain string mbti.local\nslapd shared/organization string MBTI\nslapd slapd/backend string MDB\nslapd slapd/purge_database boolean true\nslapd slapd/move_old_database boolean true\nslapd slapd/allow_ldap_v2 boolean false\nslapd slapd/no_configuration boolean false\nslapd slapd/dump_database select when needed" | debconf-set-selections && \
+    dpkg-reconfigure -f noninteractive slapd
+
 # Set working directory
 WORKDIR /var/www/html
 
-EXPOSE 80 2049 111
+EXPOSE 80 389 2049 111
 
-# Start script for both Apache and NFS
+# Start script for Apache, NFS, and LDAP
 RUN echo '#!/bin/bash\n\
     /usr/sbin/rpcbind\n\
     /usr/sbin/rpc.nfsd 8\n\
     /usr/sbin/rpc.mountd\n\
     exportfs -ra\n\
+    service slapd start\n\
+    sleep 3\n\
+    ldapadd -x -D "cn=admin,dc=mbti,dc=local" -w admin -f /tmp/ldap_init.ldif 2>/dev/null || true\n\
+    ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF\n\
+    dn: olcDatabase={1}mdb,cn=config\n\
+    changetype: modify\n\
+    replace: olcAccess\n\
+    olcAccess: to attrs=userPassword by anonymous read by self write by * none\n\
+    olcAccess: to * by * read\n\
+    EOF\n\
     exec /usr/sbin/apache2ctl -D FOREGROUND' > /start.sh && \
     chmod +x /start.sh
 

@@ -2,3 +2,6 @@ mysql_data/
 *.log
 .DS_Store
 .envs
+
+# Snyk Security Extension - AI Rules (auto-generated)
+.github/instructions/snyk_rules.instructions.md

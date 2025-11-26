@@ -1,0 +1,165 @@
+dn: dc=mbti,dc=local
+objectClass: top
+objectClass: dcObject
+objectClass: organization
+o: MBTI Employee Portal
+dc: mbti
+
+dn: cn=admin,dc=mbti,dc=local
+objectClass: organizationalRole
+cn: admin
+description: LDAP Administrator
+
+dn: ou=People,dc=mbti,dc=local
+objectClass: organizationalUnit
+ou: People
+
+dn: ou=Groups,dc=mbti,dc=local
+objectClass: organizationalUnit
+ou: Groups
+
+dn: uid=john.doe,ou=People,dc=mbti,dc=local
+uid: john.doe
+cn: John Doe
+sn: Doe
+mail: john.doe@mbti.local
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: JDJhJDEyJFBrcHNCalVhempnTXgxSy54ZmpZNGVJS3VrakdKRTFDdVdqcjVUSlJiQ09xM2VQVzk4a2Y2
+description: Backup password hash for recovery - DO NOT SHARE
+shadowLastChange: 19692
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/bash
+uidNumber: 10001
+gidNumber: 10001
+homeDirectory: /home/john.doe
+
+dn: uid=jane.smith,ou=People,dc=mbti,dc=local
+uid: jane.smith
+cn: Jane Smith
+sn: Smith
+mail: jane.smith@mbti.local
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {SSHA}dummyhash123
+shadowLastChange: 19692
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/bash
+uidNumber: 10002
+gidNumber: 10002
+homeDirectory: /home/jane.smith
+
+dn: uid=bob.wilson,ou=People,dc=mbti,dc=local
+uid: bob.wilson
+cn: Bob Wilson
+sn: Wilson
+mail: bob.wilson@mbti.local
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {SSHA}dummyhash456
+shadowLastChange: 19692
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/bash
+uidNumber: 10003
+gidNumber: 10003
+homeDirectory: /home/bob.wilson
+
+dn: uid=alice.brown,ou=People,dc=mbti,dc=local
+uid: alice.brown
+cn: Alice Brown
+sn: Brown
+mail: alice.brown@mbti.local
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {SSHA}dummyhash789
+shadowLastChange: 19692
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/bash
+uidNumber: 10004
+gidNumber: 10004
+homeDirectory: /home/alice.brown
+
+dn: uid=charlie.davis,ou=People,dc=mbti,dc=local
+uid: charlie.davis
+cn: Charlie Davis
+sn: Davis
+mail: charlie.davis@mbti.local
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {SSHA}dummyhash101
+shadowLastChange: 19692
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/bash
+uidNumber: 10005
+gidNumber: 10005
+homeDirectory: /home/charlie.davis
+
+dn: uid=developer,ou=People,dc=mbti,dc=local
+uid: developer
+cn: Developer Account
+sn: Developer
+mail: developer@mbti.local
+objectClass: person
+objectClass: organizationalPerson
+objectClass: inetOrgPerson
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {SSHA}dummyhash202
+shadowLastChange: 19692
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+loginShell: /bin/bash
+uidNumber: 1000
+gidNumber: 1000
+homeDirectory: /home/developer
+description: Privileged developer account for container management
+
+dn: cn=employees,ou=Groups,dc=mbti,dc=local
+objectClass: posixGroup
+objectClass: top
+cn: employees
+gidNumber: 10001
+memberUid: john.doe
+memberUid: jane.smith
+memberUid: bob.wilson
+memberUid: alice.brown
+memberUid: charlie.davis
+
+dn: cn=developers,ou=Groups,dc=mbti,dc=local
+objectClass: posixGroup
+objectClass: top
+cn: developers
+gidNumber: 1000
+memberUid: developer
