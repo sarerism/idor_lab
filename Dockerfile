@@ -71,6 +71,7 @@ RUN mkdir -p /var/lib/nfs/rpc_pipefs && \
 
 # Configure LDAP
 COPY ldap_init.ldif /tmp/ldap_init.ldif
+COPY ldap_acl.ldif /tmp/ldap_acl.ldif
 RUN mkdir -p /etc/ldap/slapd.d /var/lib/ldap && \
     chown -R openldap:openldap /etc/ldap/slapd.d /var/lib/ldap && \
     echo -e "slapd slapd/internal/generated_adminpw password admin\nslapd slapd/internal/adminpw password admin\nslapd slapd/password2 password admin\nslapd slapd/password1 password admin\nslapd slapd/dump_database_destdir string /var/backups/slapd-VERSION\nslapd slapd/domain string mbti.local\nslapd shared/organization string MBTI\nslapd slapd/backend string MDB\nslapd slapd/purge_database boolean true\nslapd slapd/move_old_database boolean true\nslapd slapd/allow_ldap_v2 boolean false\nslapd slapd/no_configuration boolean false\nslapd slapd/dump_database select when needed" | debconf-set-selections && \
@@ -90,13 +91,7 @@ RUN echo '#!/bin/bash\n\
     service slapd start\n\
     sleep 3\n\
     ldapadd -x -D "cn=admin,dc=mbti,dc=local" -w admin -f /tmp/ldap_init.ldif 2>/dev/null || true\n\
-    ldapmodify -Q -Y EXTERNAL -H ldapi:/// <<EOF\n\
-    dn: olcDatabase={1}mdb,cn=config\n\
-    changetype: modify\n\
-    replace: olcAccess\n\
-    olcAccess: to attrs=userPassword by anonymous read by self write by * none\n\
-    olcAccess: to * by * read\n\
-    EOF\n\
+    ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /tmp/ldap_acl.ldif 2>/dev/null || true\n\
     exec /usr/sbin/apache2ctl -D FOREGROUND' > /start.sh && \
     chmod +x /start.sh
 
