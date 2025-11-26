@@ -70,11 +70,11 @@ RUN chown -R www-data:www-data /var/www/html && \
     chown -R www-data:www-data /var/www/portal && \
     chmod -R 755 /var/www/portal
 
-# Setup NFS share for portal guide
+# Setup NFS share for portal guides
 RUN mkdir -p /var/nfs/portal-docs && \
-    mv /var/www/html/guides/portal-guide.html /var/nfs/portal-docs/ && \
+    mv /var/www/html/guides/*.html /var/nfs/portal-docs/ && \
     chmod 755 /var/nfs/portal-docs && \
-    chmod 644 /var/nfs/portal-docs/portal-guide.html && \
+    chmod 644 /var/nfs/portal-docs/*.html && \
     echo "/var/nfs/portal-docs *(ro,sync,no_subtree_check,no_root_squash,fsid=0)" >> /etc/exports
 
 # Configure NFS and start services
