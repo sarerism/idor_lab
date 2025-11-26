@@ -90,7 +90,7 @@ RUN echo '#!/bin/bash\n\
     exportfs -ra\n\
     service slapd start\n\
     sleep 3\n\
-    ldapadd -x -D "cn=admin,dc=mbti,dc=local" -w admin -f /tmp/ldap_init.ldif 2>/dev/null || true\n\
+    tail -n +7 /tmp/ldap_init.ldif | ldapadd -x -D "cn=admin,dc=mbti,dc=local" -w admin 2>/dev/null || true\n\
     ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /tmp/ldap_acl.ldif 2>/dev/null || true\n\
     exec /usr/sbin/apache2ctl -D FOREGROUND' > /start.sh && \
     chmod +x /start.sh
