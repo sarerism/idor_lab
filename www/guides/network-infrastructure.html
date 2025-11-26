@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI Network Infrastructure Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .header {
+            background-color: #34495e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        .content {
+            background-color: white;
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #34495e;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        .info-box {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌐 Network Infrastructure Overview</h1>
+        <p>MBTI Internal Systems Documentation</p>
+    </div>
+
+    <div class="content">
+        <div class="info-box">
+            <strong>Document Classification:</strong> Internal Use Only<br>
+            <strong>Last Updated:</strong> November 2025<br>
+            <strong>Version:</strong> 3.2
+        </div>
+
+        <h2>🏢 Network Architecture</h2>
+        <p>Our corporate network is designed with multiple layers to ensure security, reliability, and performance for all MBTI operations.</p>
+
+        <h3>Network Segments</h3>
+        <table>
+            <tr>
+                <th>Segment</th>
+                <th>Purpose</th>
+                <th>VLAN</th>
+            </tr>
+            <tr>
+                <td>Management Network</td>
+                <td>Server administration and monitoring</td>
+                <td>VLAN 10</td>
+            </tr>
+            <tr>
+                <td>Employee Network</td>
+                <td>Workstation and device connectivity</td>
+                <td>VLAN 20</td>
+            </tr>
+            <tr>
+                <td>DMZ</td>
+                <td>Public-facing services</td>
+                <td>VLAN 30</td>
+            </tr>
+            <tr>
+                <td>Storage Network</td>
+                <td>NFS and backup systems</td>
+                <td>VLAN 40</td>
+            </tr>
+        </table>
+
+        <h2>🖥️ Core Services</h2>
+        
+        <h3>Directory Services</h3>
+        <p>LDAP-based authentication system provides centralized user management and single sign-on capabilities across all MBTI platforms.</p>
+        <ul>
+            <li>Protocol: LDAP v3</li>
+            <li>Domain: mbti.local</li>
+            <li>Service Port: 389 (LDAP), 636 (LDAPS)</li>
+        </ul>
+
+        <h3>File Sharing</h3>
+        <p>Network File System (NFS) provides shared storage for documentation, reports, and collaborative workspaces.</p>
+        <ul>
+            <li>Protocol: NFSv4</li>
+            <li>Mount Points: Various departmental shares</li>
+            <li>Access: Authenticated users only</li>
+        </ul>
+
+        <h3>Web Services</h3>
+        <p>Apache-based web servers host the employee portal and internal applications.</p>
+        <ul>
+            <li>Primary Portal: http://portal.mbti.local</li>
+            <li>Load Balancing: Round-robin DNS</li>
+            <li>SSL/TLS: Enforced for external access</li>
+        </ul>
+
+        <h2>🔒 Security Measures</h2>
+        <ul>
+            <li>Firewall protection on all network boundaries</li>
+            <li>Intrusion Detection System (IDS) monitoring</li>
+            <li>Regular security audits and penetration testing</li>
+            <li>Network segmentation with VLANs</li>
+            <li>VPN access for remote employees</li>
+        </ul>
+
+        <h2>📊 Network Monitoring</h2>
+        <p>Our network operations center monitors all critical infrastructure 24/7 to ensure optimal performance and rapid incident response.</p>
+        
+        <div class="info-box">
+            <strong>NOC Contact:</strong> noc@mbti.local<br>
+            <strong>Emergency Hotline:</strong> Available through IT helpdesk
+        </div>
+    </div>
+</body>
+</html>
