@@ -422,6 +422,7 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
         .content-area {
             padding: 2rem;
             max-width: 1800px;
+            margin: 0 auto;
         }
         
         /* Dashboard Grid Layout */
@@ -1149,18 +1150,18 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
 <body>
     <!-- Icon-Focused Sidebar -->
     <div class="sidebar">
-        <img src="./images/mercedes-logo.png" alt="MB" class="sidebar-logo">
+        <img src="../images/mercedes-logo.png" alt="MB" class="sidebar-logo">
         <ul class="nav-menu">
             <a href="?page=home&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo ($page === 'home' || !isset($_GET['page'])) ? 'active' : ''; ?>">
-                <span class="nav-icon">⬢</span>
+                <span class="nav-icon">📊</span>
                 <span class="nav-label">Dashboard</span>
             </a>
             <a href="?page=reports&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>&report_id=510" class="nav-item <?php echo $page === 'reports' ? 'active' : ''; ?>">
-                <span class="nav-icon">📋</span>
+                <span class="nav-icon">📈</span>
                 <span class="nav-label">Reports</span>
             </a>
             <a href="?page=projects&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'projects' ? 'active' : ''; ?>">
-                <span class="nav-icon">🔷</span>
+                <span class="nav-icon">🚗</span>
                 <span class="nav-label">Projects</span>
             </a>
             <a href="?page=team&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'team' ? 'active' : ''; ?>">
@@ -1168,11 +1169,11 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
                 <span class="nav-label">Team</span>
             </a>
             <a href="?page=tasks&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'tasks' ? 'active' : ''; ?>">
-                <span class="nav-icon">✓</span>
+                <span class="nav-icon">✅</span>
                 <span class="nav-label">Tasks</span>
             </a>
             <a href="?page=timesheet&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'timesheet' ? 'active' : ''; ?>">
-                <span class="nav-icon">⏱</span>
+                <span class="nav-icon">⏰</span>
                 <span class="nav-label">Timesheet</span>
             </a>
             <div class="nav-separator"></div>
@@ -1507,131 +1508,153 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
                     gap: 1.5rem;
                     margin-top: 1.5rem;
                 }
-                .project-card {
-                    background: white;
-                    border-radius: 8px;
+                .page-projects .project-card {
+                    background: var(--mb-bg-secondary);
+                    border: 1px solid var(--mb-border);
+                    border-radius: 16px;
                     padding: 1.5rem;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-                    transition: transform 0.2s, box-shadow 0.2s;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
                     cursor: pointer;
-                    border-left: 4px solid #4169e1;
+                    position: relative;
+                    overflow: hidden;
                 }
-                .project-card:hover {
+                .page-projects .project-card::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 3px;
+                    background: var(--mb-gradient-accent);
+                    opacity: 0;
+                    transition: opacity 0.3s ease;
+                }
+                .page-projects .project-card:hover {
+                    border-color: var(--mb-accent-primary);
+                    box-shadow: 0 8px 32px var(--mb-accent-glow);
                     transform: translateY(-4px);
-                    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
                 }
-                .project-card.status-in-progress {
-                    border-left-color: #00adef;
+                .page-projects .project-card:hover::before {
+                    opacity: 1;
                 }
-                .project-card.status-planning {
-                    border-left-color: #ffa726;
-                }
-                .project-card.status-testing {
-                    border-left-color: #66bb6a;
-                }
-                .project-header {
+                .page-projects .project-header {
                     display: flex;
                     justify-content: space-between;
                     align-items: flex-start;
                     margin-bottom: 1rem;
                 }
-                .project-title {
-                    font-size: 1.15rem;
+                .page-projects .project-title {
+                    font-size: 1.1rem;
                     font-weight: 600;
-                    color: #2c2c2c;
+                    color: var(--mb-text-primary);
                     margin-bottom: 0.3rem;
                 }
-                .project-status {
-                    padding: 0.25rem 0.75rem;
-                    border-radius: 12px;
-                    font-size: 0.75rem;
+                .page-projects .project-status {
+                    padding: 0.3rem 0.7rem;
+                    border-radius: 6px;
+                    font-size: 0.7rem;
                     font-weight: 600;
                     text-transform: uppercase;
+                    letter-spacing: 0.5px;
                 }
-                .status-in-progress {
-                    background: #e3f2fd;
-                    color: #1976d2;
+                .page-projects .status-in-progress {
+                    background: rgba(0, 173, 239, 0.15);
+                    color: var(--mb-accent-primary);
+                    border: 1px solid rgba(0, 173, 239, 0.3);
                 }
-                .status-planning {
-                    background: #fff3e0;
-                    color: #f57c00;
+                .page-projects .status-planning {
+                    background: rgba(255, 184, 0, 0.15);
+                    color: var(--mb-status-yellow);
+                    border: 1px solid rgba(255, 184, 0, 0.3);
                 }
-                .status-testing {
-                    background: #e8f5e9;
-                    color: #388e3c;
+                .page-projects .status-testing {
+                    background: rgba(0, 208, 132, 0.15);
+                    color: var(--mb-status-green);
+                    border: 1px solid rgba(0, 208, 132, 0.3);
                 }
-                .project-description {
-                    color: #666;
+                .page-projects .project-description {
+                    color: var(--mb-text-secondary);
                     font-size: 0.9rem;
-                    line-height: 1.5;
+                    line-height: 1.6;
                     margin-bottom: 1rem;
                 }
-                .project-meta {
+                .page-projects .project-meta {
                     display: flex;
                     gap: 1.5rem;
                     padding-top: 1rem;
-                    border-top: 1px solid #e0e0e0;
-                    font-size: 0.85rem;
-                    color: #777;
+                    border-top: 1px solid var(--mb-border);
+                    font-size: 0.8rem;
+                    color: var(--mb-text-muted);
                 }
-                .meta-item {
+                .page-projects .meta-item {
                     display: flex;
                     align-items: center;
                     gap: 0.4rem;
                 }
-                .progress-bar {
+                .page-projects .progress-bar {
                     width: 100%;
                     height: 6px;
-                    background: #e0e0e0;
+                    background: var(--mb-bg-primary);
                     border-radius: 3px;
                     overflow: hidden;
                     margin-top: 0.5rem;
                 }
-                .progress-fill {
+                .page-projects .progress-fill {
                     height: 100%;
-                    background: linear-gradient(90deg, #00adef, #4169e1);
-                    transition: width 0.3s ease;
+                    background: var(--mb-gradient-accent);
+                    transition: width 1s ease;
+                    position: relative;
                 }
-                .team-avatars {
+                .page-projects .progress-fill::after {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+                    animation: shimmer 2s infinite;
+                }
+                .page-projects .team-avatars {
                     display: flex;
                     margin-top: 1rem;
                 }
-                .avatar {
+                .page-projects .avatar {
                     width: 32px;
                     height: 32px;
                     border-radius: 50%;
-                    background: #4169e1;
+                    background: var(--mb-gradient-accent);
                     color: white;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     font-size: 0.75rem;
                     font-weight: 600;
-                    border: 2px solid white;
+                    border: 2px solid var(--mb-bg-primary);
                     margin-left: -8px;
                 }
-                .avatar:first-child {
+                .page-projects .avatar:first-child {
                     margin-left: 0;
                 }
             </style>
             
-            <h2 style="font-size: 1.5rem; color: #2c2c2c; margin-bottom: 0.5rem;">My Projects</h2>
-            <p style="color: #666; margin-bottom: 1.5rem;">You are currently assigned to 3 active projects</p>
+            <h2 style="font-size: 1.5rem; color: var(--mb-text-primary); margin-bottom: 0.5rem;">My Projects</h2>
+            <p style="color: var(--mb-text-secondary); margin-bottom: 1.5rem;">You are currently assigned to 3 active projects</p>
             
-            <div class="projects-grid">
+            <div class="projects-grid page-projects">
                 <!-- Project 1: EQS Digital Cockpit -->
                 <div class="project-card status-in-progress">
                     <div class="project-header">
                         <div>
                             <div class="project-title">EQS Digital Cockpit Development</div>
-                            <div style="font-size: 0.8rem; color: #888;">MBTI-2024-001</div>
+                            <div style="font-size: 0.8rem; color: var(--mb-text-muted); font-family: 'Roboto Mono', monospace;">MBTI-2024-001</div>
                         </div>
                         <span class="project-status status-in-progress">In Progress</span>
                     </div>
                     <div class="project-description">
                         Developing next-generation MBUX Hyperscreen interface for the Mercedes-EQS with AI-powered personalization and advanced voice control features.
                     </div>
-                    <div style="margin-bottom: 0.5rem; font-size: 0.85rem; color: #555;">
+                    <div style="margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--mb-text-secondary);">
                         <strong>Progress:</strong> 67%
                     </div>
                     <div class="progress-bar">
@@ -1648,10 +1671,10 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
                         </div>
                     </div>
                     <div class="team-avatars">
-                        <div class="avatar" style="background: #4169e1;">TM</div>
-                        <div class="avatar" style="background: #00adef;">SS</div>
-                        <div class="avatar" style="background: #66bb6a;">MW</div>
-                        <div class="avatar" style="background: #ffa726;">+5</div>
+                        <div class="avatar">TM</div>
+                        <div class="avatar">SS</div>
+                        <div class="avatar">MW</div>
+                        <div class="avatar">+5</div>
                     </div>
                 </div>
                 
@@ -1660,7 +1683,7 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
                     <div class="project-header">
                         <div>
                             <div class="project-title">Mercedes me App v3.0</div>
-                            <div style="font-size: 0.8rem; color: #888;">MBTI-2024-042</div>
+                            <div style="font-size: 0.8rem; color: var(--mb-text-muted); font-family: 'Roboto Mono', monospace;">MBTI-2024-042</div>
                         </div>
                         <span class="project-status status-planning">Planning</span>
                     </div>

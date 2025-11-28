@@ -26,6 +26,8 @@ services:
       - "111:111"
     volumes:
       - nfs_share:/var/nfs/internal
+      - ./portal:/var/www/portal
+      - ./www:/var/www/html
     restart: unless-stopped
     privileged: true
     cap_add:
