@@ -61,18 +61,18 @@ uidNumber: 10002
 gidNumber: 10002
 homeDirectory: /home/thomas.mueller
 
-dn: uid=julia.schneider,ou=People,dc=mbti,dc=local
-uid: julia.schneider
-cn: Julia Schneider
-sn: Schneider
-mail: julia.schneider@mbti.local
+dn: uid=john.doe,ou=People,dc=mbti,dc=local
+uid: john.doe
+cn: John Doe
+sn: Doe
+mail: john.doe@mbti.local
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
-userPassword: $2a$12$
+userPassword: JDJhJDEyJFBrcHNCalVhempnTXgxSy54ZmpZNGVJS3VrakdKRTFDdVdqcjVUSlJiQ09xM2VQVzk4a2Y2
 shadowLastChange: 19692
 shadowMin: 0
 shadowMax: 99999
@@ -80,7 +80,7 @@ shadowWarning: 7
 loginShell: /bin/bash
 uidNumber: 10003
 gidNumber: 10003
-homeDirectory: /home/julia.schneider
+homeDirectory: /home/john.doe
 
 dn: uid=developer,ou=People,dc=mbti,dc=local
 uid: developer
@@ -111,7 +111,6 @@ cn: employees
 gidNumber: 10001
 memberUid: john.doe
 memberUid: thomas.mueller
-memberUid: julia.schneider
 
 dn: cn=developers,ou=Groups,dc=mbti,dc=local
 objectClass: posixGroup

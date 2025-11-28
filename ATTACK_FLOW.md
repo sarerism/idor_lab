@@ -78,7 +78,7 @@ for i in range(1, 1000):
 **Valid Credentials Found:**
 - Employee ID: `MBTI2024837`
 - Password: `tekelomuxo`
-- User: Julia Schneider (Junior Developer)
+- User: John Doe (Junior Developer)
 
 **Note:** MBTI2024837 is the ONLY account with the default password!
 
@@ -159,7 +159,7 @@ for report_id in range(1, 512):
 
 **Report Details:**
 - Title: "Infrastructure Access Credentials"
-- Author: Julia Schneider (MBTI2024837)
+- Author: John Doe (MBTI2024837)
 - Status: CONFIDENTIAL - MANAGER ONLY
 - Content: Contains internal infrastructure credentials
 
