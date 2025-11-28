@@ -60,7 +60,7 @@ docker run -d --name mbti_portal --network mbti_net -p 80:80 sareer/mbti-employe
 - Landing Page: `http://localhost`
 - Portal Subdomain: `http://portal.localhost`
 - Default Password (requires brute force to find Employee ID):
-  - Password: `MBTI1337`
+  - Password: `tekelomuxo`
   - Employee ID Format: `MBTI2024XXX` (must be discovered)
   - Valid Account: `MBTI2024837` (found via brute force)
 

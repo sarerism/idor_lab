@@ -40,18 +40,18 @@ uidNumber: 10001
 gidNumber: 10001
 homeDirectory: /home/john.doe
 
-dn: uid=jane.smith,ou=People,dc=mbti,dc=local
-uid: jane.smith
-cn: Jane Smith
-sn: Smith
-mail: jane.smith@mbti.local
+dn: uid=thomas.mueller,ou=People,dc=mbti,dc=local
+uid: thomas.mueller
+cn: Thomas Müller
+sn: Müller
+mail: thomas.mueller@mbti.local
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
-userPassword: {SSHA}dummyhash123
+userPassword: $2a$12$
 shadowLastChange: 19692
 shadowMin: 0
 shadowMax: 99999
@@ -59,20 +59,20 @@ shadowWarning: 7
 loginShell: /bin/bash
 uidNumber: 10002
 gidNumber: 10002
-homeDirectory: /home/jane.smith
+homeDirectory: /home/thomas.mueller
 
-dn: uid=bob.wilson,ou=People,dc=mbti,dc=local
-uid: bob.wilson
-cn: Bob Wilson
-sn: Wilson
-mail: bob.wilson@mbti.local
+dn: uid=julia.schneider,ou=People,dc=mbti,dc=local
+uid: julia.schneider
+cn: Julia Schneider
+sn: Schneider
+mail: julia.schneider@mbti.local
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
-userPassword: {SSHA}dummyhash456
+userPassword: $2a$12$
 shadowLastChange: 19692
 shadowMin: 0
 shadowMax: 99999
@@ -80,49 +80,7 @@ shadowWarning: 7
 loginShell: /bin/bash
 uidNumber: 10003
 gidNumber: 10003
-homeDirectory: /home/bob.wilson
-
-dn: uid=alice.brown,ou=People,dc=mbti,dc=local
-uid: alice.brown
-cn: Alice Brown
-sn: Brown
-mail: alice.brown@mbti.local
-objectClass: person
-objectClass: organizationalPerson
-objectClass: inetOrgPerson
-objectClass: posixAccount
-objectClass: top
-objectClass: shadowAccount
-userPassword: {SSHA}dummyhash789
-shadowLastChange: 19692
-shadowMin: 0
-shadowMax: 99999
-shadowWarning: 7
-loginShell: /bin/bash
-uidNumber: 10004
-gidNumber: 10004
-homeDirectory: /home/alice.brown
-
-dn: uid=charlie.davis,ou=People,dc=mbti,dc=local
-uid: charlie.davis
-cn: Charlie Davis
-sn: Davis
-mail: charlie.davis@mbti.local
-objectClass: person
-objectClass: organizationalPerson
-objectClass: inetOrgPerson
-objectClass: posixAccount
-objectClass: top
-objectClass: shadowAccount
-userPassword: {SSHA}dummyhash101
-shadowLastChange: 19692
-shadowMin: 0
-shadowMax: 99999
-shadowWarning: 7
-loginShell: /bin/bash
-uidNumber: 10005
-gidNumber: 10005
-homeDirectory: /home/charlie.davis
+homeDirectory: /home/julia.schneider
 
 dn: uid=developer,ou=People,dc=mbti,dc=local
 uid: developer
@@ -135,7 +93,7 @@ objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
-userPassword: {SSHA}dummyhash202
+userPassword: $2a$12$
 shadowLastChange: 19692
 shadowMin: 0
 shadowMax: 99999
@@ -152,10 +110,8 @@ objectClass: top
 cn: employees
 gidNumber: 10001
 memberUid: john.doe
-memberUid: jane.smith
-memberUid: bob.wilson
-memberUid: alice.brown
-memberUid: charlie.davis
+memberUid: thomas.mueller
+memberUid: julia.schneider
 
 dn: cn=developers,ou=Groups,dc=mbti,dc=local
 objectClass: posixGroup

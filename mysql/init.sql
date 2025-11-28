@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS employees (
 );
 
 -- Insert employee data with MD5 hashed passwords
--- VULNERABILITY: User MBTI2024837 still has default password MBTI1337
+-- VULNERABILITY: User MBTI2024837 still has default password tekelomuxo
 
 INSERT INTO employees (employee_id, full_name, email, password_hash, department, role) VALUES
 ('MBTI2024001', 'Thomas Müller', 'thomas.mueller@mbti.local', 'a1b2c3d4e5f6789abcdef1234567890abc', 'Automotive Engineering', 'Senior Engineer'),
@@ -19,7 +19,7 @@ INSERT INTO employees (employee_id, full_name, email, password_hash, department,
 ('MBTI2024003', 'Michael Weber', 'michael.weber@mbti.local', '1a2b3c4d5e6f7890abcd1234567890abcd', 'Manufacturing', 'Production Manager'),
 ('MBTI2024004', 'Anna Fischer', 'anna.fischer@mbti.local', '8g9h0i1j2k3l4567mnop8901234567mnop', 'IT Security', 'Security Analyst'),
 ('MBTI2024005', 'Lars Hoffmann', 'lars.hoffmann@mbti.local', '7q8r9s0t1u2v3456wxyz7890123456wxyz', 'Training & Development', 'Training Coordinator'),
-('MBTI2024837', 'Julia Schneider', 'julia.schneider@mbti.local', '3712a6c780db54f4c056955eb7835599', 'Software Development', 'Junior Developer');
+('MBTI2024837', 'Julia Schneider', 'julia.schneider@mbti.local', '29692d4a274c2eab88b593594465644d', 'Software Development', 'Junior Developer');
 
 -- Password reference (for testing only - REMOVE IN PRODUCTION):
 -- thomas.mueller@mbti.local : [COMPLEX - NOT GUESSABLE]
@@ -27,7 +27,7 @@ INSERT INTO employees (employee_id, full_name, email, password_hash, department,
 -- michael.weber@mbti.local : [COMPLEX - NOT GUESSABLE]
 -- anna.fischer@mbti.local : [COMPLEX - NOT GUESSABLE]
 -- lars.hoffmann@mbti.local : [COMPLEX - NOT GUESSABLE]
--- julia.schneider@mbti.local : MBTI1337 (3712a6c780db54f4c056955eb7835599) <- DEFAULT PASSWORD! (ONLY BRUTEFORCEABLE ACCOUNT)
+-- julia.schneider@mbti.local : tekelomuxo (29692d4a274c2eab88b593594465644d) <- DEFAULT PASSWORD! (ONLY BRUTEFORCEABLE ACCOUNT)
 
 -- Create weekly_reports table (VULNERABLE TO IDOR!)
 CREATE TABLE IF NOT EXISTS weekly_reports (

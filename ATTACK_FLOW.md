@@ -16,11 +16,11 @@ This document outlines the intended exploitation path for the MBTI Employee Port
 
 ### Step 2: Credential Acquisition
 **Found in the credentials document:**
-- Default Password: `MBTI1337`
+- Default Password: `tekelomuxo`
 - Employee ID Format: `MBTI2024XXX`
 
 **Key Information:**
-- Password is known: `MBTI1337`
+- Password is known: `tekelomuxo`
 - Employee ID format is revealed
 - Need to find valid Employee ID to login
 
@@ -57,7 +57,7 @@ Navigate to `http://portal.localhost` and observe the login page.
 ### Step 5: Analyze Login Form
 On `portal.localhost/login.php`:
 - Employee ID field expects format: `MBTI2024XXX`
-- Password field: Known value `MBTI1337`
+- Password field: Known value `tekelomuxo`
 - Need to brute force the XXX portion (numeric)
 
 ### Step 6: Brute Force Employee ID
@@ -65,7 +65,7 @@ Create a brute force attack to find valid Employee ID:
 
 ```bash
 # Using hydra
-hydra -l MBTI2024^USER^ -p MBTI1337 portal.localhost http-post-form \
+hydra -l MBTI2024^USER^ -p tekelomuxo portal.localhost http-post-form \
   "/login.php:employee_id=^USER^&password=^PASS^:Invalid employee ID or password" \
   -I -t 4 -w 30
 
@@ -77,7 +77,7 @@ for i in range(1, 1000):
 
 **Valid Credentials Found:**
 - Employee ID: `MBTI2024837`
-- Password: `MBTI1337`
+- Password: `tekelomuxo`
 - User: Julia Schneider (Junior Developer)
 
 **Note:** MBTI2024837 is the ONLY account with the default password!
@@ -87,7 +87,7 @@ for i in range(1, 1000):
 ## Phase 4: Dashboard Access & Initial Exploration
 
 ### Step 7: Successful Login
-Login with credentials: `MBTI2024837` / `MBTI1337`
+Login with credentials: `MBTI2024837` / `tekelomuxo`
 
 **Redirect URL:**
 ```
@@ -143,7 +143,7 @@ session = requests.Session()
 # Login first
 session.post('http://portal.localhost/login.php', data={
     'employee_id': 'MBTI2024837',
-    'password': 'MBTI1337',
+    'password': 'tekelomuxo',
     'login': '1'
 })
 

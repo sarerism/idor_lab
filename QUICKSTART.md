@@ -43,7 +43,7 @@ Landing Page → Default Creds → Subdomain Discovery → Brute Force → IDOR 
 ```
 
 ### Credentials You'll Find:
-- **Default Password:** `MBTI1337`
+- **Default Password:** `tekelomuxo`
 - **Employee ID Format:** `MBTI2024XXX` (needs brute force)
 - **Valid Account:** `MBTI2024837` (must be discovered)
 
@@ -69,7 +69,7 @@ curl -H "Host: portal.localhost" http://localhost
 ### Employee ID Brute Force:
 ```bash
 # Format: MBTI2024001 - MBTI2024999
-# Password: MBTI1337
+# Password: tekelomuxo
 ```
 
 ---
@@ -151,7 +151,7 @@ Open your browser: **http://localhost/portal/login.php**
 ## 3️⃣ Login
 
 - **Employee ID**: `MBTI2024837`
-- **Password**: `MBTI1337`
+- **Password**: `tekelomuxo`
 
 ## 4️⃣ Start Testing
 

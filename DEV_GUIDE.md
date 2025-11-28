@@ -60,7 +60,7 @@ sudo -E docker compose up -d --build
 - **Landing Page**: Modern animated design with scrollable sections
 - **Subdomains**: portal.localhost, dev.localhost
 - **Vulnerability**: IDOR on report_id parameter only
-- **Default Credentials**: MBTI1337 (Employee ID: MBTI2024837)
+- **Default Credentials**: tekelomuxo (Employee ID: MBTI2024837)
 
 ## 🎯 Attack Flow
 
