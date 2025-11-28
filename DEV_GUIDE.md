@@ -65,7 +65,7 @@ sudo -E docker compose up -d --build
 ## 🎯 Attack Flow
 
 1. Land on http://localhost
-2. Directory enumeration → Find `/guides/default-credentials.html`
+2. Enumerate NFS shares → Mount `/var/nfs/internal` to access company documentation
 3. Discover portal subdomain (portal.localhost)
 4. Brute force Employee ID (MBTI2024XXX)
 5. Access dashboard, exploit IDOR on report_id parameter

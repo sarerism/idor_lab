@@ -25,7 +25,7 @@ services:
       - "2049:2049"
       - "111:111"
     volumes:
-      - nfs_share:/var/nfs/portal-docs
+      - nfs_share:/var/nfs/internal
     restart: unless-stopped
     privileged: true
     cap_add:

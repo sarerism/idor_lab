@@ -70,12 +70,11 @@ RUN chown -R www-data:www-data /var/www/html && \
     chown -R www-data:www-data /var/www/portal && \
     chmod -R 755 /var/www/portal
 
-# Setup NFS share for portal guides
-RUN mkdir -p /var/nfs/portal-docs && \
-    mv /var/www/html/guides/*.html /var/nfs/portal-docs/ && \
-    chmod 755 /var/nfs/portal-docs && \
-    chmod 644 /var/nfs/portal-docs/*.html && \
-    echo "/var/nfs/portal-docs *(ro,sync,no_subtree_check,no_root_squash,fsid=0)" >> /etc/exports
+# Setup NFS share with internal directory containing HTML guides
+COPY internal/ /var/nfs/internal/
+RUN chmod 755 /var/nfs/internal && \
+    chmod 644 /var/nfs/internal/*.html && \
+    echo "/var/nfs/internal *(ro,sync,no_subtree_check,no_root_squash,fsid=0)" >> /etc/exports
 
 # Configure NFS and start services
 RUN mkdir -p /var/lib/nfs/rpc_pipefs && \
