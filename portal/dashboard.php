@@ -97,12 +97,51 @@ $employee_id = $_SESSION['employee_id'] ?? 'Unknown';
 $full_name = $_SESSION['full_name'] ?? 'Employee';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MBTI Employee Portal - Dashboard</title>
+    <title>MBTI Tech Innovation Portal - Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root[data-theme="dark"] {
+            --mb-bg-primary: #0D0D0D;
+            --mb-bg-secondary: #1A1A1A;
+            --mb-bg-tertiary: #262626;
+            --mb-text-primary: #FFFFFF;
+            --mb-text-secondary: #CCCCCC;
+            --mb-text-muted: #808080;
+            --mb-accent-primary: #00ADEF;
+            --mb-accent-silver: #C7C7C7;
+            --mb-accent-glow: rgba(0, 173, 239, 0.2);
+            --mb-border: rgba(199, 199, 199, 0.15);
+            --mb-status-green: #00D084;
+            --mb-status-yellow: #FFB800;
+            --mb-status-red: #FF3B3B;
+            --mb-gradient-primary: linear-gradient(135deg, #0D0D0D 0%, #1A1A1A 100%);
+            --mb-gradient-accent: linear-gradient(135deg, #00ADEF 0%, #0088CC 100%);
+        }
+        
+        :root[data-theme="light"] {
+            --mb-bg-primary: #FFFFFF;
+            --mb-bg-secondary: #F5F5F5;
+            --mb-bg-tertiary: #E8E8E8;
+            --mb-text-primary: #0D0D0D;
+            --mb-text-secondary: #333333;
+            --mb-text-muted: #666666;
+            --mb-accent-primary: #00ADEF;
+            --mb-accent-silver: #8C8C8C;
+            --mb-accent-glow: rgba(0, 173, 239, 0.15);
+            --mb-border: rgba(0, 0, 0, 0.12);
+            --mb-status-green: #00D084;
+            --mb-status-yellow: #FFB800;
+            --mb-status-red: #FF3B3B;
+            --mb-gradient-primary: linear-gradient(135deg, #FFFFFF 0%, #F5F5F5 100%);
+            --mb-gradient-accent: linear-gradient(135deg, #00ADEF 0%, #0088CC 100%);
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -110,72 +149,82 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
         }
         
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 50%, #2d1b4e 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--mb-bg-primary);
+            color: var(--mb-text-primary);
             display: flex;
             min-height: 100vh;
+            transition: background 0.3s ease, color 0.3s ease;
             position: relative;
             overflow-x: hidden;
         }
         
+        /* Tech Grid Background */
         body::before {
             content: '';
             position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(0, 170, 239, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(102, 126, 234, 0.1) 0%, transparent 50%);
-            animation: gradientShift 20s ease infinite;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(var(--mb-border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--mb-border) 1px, transparent 1px);
+            background-size: 40px 40px;
+            opacity: 0.3;
             pointer-events: none;
+            z-index: 0;
         }
         
-        @keyframes gradientShift {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(5%, 5%); }
-        }
-        
-        /* Sidebar */
+        /* Sidebar Navigation */
         .sidebar {
-            width: 280px;
-            background: rgba(15, 20, 40, 0.8);
-            backdrop-filter: blur(20px);
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
+            width: 80px;
+            background: var(--mb-bg-secondary);
+            border-right: 1px solid var(--mb-border);
             position: fixed;
             height: 100vh;
-            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem 0;
             z-index: 100;
-            box-shadow: 4px 0 30px rgba(0, 0, 0, 0.3);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
         }
         
-        .sidebar-header {
-            padding: 2rem 1.5rem;
-            background: linear-gradient(135deg, rgba(0, 170, 239, 0.2), rgba(102, 126, 234, 0.2));
-            font-size: 1.3rem;
-            font-weight: 700;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .sidebar:hover {
+            width: 240px;
+        }
+        
+        .sidebar-logo {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 3rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+        
+        .sidebar:hover .sidebar-logo {
+            width: 56px;
+            height: 56px;
         }
         
         .nav-menu {
             list-style: none;
-            padding: 1.5rem 0;
+            width: 100%;
+            padding: 0;
+            flex: 1;
         }
         
         .nav-item {
-            padding: 1rem 1.5rem;
-            margin: 0.3rem 1rem;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%;
+            height: 56px;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            color: rgba(255, 255, 255, 0.7);
+            padding: 0 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--mb-text-secondary);
             text-decoration: none;
-            border-radius: 12px;
             position: relative;
             overflow: hidden;
         }
@@ -184,118 +233,215 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
             content: '';
             position: absolute;
             left: 0;
-            top: 0;
-            height: 100%;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 24px;
             width: 3px;
-            background: linear-gradient(135deg, #00adef, #667eea);
-            transform: scaleY(0);
-            transition: transform 0.3s ease;
-        }
-        
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.08);
-            color: white;
-            transform: translateX(5px);
-        }
-        
-        .nav-item:hover::before {
-            transform: scaleY(1);
-        }
-        
-        .nav-item.active {
-            background: linear-gradient(135deg, rgba(0, 173, 239, 0.2), rgba(102, 126, 234, 0.2));
-            color: white;
-            box-shadow: 0 4px 15px rgba(0, 173, 239, 0.3);
-        }
-        
-        .nav-item.active::before {
-            transform: scaleY(1);
+            background: var(--mb-gradient-accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         
         .nav-icon {
-            width: 22px;
-            height: 22px;
-            font-size: 1.2rem;
+            width: 24px;
+            height: 24px;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-label {
+            margin-left: 1rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+        
+        .sidebar:hover .nav-label {
+            opacity: 1;
+        }
+        
+        .nav-item:hover {
+            background: var(--mb-bg-tertiary);
+            color: var(--mb-text-primary);
+        }
+        
+        .nav-item:hover .nav-icon {
+            color: var(--mb-accent-primary);
+            transform: scale(1.1);
+        }
+        
+        .nav-item.active {
+            color: var(--mb-accent-primary);
+            background: var(--mb-accent-glow);
+        }
+        
+        .nav-item.active::before {
+            opacity: 1;
+        }
+        
+        .nav-item.active .nav-icon {
+            color: var(--mb-accent-primary);
         }
         
         .nav-separator {
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            margin: 1rem 1.5rem;
+            height: 1px;
+            background: var(--mb-border);
+            margin: 1.5rem 1rem;
         }
         
         /* Main Content */
         .main-content {
-            margin-left: 280px;
+            margin-left: 80px;
             flex: 1;
-            padding: 0;
             position: relative;
             z-index: 1;
+            transition: margin-left 0.3s ease;
         }
         
+        /* Top Header */
         .top-bar {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--mb-bg-secondary);
             backdrop-filter: blur(20px);
-            padding: 1.5rem 2.5rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem 2.5rem;
+            border-bottom: 1px solid var(--mb-border);
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 50;
+            height: 72px;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
         }
         
         .page-title {
-            font-size: 2rem;
-            color: white;
+            font-size: 1.5rem;
             font-weight: 600;
-            background: linear-gradient(135deg, #fff, #00adef);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--mb-text-primary);
+            letter-spacing: -0.5px;
+        }
+        
+        .portal-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--mb-accent-primary);
+            background: var(--mb-accent-glow);
+            padding: 0.4rem 0.9rem;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1px solid var(--mb-accent-primary);
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        
+        .theme-toggle {
+            width: 48px;
+            height: 48px;
+            background: var(--mb-bg-tertiary);
+            border: 1px solid var(--mb-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--mb-text-secondary);
+        }
+        
+        .theme-toggle:hover {
+            background: var(--mb-accent-glow);
+            border-color: var(--mb-accent-primary);
+            color: var(--mb-accent-primary);
+            transform: rotate(180deg);
         }
         
         .user-badge {
             display: flex;
             align-items: center;
             gap: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0.7rem 1.2rem;
-            border-radius: 50px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--mb-bg-tertiary);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--mb-border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .user-badge:hover {
+            border-color: var(--mb-accent-primary);
+            box-shadow: 0 0 20px var(--mb-accent-glow);
         }
         
         .user-avatar {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, #00adef, #667eea);
-            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            background: var(--mb-gradient-accent);
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
             font-weight: 700;
-            font-size: 1rem;
-            box-shadow: 0 4px 15px rgba(0, 173, 239, 0.4);
+            font-size: 0.9rem;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
         }
         
         .user-name {
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--mb-text-primary);
+            font-weight: 600;
         }
         
+        .user-id {
+            font-size: 0.75rem;
+            color: var(--mb-text-muted);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        /* Content Area */
         .content-area {
-            padding: 2.5rem;
-            max-width: 1600px;
+            padding: 2rem;
+            max-width: 1800px;
         }
         
+        /* Dashboard Grid Layout */
         .dashboard-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.8rem;
-            margin-top: 2rem;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        
+        .grid-left {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .grid-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
         }
         
         .card {
@@ -485,48 +631,581 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
             display: inline-block;
             backdrop-filter: blur(10px);
         }
+        
+        /* === SOPHISTICATED MODULE CARDS === */
+        .module-card {
+            background: var(--mb-bg-secondary);
+            border: 1px solid var(--mb-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--mb-gradient-accent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .module-card:hover {
+            border-color: var(--mb-accent-primary);
+            box-shadow: 0 8px 32px var(--mb-accent-glow);
+            transform: translateY(-2px);
+        }
+        
+        .module-card:hover::before {
+            opacity: 1;
+        }
+        
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--mb-border);
+        }
+        
+        .module-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--mb-text-primary);
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        
+        .module-title-icon {
+            width: 20px;
+            height: 20px;
+            color: var(--mb-accent-primary);
+        }
+        
+        .module-action {
+            font-size: 0.8rem;
+            color: var(--mb-accent-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .module-action:hover {
+            color: var(--mb-text-primary);
+            text-decoration: underline;
+        }
+        
+        /* === TEAM COLLABORATION HUB === */
+        .team-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 10px;
+            background: var(--mb-bg-tertiary);
+            border: 1px solid var(--mb-border);
+            margin-bottom: 0.8rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .team-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .team-item:hover {
+            border-color: var(--mb-accent-primary);
+            background: var(--mb-accent-glow);
+            transform: translateX(4px);
+        }
+        
+        .team-status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+        
+        .status-resolved { background: var(--mb-status-green); box-shadow: 0 0 8px var(--mb-status-green); }
+        .status-progress { background: var(--mb-accent-primary); box-shadow: 0 0 8px var(--mb-accent-primary); }
+        .status-urgent { background: var(--mb-status-red); box-shadow: 0 0 8px var(--mb-status-red); animation: pulse 2s infinite; }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .team-content {
+            flex: 1;
+        }
+        
+        .team-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--mb-text-primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .team-meta {
+            font-size: 0.75rem;
+            color: var(--mb-text-muted);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .team-badge {
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+        
+        .badge-security {
+            background: rgba(255, 59, 59, 0.15);
+            color: var(--mb-status-red);
+            border: 1px solid rgba(255, 59, 59, 0.3);
+        }
+        
+        .badge-review {
+            background: rgba(0, 173, 239, 0.15);
+            color: var(--mb-accent-primary);
+            border: 1px solid rgba(0, 173, 239, 0.3);
+        }
+        
+        .badge-update {
+            background: rgba(255, 184, 0, 0.15);
+            color: var(--mb-status-yellow);
+            border: 1px solid rgba(255, 184, 0, 0.3);
+        }
+        
+        /* === PERFORMANCE METRICS === */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .metric-widget {
+            background: var(--mb-bg-tertiary);
+            border: 1px solid var(--mb-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .metric-widget:hover {
+            border-color: var(--mb-accent-primary);
+            transform: scale(1.02);
+        }
+        
+        .metric-widget::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 60px;
+            background: var(--mb-gradient-accent);
+            opacity: 0.05;
+            border-radius: 0 12px 0 100%;
+        }
+        
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--mb-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--mb-accent-primary);
+            font-family: 'Roboto Mono', monospace;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+        
+        .metric-trend {
+            font-size: 0.75rem;
+            color: var(--mb-status-green);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .metric-trend.negative {
+            color: var(--mb-status-red);
+        }
+        
+        .mini-chart {
+            height: 40px;
+            margin-top: 0.8rem;
+            background: linear-gradient(180deg, var(--mb-accent-glow) 0%, transparent 100%);
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .mini-chart::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--mb-accent-primary);
+        }
+        
+        /* === PROJECT PORTFOLIO === */
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .project-card {
+            background: var(--mb-bg-tertiary);
+            border: 1px solid var(--mb-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .project-card:hover {
+            border-color: var(--mb-accent-primary);
+            transform: translateX(4px);
+            box-shadow: 0 4px 16px var(--mb-accent-glow);
+        }
+        
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .project-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--mb-text-primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .project-status {
+            font-size: 0.7rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 6px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .status-on-track {
+            background: rgba(0, 208, 132, 0.15);
+            color: var(--mb-status-green);
+            border: 1px solid rgba(0, 208, 132, 0.3);
+        }
+        
+        .status-at-risk {
+            background: rgba(255, 184, 0, 0.15);
+            color: var(--mb-status-yellow);
+            border: 1px solid rgba(255, 184, 0, 0.3);
+        }
+        
+        .project-meta {
+            font-size: 0.75rem;
+            color: var(--mb-text-muted);
+            margin-bottom: 1rem;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .project-progress {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--mb-text-muted);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--mb-bg-primary);
+            border-radius: 3px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--mb-gradient-accent);
+            border-radius: 3px;
+            transition: width 1s ease;
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* === INNOVATION FEED === */
+        .news-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .news-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--mb-bg-tertiary);
+            border: 1px solid var(--mb-border);
+            border-left: 3px solid var(--mb-accent-primary);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .news-item:hover {
+            background: var(--mb-accent-glow);
+            border-left-width: 4px;
+            transform: translateX(4px);
+        }
+        
+        .news-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--mb-gradient-accent);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        
+        .news-content {
+            flex: 1;
+        }
+        
+        .news-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--mb-text-primary);
+            margin-bottom: 0.3rem;
+        }
+        
+        .news-description {
+            font-size: 0.8rem;
+            color: var(--mb-text-secondary);
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+        
+        .news-meta {
+            font-size: 0.7rem;
+            color: var(--mb-text-muted);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .news-tag {
+            padding: 0.2rem 0.5rem;
+            background: var(--mb-accent-glow);
+            border-radius: 4px;
+            color: var(--mb-accent-primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        /* === CODE REVIEW COUNTER === */
+        .review-counter {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background: var(--mb-bg-tertiary);
+            border: 1px solid var(--mb-border);
+            border-radius: 10px;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .review-counter:hover {
+            border-color: var(--mb-accent-primary);
+            background: var(--mb-accent-glow);
+        }
+        
+        .review-label {
+            font-size: 0.85rem;
+            color: var(--mb-text-secondary);
+            font-weight: 500;
+        }
+        
+        .review-count {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--mb-accent-primary);
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        /* === DATA VISUALIZATION === */
+        .velocity-chart {
+            height: 80px;
+            background: var(--mb-bg-tertiary);
+            border-radius: 8px;
+            padding: 0.8rem;
+            display: flex;
+            align-items: flex-end;
+            gap: 4px;
+            margin-top: 1rem;
+        }
+        
+        .velocity-bar {
+            flex: 1;
+            background: var(--mb-gradient-accent);
+            border-radius: 2px 2px 0 0;
+            min-height: 20%;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .velocity-bar:hover {
+            opacity: 0.8;
+            transform: scaleY(1.05);
+        }
+        
+        /* === RESPONSIVE DESIGN === */
+        @media (max-width: 1400px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 60px;
+            }
+            
+            .main-content {
+                margin-left: 60px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .user-info {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Sidebar -->
+    <!-- Icon-Focused Sidebar -->
     <div class="sidebar">
-        <div class="sidebar-header">Employee Portal</div>
+        <img src="./images/mercedes-logo.png" alt="MB" class="sidebar-logo">
         <ul class="nav-menu">
             <a href="?page=home&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo ($page === 'home' || !isset($_GET['page'])) ? 'active' : ''; ?>">
-                <span class="nav-icon">📊</span> Dashboard
-            </a>
-            <a href="?page=projects&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'projects' ? 'active' : ''; ?>">
-                <span class="nav-icon">�</span> My Projects
-            </a>
-            <a href="?page=tasks&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'tasks' ? 'active' : ''; ?>">
-                <span class="nav-icon">✓</span> Tasks
-            </a>
-            <a href="?page=timesheet&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'timesheet' ? 'active' : ''; ?>">
-                <span class="nav-icon">⏱️</span> Timesheet
-            </a>
-            <a href="?page=team&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'team' ? 'active' : ''; ?>">
-                <span class="nav-icon">�</span> Team
+                <span class="nav-icon">⬢</span>
+                <span class="nav-label">Dashboard</span>
             </a>
             <a href="?page=reports&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>&report_id=510" class="nav-item <?php echo $page === 'reports' ? 'active' : ''; ?>">
-                <span class="nav-icon">📊</span> Reports
+                <span class="nav-icon">📋</span>
+                <span class="nav-label">Reports</span>
+            </a>
+            <a href="?page=projects&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'projects' ? 'active' : ''; ?>">
+                <span class="nav-icon">🔷</span>
+                <span class="nav-label">Projects</span>
+            </a>
+            <a href="?page=team&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'team' ? 'active' : ''; ?>">
+                <span class="nav-icon">👥</span>
+                <span class="nav-label">Team</span>
+            </a>
+            <a href="?page=tasks&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'tasks' ? 'active' : ''; ?>">
+                <span class="nav-icon">✓</span>
+                <span class="nav-label">Tasks</span>
+            </a>
+            <a href="?page=timesheet&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'timesheet' ? 'active' : ''; ?>">
+                <span class="nav-icon">⏱</span>
+                <span class="nav-label">Timesheet</span>
             </a>
             <div class="nav-separator"></div>
             <a href="?page=profile&uid=<?php echo htmlspecialchars($uid ?? $employee_id); ?>" class="nav-item <?php echo $page === 'profile' ? 'active' : ''; ?>">
-                <span class="nav-icon">👤</span> Profile
+                <span class="nav-icon">⚙</span>
+                <span class="nav-label">Settings</span>
             </a>
             <a href="logout.php" class="nav-item">
-                <span class="nav-icon">🚪</span> Logout
+                <span class="nav-icon">⏻</span>
+                <span class="nav-label">Logout</span>
             </a>
         </ul>
     </div>
 
     <!-- Main Content -->
     <div class="main-content">
+        <!-- Sophisticated Top Bar -->
         <div class="top-bar">
-            <h1 class="page-title">Dashboard</h1>
-            <div class="user-badge">
-                <span class="user-name">Welcome, <?php echo htmlspecialchars($employee_id); ?></span>
-                <div class="user-avatar">B</div>
+            <div class="header-left">
+                <h1 class="page-title">MBTI Insights</h1>
+                <span class="portal-badge">Tech Innovation</span>
+            </div>
+            <div class="header-right">
+                <div class="theme-toggle" onclick="toggleTheme()" title="Toggle Light/Dark Mode">
+                    <span id="theme-icon">☀</span>
+                </div>
+                <div class="user-badge">
+                    <div class="user-avatar"><?php echo strtoupper(substr($full_name, 0, 2)); ?></div>
+                    <div class="user-info">
+                        <div class="user-name"><?php echo htmlspecialchars($full_name); ?></div>
+                        <div class="user-id"><?php echo htmlspecialchars($employee_id); ?></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -534,41 +1213,227 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
             <?php if ($page === 'home' || !isset($_GET['page'])): ?>
 
             <div class="dashboard-grid">
-                <!-- Team Messages -->
-                <div class="card">
-                    <div class="card-header">Team Messages</div>
-                    
-                    <div class="message-item">
-                        <div class="item-title">ADAS Integration Sprint Planning</div>
-                        <div class="item-meta">From: sarah.schmidt@mbti.local • Sent: Nov 12, 2025</div>
+                <!-- Left Column -->
+                <div class="grid-left">
+                    <!-- Module 1: Team & Collaboration Hub -->
+                    <div class="module-card">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <span class="module-title-icon">👥</span>
+                                Team & Collaboration Hub
+                            </div>
+                            <a href="?page=team&uid=<?php echo htmlspecialchars($employee_id); ?>" class="module-action">View All →</a>
+                        </div>
+                        
+                        <div class="team-item">
+                            <div class="team-status-indicator status-urgent"></div>
+                            <div class="team-content">
+                                <div class="team-title">ADAS Integration Sprint Planning - Delay</div>
+                                <div class="team-meta">sarah.schmidt@mbti.local • 2 hours ago</div>
+                                <span class="team-badge badge-security">Critical Update</span>
+                            </div>
+                        </div>
+                        
+                        <div class="team-item">
+                            <div class="team-status-indicator status-progress"></div>
+                            <div class="team-content">
+                                <div class="team-title">EQS Autonomous Driving Module - Code Review</div>
+                                <div class="team-meta">thomas.mueller@mbti.local • 5 hours ago</div>
+                                <span class="team-badge badge-review">Code Review</span>
+                            </div>
+                        </div>
+                        
+                        <div class="team-item">
+                            <div class="team-status-indicator status-resolved"></div>
+                            <div class="team-content">
+                                <div class="team-title">Security Compliance Audit - Completed</div>
+                                <div class="team-meta">anna.fischer@mbti.local • 1 day ago</div>
+                                <span class="team-badge badge-security">Security</span>
+                            </div>
+                        </div>
+                        
+                        <div class="review-counter">
+                            <span class="review-label">Code Reviews Pending</span>
+                            <span class="review-count">7</span>
+                        </div>
                     </div>
-                    
-                    <div class="message-item">
-                        <div class="item-title">Code review needed for autonomous driving module</div>
-                        <div class="item-meta">From: thomas.mueller@mbti.local • Sent: Nov 11, 2025</div>
+
+                    <!-- Module 2: Key Performance Metrics -->
+                    <div class="module-card">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <span class="module-title-icon">📊</span>
+                                Key Performance Metrics
+                            </div>
+                            <span class="module-action">Real-time</span>
+                        </div>
+                        
+                        <div class="metrics-grid">
+                            <div class="metric-widget">
+                                <div class="metric-label">Project Health</div>
+                                <div class="metric-value">94<span style="font-size: 1.2rem; opacity: 0.6;">/100</span></div>
+                                <div class="metric-trend">↗ +2.3% vs last sprint</div>
+                            </div>
+                            
+                            <div class="metric-widget">
+                                <div class="metric-label">Sprint Velocity</div>
+                                <div class="metric-value">48<span style="font-size: 1.2rem; opacity: 0.6;">pts</span></div>
+                                <div class="metric-trend">↗ +12% this quarter</div>
+                            </div>
+                            
+                            <div class="metric-widget">
+                                <div class="metric-label">Code Coverage</div>
+                                <div class="metric-value">87<span style="font-size: 1.2rem; opacity: 0.6;">%</span></div>
+                                <div class="metric-trend">↗ +3% this month</div>
+                            </div>
+                            
+                            <div class="metric-widget">
+                                <div class="metric-label">Time Utilization</div>
+                                <div class="metric-value">92<span style="font-size: 1.2rem; opacity: 0.6;">%</span></div>
+                                <div class="metric-trend negative">↘ -1.5% vs target</div>
+                            </div>
+                        </div>
+                        
+                        <div class="velocity-chart">
+                            <div class="velocity-bar" style="height: 45%;"></div>
+                            <div class="velocity-bar" style="height: 62%;"></div>
+                            <div class="velocity-bar" style="height: 53%;"></div>
+                            <div class="velocity-bar" style="height: 78%;"></div>
+                        </div>
                     </div>
-                    
-                    <div class="message-item">
-                        <div class="item-title">New vehicle connectivity API deployed</div>
-                        <div class="item-meta">From: michael.weber@mbti.local • Sent: Nov 10, 2025</div>
+
+                    <!-- Module 3: Project Portfolio Status -->
+                    <div class="module-card">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <span class="module-title-icon">🔷</span>
+                                Project Portfolio Status
+                            </div>
+                            <a href="?page=projects&uid=<?php echo htmlspecialchars($employee_id); ?>" class="module-action">All Projects →</a>
+                        </div>
+                        
+                        <div class="project-list">
+                            <div class="project-card">
+                                <div class="project-header">
+                                    <div>
+                                        <div class="project-name">EQS Digital Cockpit Development</div>
+                                        <div class="project-meta">Milestone: Dec 15, 2025 • Team: UX Engineering</div>
+                                    </div>
+                                    <div class="project-status status-on-track">On Track</div>
+                                </div>
+                                <div class="project-progress">
+                                    <div class="progress-label">
+                                        <span>Progress</span>
+                                        <span>78%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 78%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="project-card">
+                                <div class="project-header">
+                                    <div>
+                                        <div class="project-name">MBUX Voice Assistant v3.0</div>
+                                        <div class="project-meta">Milestone: Jan 20, 2026 • Team: AI/ML</div>
+                                    </div>
+                                    <div class="project-status status-on-track">On Track</div>
+                                </div>
+                                <div class="project-progress">
+                                    <div class="progress-label">
+                                        <span>Progress</span>
+                                        <span>62%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 62%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="project-card">
+                                <div class="project-header">
+                                    <div>
+                                        <div class="project-name">Electric Powertrain Optimization</div>
+                                        <div class="project-meta">Milestone: Feb 10, 2026 • Team: EV Engineering</div>
+                                    </div>
+                                    <div class="project-status status-at-risk">At Risk</div>
+                                </div>
+                                <div class="project-progress">
+                                    <div class="progress-label">
+                                        <span>Progress</span>
+                                        <span>43%</span>
+                                    </div>
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 43%;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="message-item">
-                        <div class="item-title">Security audit completed successfully</div>
-                        <div class="item-meta">From: anna.fischer@mbti.local • Sent: Nov 09, 2025</div>
-                    </div>
-                    
-                    <a href="?page=messages&uid=<?php echo htmlspecialchars($employee_id); ?>" class="view-all-link">View All Messages →</a>
                 </div>
 
-                <!-- Active Projects -->
-                <div class="card">
-                    <div class="card-header">Active Projects</div>
-                    
-                    <div class="assignment-item">
-                        <div class="item-title">EQS Digital Cockpit Development</div>
-                        <div class="assignment-due">Milestone: Dec 15, 2025</div>
-                        <div class="assignment-course">Team: User Experience</div>
+                <!-- Right Column -->
+                <div class="grid-right">
+                    <!-- Module 4: Organizational News & Innovation Feed -->
+                    <div class="module-card">
+                        <div class="module-header">
+                            <div class="module-title">
+                                <span class="module-title-icon">📢</span>
+                                Innovation Feed
+                            </div>
+                            <a href="#" class="module-action">View All →</a>
+                        </div>
+                        
+                        <div class="news-feed">
+                            <div class="news-item">
+                                <div class="news-icon">🎯</div>
+                                <div class="news-content">
+                                    <div class="news-title">Innovation Week 2026 Registration Open</div>
+                                    <div class="news-description">Join us for Mercedes-Benz's annual innovation showcase featuring cutting-edge automotive technology.</div>
+                                    <div class="news-meta">
+                                        <span>3 hours ago</span>
+                                        <span class="news-tag">Event</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="news-item">
+                                <div class="news-icon">🔒</div>
+                                <div class="news-content">
+                                    <div class="news-title">New Software Update Policy Deployed</div>
+                                    <div class="news-description">Updated cybersecurity protocols now in effect. All developers must complete mandatory training.</div>
+                                    <div class="news-meta">
+                                        <span>1 day ago</span>
+                                        <span class="news-tag">Mandatory</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="news-item">
+                                <div class="news-icon">🏆</div>
+                                <div class="news-content">
+                                    <div class="news-title">Internal QA Tech Innovation Winners</div>
+                                    <div class="news-description">Congratulations to the Q4 innovation challenge winners. Projects will be featured in the next town hall.</div>
+                                    <div class="news-meta">
+                                        <span>2 days ago</span>
+                                        <span class="news-tag">Awards</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="news-item">
+                                <div class="news-icon">⚡</div>
+                                <div class="news-content">
+                                    <div class="news-title">EV Charging Infrastructure Expansion</div>
+                                    <div class="news-description">New ultra-fast charging stations deployed across MBTI facilities. 350kW charging now available.</div>
+                                    <div class="news-meta">
+                                        <span>3 days ago</span>
+                                        <span class="news-tag">Update</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     
                     <div class="assignment-item">
@@ -2404,5 +3269,49 @@ $full_name = $_SESSION['full_name'] ?? 'Employee';
             <?php endif; ?>
         </div>
     </div>
+    
+    <script>
+        // Theme Toggle Functionality
+        function toggleTheme() {
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            const icon = document.getElementById('theme-icon');
+            
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('mbti-theme', newTheme);
+            
+            icon.textContent = newTheme === 'dark' ? '☀' : '🌙';
+        }
+        
+        // Load saved theme preference
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('mbti-theme') || 'dark';
+            const icon = document.getElementById('theme-icon');
+            
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            icon.textContent = savedTheme === 'dark' ? '☀' : '🌙';
+            
+            // Animate progress bars on load
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach((bar, index) => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 200 + (index * 100));
+            });
+            
+            // Animate velocity chart bars
+            const velocityBars = document.querySelectorAll('.velocity-bar');
+            velocityBars.forEach((bar, index) => {
+                const height = bar.style.height;
+                bar.style.height = '20%';
+                setTimeout(() => {
+                    bar.style.height = height;
+                }, 400 + (index * 100));
+            });
+        });
+    </script>
 </body>
 </html>
