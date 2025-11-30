@@ -17,8 +17,8 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache modules
 RUN a2enmod php8.1 rewrite
 
-# Copy Apache virtual host configuration
-COPY www/apache-vhosts.conf /etc/apache2/sites-available/000-default.conf
+# Copy Apache virtual host configuration (React version)
+COPY portal/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \

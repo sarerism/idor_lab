@@ -174,8 +174,17 @@ docker-compose down
 ## 🎯 Your Mission
 
 Find and exploit the IDOR vulnerabilities to:
-1. Access other employees' dashboards
-2. Read confidential reports you shouldn't have access to
-3. Discover sensitive credentials hidden in the system
+1. Access other employees' dashboards (if applicable)
+2. **Read confidential reports** you shouldn't have access to
+3. Discover sensitive **credentials hidden** in report #502
+4. Find the **database password** in report #512
+
+**Hint**: Check the Reports section - there are 512 reports total, but only some are confidential! 🔐
+
+### Quick Wins:
+- Navigate to **Reports** page
+- Try accessing report IDs directly: **502** and **512**
+- Look for the "Direct Report Access" feature
+- Notice there's no authorization check! 😱
 
 **Good luck!** 🔐

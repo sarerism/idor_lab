@@ -7,19 +7,39 @@ CREATE TABLE IF NOT EXISTS employees (
     password_hash VARCHAR(255) NOT NULL,
     department VARCHAR(100),
     role VARCHAR(50),
+    manager_name VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Insert employee data with MD5 hashed passwords
 -- VULNERABILITY: User MBTI2024837 still has default password tekelomuxo
 
-INSERT INTO employees (employee_id, full_name, email, password_hash, department, role) VALUES
-('MBTI2024001', 'Thomas Müller', 'thomas.mueller@mbti.local', 'a1b2c3d4e5f6789abcdef1234567890abc', 'Automotive Engineering', 'Senior Engineer'),
-('MBTI2024002', 'Sarah Schmidt', 'sarah.schmidt@mbti.local', '9f8e7d6c5b4a321fedcba9876543210fed', 'EV Technology', 'Lead Researcher'),
-('MBTI2024003', 'Michael Weber', 'michael.weber@mbti.local', '1a2b3c4d5e6f7890abcd1234567890abcd', 'Manufacturing', 'Production Manager'),
-('MBTI2024004', 'Anna Fischer', 'anna.fischer@mbti.local', '8g9h0i1j2k3l4567mnop8901234567mnop', 'IT Security', 'Security Analyst'),
-('MBTI2024005', 'Lars Hoffmann', 'lars.hoffmann@mbti.local', '7q8r9s0t1u2v3456wxyz7890123456wxyz', 'Training & Development', 'Training Coordinator'),
-('MBTI2024837', 'John Doe', 'john.doe@mbti.local', '29692d4a274c2eab88b593594465644d', 'Software Development', 'Junior Developer');
+INSERT INTO employees (employee_id, full_name, email, password_hash, department, role, manager_name) VALUES
+('MBTI2024001', 'Stefan Müller', 'stefan.mueller@mbti.local', 'a1b2c3d4e5f6789abcdef1234567890abc', 'Software Development', 'Senior Software Engineer', 'Klaus Weber'),
+('MBTI2024002', 'Anna Schmidt', 'anna.schmidt@mbti.local', '9f8e7d6c5b4a321fedcba9876543210fed', 'Software Development', 'Full Stack Developer', 'Klaus Weber'),
+('MBTI2024003', 'Michael Weber', 'michael.weber@mbti.local', '1a2b3c4d5e6f7890abcd1234567890abcd', 'Software Development', 'Backend Developer', 'Klaus Weber'),
+('MBTI2024004', 'Julia Fischer', 'julia.fischer@mbti.local', '8g9h0i1j2k3l4567mnop8901234567mnop', 'Software Development', 'Frontend Developer', 'Klaus Weber'),
+('MBTI2024005', 'Thomas Schneider', 'thomas.schneider@mbti.local', '7q8r9s0t1u2v3456wxyz7890123456wxyz', 'Software Development', 'DevOps Engineer', 'Klaus Weber'),
+('MBTI2024006', 'Laura Wagner', 'laura.wagner@mbti.local', 'b2c3d4e5f6g78901bcde2345678901bcde', 'Automotive Engineering', 'Mechanical Engineer', 'Klaus Weber'),
+('MBTI2024007', 'Markus Becker', 'markus.becker@mbti.local', 'c3d4e5f6g7h89012cdef3456789012cdef', 'Automotive Engineering', 'Systems Engineer', 'Klaus Weber'),
+('MBTI2024008', 'Sophie Meyer', 'sophie.meyer@mbti.local', 'd4e5f6g7h8i90123defg4567890123defg', 'EV Technology', 'Battery Specialist', 'Klaus Weber'),
+('MBTI2024009', 'Alexander Wolf', 'alexander.wolf@mbti.local', 'e5f6g7h8i9j01234efgh5678901234efgh', 'EV Technology', 'Power Electronics Engineer', 'Klaus Weber'),
+('MBTI2024010', 'Lisa Hoffmann', 'lisa.hoffmann@mbti.local', 'f6g7h8i9j0k12345fghi6789012345fghi', 'EV Technology', 'Research Scientist', 'Klaus Weber'),
+('MBTI2024011', 'Daniel Schäfer', 'daniel.schaefer@mbti.local', 'g7h8i9j0k1l23456ghij7890123456ghij', 'Manufacturing', 'Production Supervisor', 'Klaus Weber'),
+('MBTI2024012', 'Emma Koch', 'emma.koch@mbti.local', 'h8i9j0k1l2m34567hijk8901234567hijk', 'Manufacturing', 'Quality Engineer', 'Klaus Weber'),
+('MBTI2024013', 'Felix Bauer', 'felix.bauer@mbti.local', 'i9j0k1l2m3n45678ijkl9012345678ijkl', 'Manufacturing', 'Process Engineer', 'Klaus Weber'),
+('MBTI2024014', 'Hannah Richter', 'hannah.richter@mbti.local', 'j0k1l2m3n4o56789jklm0123456789jklm', 'IT Security', 'Security Analyst', 'Klaus Weber'),
+('MBTI2024015', 'Lukas Klein', 'lukas.klein@mbti.local', 'k1l2m3n4o5p67890klmn1234567890klmn', 'IT Security', 'Network Security Specialist', 'Klaus Weber'),
+('MBTI2024016', 'Marie Zimmermann', 'marie.zimmermann@mbti.local', 'l2m3n4o5p6q78901lmno2345678901lmno', 'Training & Development', 'Training Specialist', 'Klaus Weber'),
+('MBTI2024017', 'Maximilian Braun', 'maximilian.braun@mbti.local', 'm3n4o5p6q7r89012mnop3456789012mnop', 'Training & Development', 'Learning Coordinator', 'Klaus Weber'),
+('MBTI2024018', 'Lena Krüger', 'lena.krueger@mbti.local', 'n4o5p6q7r8s90123nopq4567890123nopq', 'Product Management', 'Product Manager', 'Klaus Weber'),
+('MBTI2024019', 'Jonas Hartmann', 'jonas.hartmann@mbti.local', 'o5p6q7r8s9t01234opqr5678901234opqr', 'Product Management', 'Product Owner', 'Klaus Weber'),
+('MBTI2024020', 'Sarah Lehmann', 'sarah.lehmann@mbti.local', 'p6q7r8s9t0u12345pqrs6789012345pqrs', 'Data Analytics', 'Data Analyst', 'Klaus Weber'),
+('MBTI2024021', 'Tim Neumann', 'tim.neumann@mbti.local', 'q7r8s9t0u1v23456qrst7890123456qrst', 'Data Analytics', 'Business Intelligence Analyst', 'Klaus Weber'),
+('MBTI2024022', 'Nina Schwarz', 'nina.schwarz@mbti.local', 'r8s9t0u1v2w34567rstu8901234567rstu', 'Data Analytics', 'Data Scientist', 'Klaus Weber'),
+('MBTI2024023', 'Leon Zimmermann', 'leon.zimmermann@mbti.local', 's9t0u1v2w3x45678stuv9012345678stuv', 'Customer Support', 'Support Engineer', 'Klaus Weber'),
+('MBTI2024024', 'Mia Krause', 'mia.krause@mbti.local', 't0u1v2w3x4y56789tuvw0123456789tuvw', 'Customer Support', 'Technical Support Specialist', 'Klaus Weber'),
+('MBTI2024837', 'John Doe', 'john.doe@mbti.local', '29692d4a274c2eab88b593594465644d', 'Software Development', 'Junior Developer', 'Klaus Weber');
 
 -- Password reference (for testing only - REMOVE IN PRODUCTION):
 -- thomas.mueller@mbti.local : [COMPLEX - NOT GUESSABLE]
@@ -45,10 +65,10 @@ CREATE TABLE IF NOT EXISTS weekly_reports (
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id) ON DELETE CASCADE
 );
 
--- Insert manager account (Zimmer Dan) who will review reports
-INSERT INTO employees (employee_id, full_name, email, password_hash, department, role) VALUES
-('MBTI2024999', 'Zimmer Dan', 'zimmer.dan@mbti.local', '6e5d4c3b2a1098fedcba7654321fedcba', 'Management', 'Department Manager');
--- zimmer.dan@mbti.local : [COMPLEX - NOT GUESSABLE]
+-- Insert manager account (Klaus Weber) who will review reports
+INSERT INTO employees (employee_id, full_name, email, password_hash, department, role, manager_name) VALUES
+('MBTI2024999', 'Klaus Weber', 'klaus.weber@mbti.local', '6e5d4c3b2a1098fedcba7654321fedcba', 'Management', 'Team Lead', NULL);
+-- klaus.weber@mbti.local : [COMPLEX - NOT GUESSABLE]
 
 -- Insert sample reports for employees (reports 1-511)
 -- Reports 1-500: Dummy placeholder reports (older historical data)

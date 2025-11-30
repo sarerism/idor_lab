@@ -30,8 +30,8 @@ if (isset($_POST['login'])) {
             $_SESSION['department'] = $user['department'];
             $_SESSION['role'] = $user['role'];
             
-            // Redirect to dashboard with uid parameter for display
-            header('Location: dashboard.php?page=home&uid=' . $user['employee_id']);
+            // Redirect to Paper Dashboard
+            header('Location: paper_dashboard.php');
             exit();
         } else {
             $error_message = 'Invalid employee ID or password.';
