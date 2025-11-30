@@ -21,8 +21,8 @@ function Reports() {
 
     useEffect(() => {
         if (!reportId) {
-            // Redirect to most recent report (512) when no report_id specified
-            navigate("/reports?report_id=512", { replace: true });
+            // Redirect to most recent report (502) when no report_id specified
+            navigate("/reports?report_id=502", { replace: true });
             return;
         }
         fetchReportById(parseInt(reportId));
