@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MBTI - Employee Handbook</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        .content {
+            background-color: white;
+            padding: 30px;
+            margin-top: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .info-box {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-left: 4px solid #3498db;
+            margin: 15px 0;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>📘 MBTI Employee Handbook</h1>
+        <p>Internal Documentation - Confidential</p>
+    </div>
+
+    <div class="content">
+        <div class="section">
+            <h2>🏢 About Mercedes-Benz Tech Innovation</h2>
+            <p>Welcome to Mercedes-Benz Tech Innovation (MBTI). This handbook contains essential information for all
+                employees about our company culture, policies, and workplace guidelines.</p>
+
+            <div class="info-box">
+                <h3>Company Mission</h3>
+                <p>MBTI is dedicated to advancing automotive technology through innovation, research, and development of
+                    cutting-edge solutions for the mobility of tomorrow.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>👥 New Employee Onboarding</h2>
+            <p>Welcome to the team! Please complete the following steps during your first week:</p>
+
+            <ul>
+                <li><strong>Orientation:</strong> Attend company orientation session on your first day</li>
+                <li><strong>Documentation:</strong> Complete all HR paperwork and submit required documents</li>
+                <li><strong>Equipment:</strong> Collect your badge, laptop, and access cards from IT department</li>
+                <li><strong>Training:</strong> Complete mandatory safety and security awareness training</li>
+                <li><strong>Team Introduction:</strong> Meet with your manager and team members</li>
+            </ul>
+
+            <div class="note">
+                <strong>⚠️ Important:</strong> Please review all company policies during your first week. Contact HR at
+                hr@mbti.de if you have any questions.
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Company Departments</h2>
+            <ul>
+                <li><strong>Research & Development:</strong> Innovation and product development for next-generation
+                    automotive technology</li>
+                <li><strong>Engineering:</strong> Technical design, implementation, and system architecture</li>
+                <li><strong>Quality Assurance:</strong> Testing, validation, and quality control processes</li>
+                <li><strong>Human Resources:</strong> Employee services, recruitment, and organizational development
+                </li>
+                <li><strong>Operations:</strong> Facility management and administrative support services</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🔧 Employee Support Services</h2>
+            <p>For assistance with workplace matters, please contact:</p>
+
+            <div class="info-box">
+                <p><strong>Human Resources:</strong> hr@mbti.de</p>
+                <p><strong>Facilities Management:</strong> facilities@mbti.de</p>
+                <p><strong>Main Office:</strong> +49 (0) 30 1234-5678</p>
+                <p><strong>Business Hours:</strong> Monday - Friday, 8:00 - 18:00 CET</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📝 Core Company Values</h2>
+            <p><strong>Innovation:</strong> We push boundaries and embrace new technologies to stay ahead in the
+                automotive industry. Our research teams work on pioneering solutions that define the future of
+                mobility.</p>
+            <p><strong>Excellence:</strong> We maintain the highest standards in everything we do, from product quality
+                to customer service and employee development.</p>
+            <p><strong>Collaboration:</strong> We work together across teams and departments to achieve common goals
+                and support each other's professional growth.</p>
+            <p><strong>Sustainability:</strong> We are committed to developing environmentally responsible technologies
+                and maintaining sustainable business practices.</p>
+        </div>
+
+        <div class="section">
+            <h2>🏆 Employee Benefits</h2>
+            <ul>
+                <li>Competitive salary and performance bonuses</li>
+                <li>Comprehensive health insurance coverage</li>
+                <li>Flexible working hours and remote work options</li>
+                <li>Professional development and training opportunities</li>
+                <li>Company pension plan</li>
+                <li>Subsidized cafeteria and parking</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>🛡️ Workplace Guidelines</h2>
+            <ul>
+                <li>Maintain professional conduct and respect for all colleagues</li>
+                <li>Protect confidentiality of proprietary company information</li>
+                <li>Report any safety or security concerns to your supervisor immediately</li>
+                <li>Follow all company policies and procedures</li>
+                <li>Participate in required training and development programs</li>
+                <li>Use company resources responsibly and ethically</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>📞 Important Contacts</h2>
+            <div class="info-box">
+                <p><strong>Emergency:</strong> Contact building security immediately</p>
+                <p><strong>IT Support:</strong> Available through company helpdesk</p>
+                <p><strong>HR Department:</strong> Building A, 3rd Floor</p>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>📅 Last Updated:</strong> November 2025<br>
+            <strong>Version:</strong> 3.0<br>
+            <strong>Document ID:</strong> MBTI-HANDBOOK-2025
+        </div>
+    </div>
+</body>
+
+</html>

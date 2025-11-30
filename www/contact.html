@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Mercedes-Benz Tech Innovation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Background */
+        .page-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background-image: url('images/mercedes-avatar.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            filter: brightness(1.1);
+        }
+
+        .page-background::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 100%);
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .brand {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.02em;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            height: 40px;
+            width: auto;
+            filter: brightness(1.2);
+            object-fit: contain;
+        }
+
+        .nav-pills {
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 0.25rem;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .nav-link {
+            padding: 0.5rem 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Content */
+        .content {
+            position: relative;
+            z-index: 10;
+            padding-top: 8rem;
+            min-height: 100vh;
+        }
+
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: transparent;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.02em;
+            color: #ffffff;
+        }
+
+        .section-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 800px;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-5px);
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .contact-card p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .contact-link {
+            display: inline-block;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            margin-top: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .contact-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(5px);
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .location-tag {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .headquarters {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .headquarters h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .headquarters p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .tagline {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            color: #ffffff;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background -->
+    <div class="page-background"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="brand">
+                <img src="images/mercedes-logo-silver.png" alt="Mercedes-Benz" class="brand-logo">
+                <span>Mercedes-Benz Tech Innovation</span>
+            </a>
+
+            <div class="nav-pills">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/about" class="nav-link">About</a>
+                <a href="/innovation" class="nav-link">Innovation</a>
+                <a href="/contact" class="nav-link active">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Hero Section -->
+        <section class="section">
+            <h1 class="section-title">Let's Work Together</h1>
+            <p class="section-subtitle">
+                Whether it's a new professional challenge or a joint project within Mercedes-Benz –
+                become part of the <span class="highlight">#techinnovators</span>!
+                Are you interested in our tech topics or innovative projects in the dynamic automotive environment?
+                Looking for a strong partner for digital products and future-oriented software solutions?
+            </p>
+        </section>
+
+        <!-- Contact Information -->
+        <section class="section">
+            <p class="tagline">Get in Touch</p>
+            <h2 class="section-title">Contact Us</h2>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <h3>Press & Public Relations</h3>
+                    <p>For media inquiries and press-related questions</p>
+                    <p><strong>Martina Cailloud</strong></p>
+                    <a href="mailto:mbti-mc@mercedes-benz.com" class="contact-link">Send Email →</a>
+                </div>
+
+                <div class="contact-card">
+                    <h3>Career Opportunities</h3>
+                    <p>Interested in joining our team of tech innovators?</p>
+                    <p><strong>Nadine Lattoch</strong></p>
+                    <a href="mailto:mbti-career@mercedes-benz.com" class="contact-link">Career Inquiries →</a>
+                </div>
+
+                <div class="contact-card">
+                    <h3>General Inquiries</h3>
+                    <p>For all other questions and general information</p>
+                    <a href="mailto:techinnovation@mercedes-benz.com" class="contact-link">Contact Us →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Locations -->
+        <section class="section">
+            <p class="tagline">Visit Us</p>
+            <h2 class="section-title">Our Locations</h2>
+
+            <div class="headquarters">
+                <h3>Headquarters</h3>
+                <p><strong>Mercedes-Benz Tech Innovation GmbH</strong></p>
+                <p>Wilhelm-Runge-Straße 11</p>
+                <p>89081 Ulm, Germany</p>
+                <p style="margin-top: 1rem;">
+                    <a href="mailto:techinnovation@mercedes-benz.com" style="color: rgba(255, 255, 255, 0.9);">
+                        techinnovation@mercedes-benz.com
+                    </a>
+                </p>
+                <a href="https://maps.app.goo.gl/oayqUVKYcXFTAPmw9" target="_blank" class="contact-link">
+                    Plan Your Visit →
+                </a>
+            </div>
+
+            <div class="location-grid">
+                <div class="location-tag">Ulm</div>
+                <div class="location-tag">Stuttgart</div>
+                <div class="location-tag">Böblingen</div>
+                <div class="location-tag">Karlsruhe</div>
+                <div class="location-tag">Berlin</div>
+            </div>
+        </section>
+
+        <!-- Work With Us -->
+        <section class="section">
+            <p class="tagline">Join Our Team</p>
+            <h2 class="section-title">Become a #TechInnovator</h2>
+            <p class="section-subtitle">
+                We're always looking for talented individuals who share our passion for technology
+                and innovation. Explore career opportunities and join us in shaping the future of mobility.
+            </p>
+            <a href="mailto:mbti-career@mercedes-benz.com" class="contact-link" style="display: inline-block;">
+                View Open Positions →
+            </a>
+        </section>
+    </div>
+</body>
+
+</html>
