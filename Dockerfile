@@ -41,23 +41,19 @@ RUN useradd -m -s /bin/bash developer && \
     echo 'john.doe:tekelomuxo' | chpasswd
 
 # Copy system administration scripts
-COPY manage_containers.py /usr/local/bin/manage_containers.py
-COPY system_monitor.py /usr/local/bin/system_monitor.py
-COPY db_backup.py /usr/local/bin/db_backup.py
-COPY log_rotation.py /usr/local/bin/log_rotation.py
+COPY scripts/manage_containers.py /usr/local/bin/manage_containers.py
+COPY scripts/system_monitor.py /usr/local/bin/system_monitor.py
+COPY scripts/log_rotation.py /usr/local/bin/log_rotation.py
 RUN chmod 755 /usr/local/bin/manage_containers.py \
     /usr/local/bin/system_monitor.py \
-    /usr/local/bin/db_backup.py \
     /usr/local/bin/log_rotation.py && \
     chown root:root /usr/local/bin/manage_containers.py \
     /usr/local/bin/system_monitor.py \
-    /usr/local/bin/db_backup.py \
     /usr/local/bin/log_rotation.py
 
 # Allow www-data to run scripts as developer user
 RUN echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/log_rotation.py" >> /etc/sudoers && \
     echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/system_monitor.py" >> /etc/sudoers && \
-    echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/db_backup.py" >> /etc/sudoers && \
     echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/manage_containers.py" >> /etc/sudoers
 
 # Copy application files into the image
