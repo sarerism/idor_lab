@@ -44,7 +44,7 @@ function Login() {
             if (data.success) {
                 localStorage.setItem("user", JSON.stringify(data.user));
                 localStorage.setItem("token", data.token);
-                navigate("/dashboard");
+                navigate(`/dashboard?uid=${data.user.employee_id}`);
             } else {
                 setError(data.message || "Login failed");
             }
@@ -70,7 +70,7 @@ function Login() {
                         <Card className="card-login">
                             <CardHeader className="text-center">
                                 <img
-                                    src="/images/mbti-logo.jpg"
+                                    src={`${process.env.PUBLIC_URL}/images/mbti-logo.jpg`}
                                     alt="MBTI Logo"
                                     style={{ width: "80px", marginBottom: "15px" }}
                                 />

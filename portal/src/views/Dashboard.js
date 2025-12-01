@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Line } from "react-chartjs-2";
 import {
   Card,
@@ -13,13 +14,15 @@ import {
 
 function Dashboard() {
   const [user, setUser] = useState(null);
+  const [searchParams] = useSearchParams();
+  const uid = searchParams.get("uid");
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
       setUser(JSON.parse(userData));
     }
-  }, []);
+  }, [uid]);
 
   // Security metrics data
   const securityMetrics = {

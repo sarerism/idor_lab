@@ -17,7 +17,7 @@
 
 */
 import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useSearchParams } from "react-router-dom";
 import { Nav } from "reactstrap";
 // javascript plugin used to create scrollbars on windows
 import PerfectScrollbar from "perfect-scrollbar";
@@ -28,6 +28,8 @@ var ps;
 
 function Sidebar(props) {
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+  const uid = searchParams.get("uid");
   const sidebar = React.useRef();
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
@@ -54,7 +56,7 @@ function Sidebar(props) {
     >
       <div className="logo">
         <a
-          href="/dashboard"
+          href={uid ? `/dashboard?uid=${uid}` : "/dashboard"}
           className="simple-text logo-normal"
           style={{ fontSize: '24px', fontWeight: 'bold', textAlign: 'center', width: '100%' }}
         >
@@ -71,7 +73,10 @@ function Sidebar(props) {
                 }
                 key={key}
               >
-                <NavLink to={prop.layout + prop.path} className="nav-NavLink">
+                <NavLink
+                  to={uid ? `${prop.layout}${prop.path}?uid=${uid}` : `${prop.layout}${prop.path}`}
+                  className="nav-NavLink"
+                >
                   <i className={prop.icon} />
                   <p>{prop.name}</p>
                 </NavLink>

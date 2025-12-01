@@ -1,4 +1,5 @@
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 import {
     Card,
     CardHeader,
@@ -11,6 +12,8 @@ import {
 } from "reactstrap";
 
 function Projects() {
+    const [searchParams] = useSearchParams();
+    const uid = searchParams.get("uid");
     const projects = [
         {
             id: 1,

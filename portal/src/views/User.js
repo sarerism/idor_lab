@@ -17,6 +17,7 @@
 
 */
 import React from "react";
+import { useSearchParams } from "react-router-dom";
 
 // reactstrap components
 import {
@@ -34,6 +35,9 @@ import {
 } from "reactstrap";
 
 function User() {
+  const [searchParams] = useSearchParams();
+  const uid = searchParams.get("uid");
+
   return (
     <>
       <div className="content">

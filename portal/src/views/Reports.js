@@ -13,6 +13,30 @@ import {
 } from "reactstrap";
 
 function Reports() {
+    // Show empty state - no reports available
+    return (
+        <div className="content">
+            <Row>
+                <Col md="12">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle tag="h4">Reports</CardTitle>
+                        </CardHeader>
+                        <CardBody className="text-center" style={{ padding: "60px 20px" }}>
+                            <i className="nc-icon nc-paper" style={{ fontSize: "64px", color: "#ccc", marginBottom: "20px" }}></i>
+                            <h4>No Reports Available</h4>
+                            <p className="text-muted">There are currently no reports to display.</p>
+                        </CardBody>
+                    </Card>
+                </Col>
+            </Row>
+        </div>
+    );
+}
+
+// Old code - keeping for reference if reports are added back
+/*
+function ReportsOld() {
     const [loading, setLoading] = useState(true);
     const [selectedReport, setSelectedReport] = useState(null);
     const [searchParams] = useSearchParams();
@@ -160,5 +184,6 @@ function Reports() {
     // Fallback - should never reach here due to redirect
     return null;
 }
+*/
 
 export default Reports;

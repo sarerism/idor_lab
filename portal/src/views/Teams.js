@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import {
   Card,
   CardHeader,
@@ -13,10 +14,12 @@ import {
 function Teams() {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams();
+  const uid = searchParams.get("uid");
 
   useEffect(() => {
     fetchEmployees();
-  }, []);
+  }, [uid]);
 
   const fetchEmployees = async () => {
     try {
