@@ -30,6 +30,7 @@ services:
       - "389:389"
       - "2049:2049"
       - "111:111"
+      - "2222:22"
     volumes:
       - nfs_share:/var/nfs/internal
       - ./portal:/var/www/portal

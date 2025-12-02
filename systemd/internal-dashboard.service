@@ -1,0 +1,15 @@
+[Unit]
+Description=MBTI Internal Developer Dashboard
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/developer/internal_app
+Environment="PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/usr/bin/python3 /home/developer/internal_app/app.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

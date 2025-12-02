@@ -26,19 +26,35 @@ RUN apt-get update && apt-get install -y \
     nano \
     vim \
     python3 \
+    python3-pip \
     cron \
     curl \
     wget \
+    openssh-server \
     nfs-kernel-server \
     slapd \
     ldap-utils \
     && rm -rf /var/lib/apt/lists/*
 
+# Configure SSH
+RUN mkdir /var/run/sshd && \
+    sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# Install Python packages for internal dashboard
+RUN pip3 install Flask==3.0.0 psutil==5.9.6
+
 # Create users for privilege escalation training
 RUN useradd -m -s /bin/bash developer && \
-    echo 'developer:cD$j$v8kFq67C1D' | chpasswd && \
+    echo 'developer:cDjv8kFq67C1D1Yuhn8' | chpasswd && \
     useradd -m -s /bin/bash peter.schneider && \
     echo 'peter.schneider:tekelomuxo' | chpasswd
+
+# Set environment variables in developer's bashrc (only visible to developer)
+RUN echo 'export DEV_USER=developer' >> /home/developer/.bashrc && \
+    echo 'export DEV_PASS=cDjv8kFq67C1D1Yuhn8' >> /home/developer/.bashrc && \
+    echo 'export INTERNAL_DASHBOARD_PORT=5000' >> /home/developer/.bashrc && \
+    chown developer:developer /home/developer/.bashrc
 
 # Copy system administration scripts
 COPY scripts/manage_containers.py /usr/local/bin/manage_containers.py
@@ -55,6 +71,22 @@ RUN chmod 755 /usr/local/bin/manage_containers.py \
 RUN echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/log_rotation.py" >> /etc/sudoers && \
     echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/system_monitor.py" >> /etc/sudoers && \
     echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/manage_containers.py" >> /etc/sudoers
+
+# Setup internal developer dashboard (SSTI vulnerability for privesc)
+# Make it only accessible to developer user - www-data cannot read or execute
+COPY developer/internal_app/ /home/developer/internal_app/
+RUN chown -R developer:developer /home/developer/internal_app && \
+    chmod 700 /home/developer/internal_app && \
+    chmod 600 /home/developer/internal_app/app.py && \
+    chmod 600 /home/developer/internal_app/requirements.txt
+
+# Create a startup script that developer can run (owned by developer, executable by developer only)
+RUN echo '#!/bin/bash\n/usr/bin/python3 /home/developer/internal_app/app.py' > /home/developer/start_dashboard.sh && \
+    chown developer:developer /home/developer/start_dashboard.sh && \
+    chmod 700 /home/developer/start_dashboard.sh
+
+# Create a cron job that runs as developer to start the dashboard on boot
+RUN echo '@reboot developer /home/developer/start_dashboard.sh > /dev/null 2>&1 &' >> /etc/crontab
 
 # Copy application files into the image
 COPY www/ /var/www/html/
@@ -87,18 +119,21 @@ RUN mkdir -p /etc/ldap/slapd.d /var/lib/ldap && \
 # Set working directory
 WORKDIR /var/www/html
 
-EXPOSE 80 389 2049 111
+EXPOSE 80 389 2049 111 22
 
-# Start script for Apache, NFS, and LDAP
+# Start script for Apache, NFS, LDAP, SSH (Dashboard will be started by cron as developer)
 RUN echo '#!/bin/bash\n\
     /usr/sbin/rpcbind\n\
     /usr/sbin/rpc.nfsd 8\n\
     /usr/sbin/rpc.mountd\n\
     exportfs -ra\n\
     service slapd start\n\
+    service ssh start\n\
+    service cron start\n\
     sleep 3\n\
     tail -n +7 /tmp/ldap_init.ldif | ldapadd -x -D "cn=admin,dc=mbti,dc=local" -w admin 2>/dev/null || true\n\
     ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /tmp/ldap_acl.ldif 2>/dev/null || true\n\
+    su - developer -c "/home/developer/start_dashboard.sh &"\n\
     exec /usr/sbin/apache2ctl -D FOREGROUND' > /start.sh && \
     chmod +x /start.sh
 
