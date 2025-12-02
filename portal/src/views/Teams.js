@@ -10,6 +10,9 @@ import {
   Col,
   Badge,
   Alert,
+  Input,
+  InputGroup,
+  Button,
 } from "reactstrap";
 
 function Teams() {
@@ -19,6 +22,8 @@ function Teams() {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [searchParams] = useSearchParams();
   const uid = searchParams.get("uid");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResult, setSearchResult] = useState(null);
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -47,6 +52,25 @@ function Teams() {
       console.error("Error fetching employees:", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      setSearchResult(null);
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/search.php?q=${encodeURIComponent(searchQuery)}`);
+      const data = await response.json();
+
+      if (data.success) {
+        setSearchResult(data);
+      }
+    } catch (error) {
+      console.error("Error searching:", error);
+      setSearchResult({ found: false, message: "Search failed" });
     }
   };
 
@@ -97,6 +121,30 @@ function Teams() {
                 <p className="card-category">All employees in the organization</p>
               </CardHeader>
               <CardBody>
+                {/* Search Bar */}
+                <div style={{ marginBottom: "20px" }}>
+                  <InputGroup>
+                    <Input
+                      type="text"
+                      placeholder="Search by name, department, role, or email..."
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      onKeyPress={(e) => e.key === "Enter" && handleSearch()}
+                    />
+                    <Button color="info" onClick={handleSearch}>
+                      <i className="nc-icon nc-zoom-split" /> Search
+                    </Button>
+                  </InputGroup>
+
+                  {searchResult && (
+                    <Alert
+                      color={searchResult.found ? "success" : "warning"}
+                      style={{ marginTop: "10px" }}
+                    >
+                      <strong>{searchResult.found ? "✓" : "✗"}</strong> {searchResult.message}
+                    </Alert>
+                  )}
+                </div>
                 <Table responsive>
                   <thead className="text-primary">
                     <tr>

@@ -1,7 +1,8 @@
 FROM mysql:8.0
 
 # Copy initialization scripts
-COPY mysql/init.sql /docker-entrypoint-initdb.d/
+COPY mysql/init.sql /docker-entrypoint-initdb.d/01-init.sql
+COPY mysql/dev_db.sql /docker-entrypoint-initdb.d/02-dev_db.sql
 
 # Set default environment variables
 ENV MYSQL_ROOT_PASSWORD=MB_R00t_P@ss_2024!

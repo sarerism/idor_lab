@@ -14,8 +14,9 @@ RUN apt-get update && apt-get install -y \
     libapache2-mod-php8.1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Enable Apache modules
-RUN a2enmod php8.1 rewrite
+# Enable Apache modules and disable javascript-common alias
+RUN a2enmod php8.1 rewrite && \
+    a2disconf javascript-common
 
 # Copy Apache virtual host configuration (React version)
 COPY portal/apache-vhost.conf /etc/apache2/sites-available/000-default.conf
@@ -39,7 +40,9 @@ RUN apt-get update && apt-get install -y \
 # Configure SSH
 RUN mkdir /var/run/sshd && \
     sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
-    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    echo 'Match User peter.schneider' >> /etc/ssh/sshd_config && \
+    echo '    PasswordAuthentication no' >> /etc/ssh/sshd_config
 
 # Install Python packages for internal dashboard
 RUN pip3 install Flask==3.0.0 psutil==5.9.6
