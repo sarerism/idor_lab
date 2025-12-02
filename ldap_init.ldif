@@ -18,11 +18,11 @@ dn: ou=Groups,dc=mbti,dc=local
 objectClass: organizationalUnit
 ou: Groups
 
-dn: uid=john.doe,ou=People,dc=mbti,dc=local
-uid: john.doe
-cn: John Doe
-sn: Doe
-mail: john.doe@mbti.local
+dn: uid=peter.schneider,ou=People,dc=mbti,dc=local
+uid: peter.schneider
+cn: Peter Schneider
+sn: Schneider
+mail: peter.schneider@mbti.local
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
@@ -38,7 +38,7 @@ shadowWarning: 7
 loginShell: /bin/bash
 uidNumber: 10001
 gidNumber: 10001
-homeDirectory: /home/john.doe
+homeDirectory: /home/peter.schneider
 
 dn: uid=thomas.mueller,ou=People,dc=mbti,dc=local
 uid: thomas.mueller
@@ -61,11 +61,11 @@ uidNumber: 10002
 gidNumber: 10002
 homeDirectory: /home/thomas.mueller
 
-dn: uid=john.doe,ou=People,dc=mbti,dc=local
-uid: john.doe
-cn: John Doe
-sn: Doe
-mail: john.doe@mbti.local
+dn: uid=peter.schneider,ou=People,dc=mbti,dc=local
+uid: peter.schneider
+cn: Peter Schneider
+sn: Schneider
+mail: peter.schneider@mbti.local
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
@@ -80,7 +80,7 @@ shadowWarning: 7
 loginShell: /bin/bash
 uidNumber: 10003
 gidNumber: 10003
-homeDirectory: /home/john.doe
+homeDirectory: /home/peter.schneider
 
 dn: uid=developer,ou=People,dc=mbti,dc=local
 uid: developer
@@ -109,7 +109,7 @@ objectClass: posixGroup
 objectClass: top
 cn: employees
 gidNumber: 10001
-memberUid: john.doe
+memberUid: peter.schneider
 memberUid: thomas.mueller
 
 dn: cn=developers,ou=Groups,dc=mbti,dc=local

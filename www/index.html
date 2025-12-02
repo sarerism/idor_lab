@@ -45,77 +45,7 @@
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.7) 100%);
         }
 
-        .beam {
-            position: absolute;
-            bottom: -10%;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(to top, transparent, rgba(255, 255, 255, 0.15), transparent);
-            opacity: 0;
-            animation: beamRise 8s infinite ease-in-out;
-            transform-origin: bottom;
-        }
 
-        @keyframes beamRise {
-            0% {
-                transform: translateY(100%) scaleY(0);
-                opacity: 0;
-            }
-
-            50% {
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-100%) scaleY(1.5);
-                opacity: 0;
-            }
-        }
-
-        .beam:nth-child(1) {
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .beam:nth-child(2) {
-            left: 20%;
-            animation-delay: 1.5s;
-        }
-
-        .beam:nth-child(3) {
-            left: 30%;
-            animation-delay: 3s;
-        }
-
-        .beam:nth-child(4) {
-            left: 40%;
-            animation-delay: 0.8s;
-        }
-
-        .beam:nth-child(5) {
-            left: 50%;
-            animation-delay: 2.2s;
-        }
-
-        .beam:nth-child(6) {
-            left: 60%;
-            animation-delay: 4s;
-        }
-
-        .beam:nth-child(7) {
-            left: 70%;
-            animation-delay: 1.2s;
-        }
-
-        .beam:nth-child(8) {
-            left: 80%;
-            animation-delay: 2.8s;
-        }
-
-        .beam:nth-child(9) {
-            left: 90%;
-            animation-delay: 0.5s;
-        }
 
         /* Gradient Overlay */
         .gradient-overlay {
@@ -469,15 +399,6 @@
 <body>
     <!-- Animated Beams Background -->
     <div class="beams-background">
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
-        <div class="beam"></div>
     </div>
 
     <!-- Gradient Overlay -->

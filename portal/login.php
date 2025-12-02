@@ -223,7 +223,7 @@ if (isset($_POST['login'])) {
     <div class="login-container">
         <div class="portal-header">
             <img src="./images/mercedes-logo.png" alt="Mercedes-Benz" class="portal-logo">
-            <h1>MBTI Employee Portal</h1>
+            <h1>Employee Portal</h1>
             <p>Please log in with your employee credentials</p>
         </div>
         

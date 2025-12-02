@@ -10,9 +10,58 @@ import {
     Col,
     Button,
     Badge,
+    Alert,
 } from "reactstrap";
 
 function Reports() {
+    const [searchParams] = useSearchParams();
+    const [accessDenied, setAccessDenied] = useState(false);
+    const [loggedInUser, setLoggedInUser] = useState(null);
+    const uid = searchParams.get("uid");
+
+    useEffect(() => {
+        const userData = localStorage.getItem("user");
+        if (userData) {
+            const parsedUser = JSON.parse(userData);
+            setLoggedInUser(parsedUser);
+
+            // Check if the uid in URL matches the logged-in user
+            if (uid && uid !== parsedUser.employee_id) {
+                setAccessDenied(true);
+            } else {
+                setAccessDenied(false);
+            }
+        }
+    }, [uid]);
+
+    if (accessDenied) {
+        return (
+            <div className="content">
+                <Row>
+                    <Col md="12">
+                        <Card>
+                            <CardBody>
+                                <Alert color="danger">
+                                    <h4 className="alert-heading">Access Denied</h4>
+                                    <p>
+                                        You don't have permission to view this page. You are trying to access data for user ID: <strong>{uid}</strong>
+                                    </p>
+                                    <p>
+                                        Your user ID is: <strong>{loggedInUser?.employee_id}</strong>
+                                    </p>
+                                    <hr />
+                                    <p className="mb-0">
+                                        Please use the navigation menu to access your own data.
+                                    </p>
+                                </Alert>
+                            </CardBody>
+                        </Card>
+                    </Col>
+                </Row>
+            </div>
+        );
+    }
+
     // Show empty state - no reports available
     return (
         <div className="content">

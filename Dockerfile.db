@@ -1,6 +1,6 @@
 FROM mysql:8.0
 
-# Copy initialization script
+# Copy initialization scripts
 COPY mysql/init.sql /docker-entrypoint-initdb.d/
 
 # Set default environment variables

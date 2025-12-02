@@ -37,8 +37,8 @@ RUN apt-get update && apt-get install -y \
 # Create users for privilege escalation training
 RUN useradd -m -s /bin/bash developer && \
     echo 'developer:cD$j$v8kFq67C1D' | chpasswd && \
-    useradd -m -s /bin/bash john.doe && \
-    echo 'john.doe:tekelomuxo' | chpasswd
+    useradd -m -s /bin/bash peter.schneider && \
+    echo 'peter.schneider:tekelomuxo' | chpasswd
 
 # Copy system administration scripts
 COPY scripts/manage_containers.py /usr/local/bin/manage_containers.py

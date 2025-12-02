@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
 import { Line } from "react-chartjs-2";
 import {
   Card,
@@ -10,17 +10,28 @@ import {
   Col,
   Badge,
   Progress,
+  Alert,
 } from "reactstrap";
 
 function Dashboard() {
   const [user, setUser] = useState(null);
+  const [accessDenied, setAccessDenied] = useState(false);
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const uid = searchParams.get("uid");
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
-      setUser(JSON.parse(userData));
+      const parsedUser = JSON.parse(userData);
+      setUser(parsedUser);
+
+      // Check if the uid in URL matches the logged-in user
+      if (uid && uid !== parsedUser.employee_id) {
+        setAccessDenied(true);
+      } else {
+        setAccessDenied(false);
+      }
     }
   }, [uid]);
 
@@ -60,6 +71,35 @@ function Dashboard() {
       },
     },
   };
+
+  // Show access denied message if trying to access another user's data
+  if (accessDenied) {
+    return (
+      <div className="content">
+        <Row>
+          <Col md="12">
+            <Card>
+              <CardBody>
+                <Alert color="danger">
+                  <h4 className="alert-heading">Access Denied</h4>
+                  <p>
+                    You don't have permission to view this page. You are trying to access data for user ID: <strong>{uid}</strong>
+                  </p>
+                  <p>
+                    Your user ID is: <strong>{user?.employee_id}</strong>
+                  </p>
+                  <hr />
+                  <p className="mb-0">
+                    Please use the navigation menu to access your own dashboard.
+                  </p>
+                </Alert>
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
+    );
+  }
 
   return (
     <>

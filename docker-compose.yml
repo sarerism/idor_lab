@@ -1,5 +1,8 @@
 services:
   mbti_db:
+    build:
+      context: .
+      dockerfile: Dockerfile.db
     image: sareer/mbti-db:latest
     container_name: mbti_db
     networks:
@@ -12,6 +15,9 @@ services:
     restart: unless-stopped
 
   mbti_portal:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: sareer/mbti-portal:latest
     container_name: mbti_portal
     depends_on:
