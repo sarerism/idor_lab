@@ -12,7 +12,6 @@ CREATE TABLE IF NOT EXISTS employees (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Insert employee data with MD5 hashed passwords
--- VULNERABILITY: User MBTI2024837 still has default password tekelomuxo
 
 INSERT INTO employees (employee_id, full_name, email, password_hash, department, role, manager_name) VALUES
 ('MBTI2024001', 'Stefan Müller', 'stefan.mueller@mbti.local', 'a1b2c3d4e5f6789abcdef1234567890abc', 'CIVA-I', 'Security Engineer', 'Klaus Weber'),
@@ -41,15 +40,7 @@ INSERT INTO employees (employee_id, full_name, email, password_hash, department,
 ('MBTI2024024', 'Mia Krause', 'mia.krause@mbti.local', 't0u1v2w3x4y56789tuvw0123456789tuvw', 'EPA', 'Cloud Security Engineer', 'Klaus Weber'),
 ('MBTI2024837', 'Peter Schneider', 'peter.schneider@mbti.local', '29692d4a274c2eab88b593594465644d', 'CIVA-I', 'Junior Security Analyst', 'Klaus Weber');
 
--- Password reference (for testing only - REMOVE IN PRODUCTION):
--- thomas.mueller@mbti.local : [COMPLEX - NOT GUESSABLE]
--- sarah.schmidt@mbti.local : [COMPLEX - NOT GUESSABLE]
--- michael.weber@mbti.local : [COMPLEX - NOT GUESSABLE]
--- anna.fischer@mbti.local : [COMPLEX - NOT GUESSABLE]
--- lars.hoffmann@mbti.local : [COMPLEX - NOT GUESSABLE]
--- peter.schneider@mbti.local : tekelomuxo (29692d4a274c2eab88b593594465644d) <- DEFAULT PASSWORD! (ONLY BRUTEFORCEABLE ACCOUNT)
-
--- Create weekly_reports table (VULNERABLE TO IDOR!)
+-- Create weekly_reports table 
 CREATE TABLE IF NOT EXISTS weekly_reports (
     id INT AUTO_INCREMENT PRIMARY KEY,
     employee_id VARCHAR(50) NOT NULL,
@@ -68,9 +59,7 @@ CREATE TABLE IF NOT EXISTS weekly_reports (
 -- Insert manager account (Klaus Weber) who will review reports
 INSERT INTO employees (employee_id, full_name, email, password_hash, department, role, manager_name) VALUES
 ('MBTI2024999', 'Klaus Weber', 'klaus.weber@mbti.local', '6e5d4c3b2a1098fedcba7654321fedcba', 'Management', 'Chief Security Officer', NULL);
--- klaus.weber@mbti.local : [COMPLEX - NOT GUESSABLE]
 
--- Create report_uploads table for PDF upload feature (rabbit hole - no vulnerabilities)
 CREATE TABLE report_uploads (
     id INT AUTO_INCREMENT PRIMARY KEY,
     employee_id VARCHAR(50) NOT NULL,
