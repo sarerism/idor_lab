@@ -106,8 +106,8 @@ function User() {
                   <p className="description">@peter.schneider</p>
                 </div>
                 <p className="description text-center">
-                  "Quality engineering and <br />
-                  precision manufacturing <br />are the heart of innovation"
+                  "Security is not a product, <br />
+                  but a process of <br />continuous improvement"
                 </p>
               </CardBody>
             </Card>
@@ -264,7 +264,7 @@ function User() {
                         <label>About Me</label>
                         <Input
                           type="textarea"
-                          defaultValue="Junior Security Developer at Mercedes-Benz Tech Innovation EPA Department. Focused on secure software development and vulnerability assessment. Based in Stuttgart, passionate about cybersecurity and continuous learning."
+                          defaultValue="Junior Security Analyst at Mercedes-Benz Tech Innovation CIVA-I Department. Focused on secure software development and vulnerability assessment. Based in Stuttgart, passionate about cybersecurity and continuous learning."
                         />
                       </FormGroup>
                     </Col>

@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.7a0b9f40.css",
-    "main.js": "/static/js/main.d31de018.js",
+    "main.js": "/static/js/main.436ba353.js",
     "static/media/stefan.png": "/static/media/stefan.e342f864c59e4e314089.png",
     "static/media/team1.png": "/static/media/team1.7078c0926252f8bdc263.png",
     "static/media/damir-bosnjak.jpg": "/static/media/damir-bosnjak.efcaca50b633c2ba2ba9.jpg",
@@ -12,10 +12,10 @@
     "static/media/logo.svg": "/static/media/logo.103b5fa18196d5665a7e12318285c916.svg",
     "index.html": "/index.html",
     "main.7a0b9f40.css.map": "/static/css/main.7a0b9f40.css.map",
-    "main.d31de018.js.map": "/static/js/main.d31de018.js.map"
+    "main.436ba353.js.map": "/static/js/main.436ba353.js.map"
   },
   "entrypoints": [
     "static/css/main.7a0b9f40.css",
-    "static/js/main.d31de018.js"
+    "static/js/main.436ba353.js"
   ]
 }

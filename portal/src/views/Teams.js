@@ -17,6 +17,7 @@ import {
 
 function Teams() {
   const [employees, setEmployees] = useState([]);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
   const [accessDenied, setAccessDenied] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -47,6 +48,7 @@ function Teams() {
       const data = await response.json();
       if (data.success) {
         setEmployees(data.data);
+        setFilteredEmployees(data.data);
       }
     } catch (error) {
       console.error("Error fetching employees:", error);
@@ -58,19 +60,32 @@ function Teams() {
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
       setSearchResult(null);
+      setFilteredEmployees(employees);
       return;
     }
 
-    try {
-      const response = await fetch(`/api/search.php?q=${encodeURIComponent(searchQuery)}`);
-      const data = await response.json();
+    // Filter employees by employee_id or name (case-insensitive partial match)
+    const query = searchQuery.toLowerCase();
+    const filtered = employees.filter(emp =>
+      emp.employee_id.toLowerCase().includes(query) ||
+      emp.full_name.toLowerCase().includes(query)
+    );
 
-      if (data.success) {
-        setSearchResult(data);
-      }
+    setFilteredEmployees(filtered);
+
+    if (filtered.length === 0) {
+      setSearchResult({ found: false, message: `No employees found matching "${searchQuery}"` });
+    } else if (filtered.length === 1) {
+      setSearchResult({ found: true, message: `Found 1 employee matching "${searchQuery}"` });
+    } else {
+      setSearchResult({ found: true, message: `Found ${filtered.length} employees matching "${searchQuery}"` });
+    }
+
+    // Still call the blind SQLi endpoint for the vulnerability (doesn't affect display)
+    try {
+      await fetch(`/api/search.php?q=${encodeURIComponent(searchQuery)}`);
     } catch (error) {
-      console.error("Error searching:", error);
-      setSearchResult({ found: false, message: "Search failed" });
+      console.error("Backend search error:", error);
     }
   };
 
@@ -126,7 +141,7 @@ function Teams() {
                   <InputGroup>
                     <Input
                       type="text"
-                      placeholder="Search by name, department, role, or email..."
+                      placeholder="Search by employee ID or name..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                       onKeyPress={(e) => e.key === "Enter" && handleSearch()}
@@ -163,8 +178,8 @@ function Teams() {
                           Loading...
                         </td>
                       </tr>
-                    ) : employees.length > 0 ? (
-                      employees.map((employee) => (
+                    ) : filteredEmployees.length > 0 ? (
+                      filteredEmployees.map((employee) => (
                         <tr key={employee.employee_id}>
                           <td>{employee.employee_id}</td>
                           <td>

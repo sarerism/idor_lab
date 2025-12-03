@@ -16,7 +16,7 @@ RUN apt-get update && apt-get install -y \
 
 # Enable Apache modules and disable javascript-common alias
 RUN a2enmod php8.1 rewrite && \
-    a2disconf javascript-common
+    a2disconf javascript-common || true
 
 # Copy Apache virtual host configuration (React version)
 COPY portal/apache-vhost.conf /etc/apache2/sites-available/000-default.conf

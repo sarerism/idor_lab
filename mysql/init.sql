@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS employees (
     role VARCHAR(50),
     manager_name VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Insert employee data with MD5 hashed passwords
 -- VULNERABILITY: User MBTI2024837 still has default password tekelomuxo
@@ -69,3 +69,16 @@ CREATE TABLE IF NOT EXISTS weekly_reports (
 INSERT INTO employees (employee_id, full_name, email, password_hash, department, role, manager_name) VALUES
 ('MBTI2024999', 'Klaus Weber', 'klaus.weber@mbti.local', '6e5d4c3b2a1098fedcba7654321fedcba', 'Management', 'Chief Security Officer', NULL);
 -- klaus.weber@mbti.local : [COMPLEX - NOT GUESSABLE]
+
+-- Create report_uploads table for PDF upload feature (rabbit hole - no vulnerabilities)
+CREATE TABLE report_uploads (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employee_id VARCHAR(50) NOT NULL,
+    file_id VARCHAR(100) NOT NULL UNIQUE,
+    title VARCHAR(255) NOT NULL,
+    filename VARCHAR(255) NOT NULL,
+    file_size INT NOT NULL,
+    upload_date DATETIME NOT NULL,
+    INDEX idx_employee_id (employee_id),
+    INDEX idx_upload_date (upload_date)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

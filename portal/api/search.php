@@ -21,42 +21,45 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['q'])) {
     $search = $_GET['q'];
     
-    // VULNERABILITY: Blind SQL Injection
-    // Query uses user input directly without escaping
-    // Returns only boolean result (found/not found), making it a blind SQLi
-    // This searches in a separate dev_environment database with credentials
-    $query = "SELECT COUNT(*) as count FROM dev_environment.dev_credentials WHERE 
-              service_name LIKE '%$search%' OR 
-              username LIKE '%$search%' OR 
-              access_level LIKE '%$search%' OR 
-              notes LIKE '%$search%'";
+    // VULNERABILITY: SQL Injection
+    // The search parameter is directly concatenated into the SQL query
+    // Allows UNION-based SQLi to extract data from dev_environment database
+    $query = "SELECT employee_id, full_name, email, department, role, manager_name 
+              FROM employees 
+              WHERE CONCAT(employee_id, ' ', full_name, ' ', email, ' ', department) LIKE '%" . $search . "%'";
     
-    $result = $conn->query($query);
-    
-    if ($result) {
-        $row = $result->fetch_assoc();
-        $count = $row['count'];
+    try {
+        $result = $conn->query($query);
         
-        // Blind SQLi: Only returns true/false, no actual data
-        // Attacker must use time-based or boolean-based techniques to extract data
-        if ($count > 0) {
+        if ($result) {
+            $employees = [];
+            while ($row = $result->fetch_assoc()) {
+                $employees[] = $row;
+            }
+            
             echo json_encode([
                 'success' => true,
-                'found' => true,
-                'message' => 'Results found'
+                'found' => count($employees) > 0,
+                'count' => count($employees),
+                'employees' => $employees,
+                'message' => count($employees) > 0 ? 'Found ' . count($employees) . ' employee(s)' : 'No results found'
             ]);
         } else {
             echo json_encode([
                 'success' => true,
                 'found' => false,
+                'count' => 0,
+                'employees' => [],
                 'message' => 'No results found'
             ]);
         }
-    } else {
-        // Don't reveal SQL errors - makes it truly blind
+    } catch (Exception $e) {
+        // Suppress errors to avoid revealing SQL syntax issues
         echo json_encode([
             'success' => true,
             'found' => false,
+            'count' => 0,
+            'employees' => [],
             'message' => 'No results found'
         ]);
     }
