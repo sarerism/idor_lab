@@ -25,18 +25,13 @@ if [ "$i" = 0 ]; then
     exit 1
 fi
 
-echo "MySQL is up - checking dev_environment database..."
+echo "MySQL is up - initializing dev_environment database..."
 
-# Check if dev_environment exists
-DB_EXISTS=$(mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "SHOW DATABASES LIKE 'dev_environment';" 2>/dev/null | grep dev_environment || true)
-
-if [ -z "$DB_EXISTS" ]; then
-    echo "Creating dev_environment database..."
-    mysql -uroot -p"$MYSQL_ROOT_PASSWORD" < /docker-entrypoint-initdb.d/02-dev_db.sql 2>&1 | grep -v "ERROR 1050" || true
-    echo "✅ dev_environment database created!"
-else
-    echo "✅ dev_environment database already exists"
-fi
+# Always recreate dev_environment to ensure fresh data on every startup
+echo "Dropping and recreating dev_environment database..."
+mysql -uroot -p"$MYSQL_ROOT_PASSWORD" -e "DROP DATABASE IF EXISTS dev_environment;" 2>/dev/null || true
+mysql -uroot -p"$MYSQL_ROOT_PASSWORD" < /docker-entrypoint-initdb.d/02-dev_db.sql 2>&1 | grep -v "Using a password" || true
+echo "✅ dev_environment database initialized!"
 
 # Keep MySQL running in foreground
 wait $MYSQL_PID
