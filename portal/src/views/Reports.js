@@ -88,7 +88,19 @@ function Reports() {
             setUploadProgress(100);
 
             if (data.success) {
-                setUploadStatus({ type: 'success', message: `Report uploaded successfully! File ID: ${data.file_id}` });
+                const viewUrl = `/api/view_report.php?file_id=${data.file_id.replace('uploads/', '')}`;
+                setUploadStatus({
+                    type: 'success',
+                    message: (
+                        <>
+                            {data.message}
+                            <br />
+                            <a href={viewUrl} target="_blank" rel="noopener noreferrer" className="text-white" style={{ textDecoration: 'underline' }}>
+                                View uploaded report
+                            </a>
+                        </>
+                    )
+                });
                 setSelectedFile(null);
                 setReportTitle('');
                 // Reset file input

@@ -96,9 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($stmt->execute()) {
             echo json_encode([
                 'success' => true,
-                'message' => 'Report uploaded successfully',
-                'file_id' => $file_id,
-                'filename' => $safe_filename
+                'message' => 'Report uploaded successfully! File ID: uploads/' . $file_id,
+                'file_id' => 'uploads/' . $file_id,
+                'filename' => $safe_filename,
+                'view_url' => '/reports?uid=' . $employee_id . '/uploads/' . $file_id . '.pdf'
             ]);
         } else {
             // Clean up file if database insert fails
