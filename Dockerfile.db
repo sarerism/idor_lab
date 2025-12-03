@@ -4,8 +4,15 @@ FROM mysql:8.0
 COPY mysql/init.sql /docker-entrypoint-initdb.d/01-init.sql
 COPY mysql/dev_db.sql /docker-entrypoint-initdb.d/02-dev_db.sql
 
+# Copy custom entrypoint that ensures dev_environment always exists
+COPY mysql/docker-entrypoint.sh /usr/local/bin/custom-entrypoint.sh
+RUN chmod +x /usr/local/bin/custom-entrypoint.sh
+
 # Set default environment variables
 ENV MYSQL_ROOT_PASSWORD=MB_R00t_P@ss_2024!
 ENV MYSQL_DATABASE=mbti_employees
 ENV MYSQL_USER=mbti_admin
 ENV MYSQL_PASSWORD=Training_DB_2024
+
+# Use custom entrypoint
+ENTRYPOINT ["/usr/local/bin/custom-entrypoint.sh"]

@@ -34,7 +34,10 @@ See [SUBDOMAIN_SETUP.md](SUBDOMAIN_SETUP.md) for detailed instructions.
 
 **Step 2: Deploy with Docker Compose**
 ```bash
-docker-compose up -d
+docker compose up -d
+
+# Wait for containers to be healthy (about 15 seconds)
+# The dev_environment database is created automatically!
 ```
 
 **Option 2: Manual Docker Commands**
@@ -117,21 +120,34 @@ docker-compose logs -f mbti_portal
 docker-compose logs -f mbti_db
 ```
 
-### Stop Lab
+### Stop Lab (Data Persists)
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ### Restart Lab
 ```bash
-docker-compose restart
+docker compose restart
 ```
 
-### Complete Cleanup
+### Complete Cleanup (Removes All Data)
 ```bash
-docker-compose down
+# Remove containers, networks, and volumes
+docker compose down -v
+
+# Remove images
 docker rmi sareer/mbti-employee-portal:latest sareer/mbti-db:latest
 ```
+
+## 💾 Data Persistence
+
+The lab uses **named volumes** for persistence:
+- **`mysql_data`**: Database data (employees, credentials)
+- **`nfs_share`**: NFS shared files
+- **`./portal`**: PHP API files (mounted from host)
+- **`./www`**: Static web files (mounted from host)
+
+Data survives `docker compose down` but is removed with `docker compose down -v`.
 
 ## 🏗️ Building from Source
 

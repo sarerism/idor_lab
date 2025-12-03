@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS weekly_reports (
     INDEX idx_employee (employee_id),
     INDEX idx_status (status),
     FOREIGN KEY (employee_id) REFERENCES employees(employee_id) ON DELETE CASCADE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Insert manager account (Klaus Weber) who will review reports
 INSERT INTO employees (employee_id, full_name, email, password_hash, department, role, manager_name) VALUES
