@@ -39,6 +39,12 @@ function User() {
   const [searchParams] = useSearchParams();
   const [accessDenied, setAccessDenied] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [passwordStatus, setPasswordStatus] = useState(null);
+  const [passwordData, setPasswordData] = useState({
+    current_password: '',
+    new_password: '',
+    confirm_password: ''
+  });
   const uid = searchParams.get("uid");
 
   useEffect(() => {
@@ -83,6 +89,43 @@ function User() {
       </div>
     );
   }
+
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    setPasswordStatus(null);
+
+    try {
+      const response = await fetch('/api/change_password.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(passwordData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setPasswordStatus({ type: 'success', message: data.message });
+        setPasswordData({
+          current_password: '',
+          new_password: '',
+          confirm_password: ''
+        });
+      } else {
+        setPasswordStatus({ type: 'danger', message: data.message });
+      }
+    } catch (error) {
+      setPasswordStatus({ type: 'danger', message: 'Failed to change password. Please try again.' });
+    }
+  };
+
+  const handlePasswordInputChange = (e) => {
+    setPasswordData({
+      ...passwordData,
+      [e.target.name]: e.target.value
+    });
+  };
 
   return (
     <>
@@ -277,6 +320,76 @@ function User() {
                         type="submit"
                       >
                         Update Profile
+                      </Button>
+                    </div>
+                  </Row>
+                </Form>
+              </CardBody>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h5">Change Password</CardTitle>
+              </CardHeader>
+              <CardBody>
+                {passwordStatus && (
+                  <Alert color={passwordStatus.type}>
+                    {passwordStatus.message}
+                  </Alert>
+                )}
+                <Form onSubmit={handlePasswordChange}>
+                  <Row>
+                    <Col md="12">
+                      <FormGroup>
+                        <label>Current Password</label>
+                        <Input
+                          name="current_password"
+                          placeholder="Enter current password"
+                          type="password"
+                          value={passwordData.current_password}
+                          onChange={handlePasswordInputChange}
+                          required
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="12">
+                      <FormGroup>
+                        <label>New Password</label>
+                        <Input
+                          name="new_password"
+                          placeholder="Enter new password (min 8 characters)"
+                          type="password"
+                          value={passwordData.new_password}
+                          onChange={handlePasswordInputChange}
+                          required
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col md="12">
+                      <FormGroup>
+                        <label>Confirm New Password</label>
+                        <Input
+                          name="confirm_password"
+                          placeholder="Confirm new password"
+                          type="password"
+                          value={passwordData.confirm_password}
+                          onChange={handlePasswordInputChange}
+                          required
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <div className="update ml-auto mr-auto">
+                      <Button
+                        className="btn-round"
+                        color="primary"
+                        type="submit"
+                      >
+                        Change Password
                       </Button>
                     </div>
                   </Row>

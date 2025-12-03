@@ -28,39 +28,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['q'])) {
               FROM employees 
               WHERE CONCAT(employee_id, ' ', full_name, ' ', email, ' ', department) LIKE '%" . $search . "%'";
     
-    try {
-        $result = $conn->query($query);
-        
-        if ($result) {
-            $employees = [];
-            while ($row = $result->fetch_assoc()) {
-                $employees[] = $row;
-            }
-            
-            echo json_encode([
-                'success' => true,
-                'found' => count($employees) > 0,
-                'count' => count($employees),
-                'employees' => $employees,
-                'message' => count($employees) > 0 ? 'Found ' . count($employees) . ' employee(s)' : 'No results found'
-            ]);
-        } else {
-            echo json_encode([
-                'success' => true,
-                'found' => false,
-                'count' => 0,
-                'employees' => [],
-                'message' => 'No results found'
-            ]);
+    // VULNERABILITY: No error handling - SQL errors cause 500 status
+    // This allows blind SQL injection detection through error responses
+    $result = $conn->query($query);
+    
+    if ($result) {
+        $employees = [];
+        while ($row = $result->fetch_assoc()) {
+            $employees[] = $row;
         }
-    } catch (Exception $e) {
-        // Suppress errors to avoid revealing SQL syntax issues
+        
         echo json_encode([
             'success' => true,
-            'found' => false,
-            'count' => 0,
-            'employees' => [],
-            'message' => 'No results found'
+            'found' => count($employees) > 0,
+            'count' => count($employees),
+            'employees' => $employees,
+            'message' => count($employees) > 0 ? 'Found ' . count($employees) . ' employee(s)' : 'No results found'
+        ]);
+    } else {
+        // Query failed - return 500 error
+        http_response_code(500);
+        echo json_encode([
+            'success' => false,
+            'message' => 'Database query failed'
         ]);
     }
     exit;
