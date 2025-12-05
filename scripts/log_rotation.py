@@ -18,10 +18,21 @@ LOG_DIRS = [
 
 def check_permissions():
     """Verify script is run with appropriate permissions"""
+    # Allow developer user or root to run this script
     if os.geteuid() != 0:
-        print("ERROR: This script must be run with root privileges")
-        print("Please run with sudo or as root user")
-        return False
+        # Check if running as developer user
+        try:
+            import pwd
+            current_user = pwd.getpwuid(os.getuid()).pw_name
+            if current_user != 'developer':
+                print(
+                    "ERROR: This script must be run as developer user or with root privileges")
+                print("Please run with sudo or as developer user")
+                return False
+        except:
+            print("ERROR: This script must be run with root privileges")
+            print("Please run with sudo or as root user")
+            return False
     return True
 
 

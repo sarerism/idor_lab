@@ -41,6 +41,7 @@ RUN apt-get update && apt-get install -y \
 RUN mkdir /var/run/sshd && \
     sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin no/' /etc/ssh/sshd_config && \
     sed -i 's/#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
+    sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config && \
     echo 'Match User peter.schneider' >> /etc/ssh/sshd_config && \
     echo '    PasswordAuthentication no' >> /etc/ssh/sshd_config
 
@@ -88,9 +89,6 @@ RUN echo '#!/bin/bash\n/usr/bin/python3 /home/developer/internal_app/app.py' > /
     chown developer:developer /home/developer/start_dashboard.sh && \
     chmod 700 /home/developer/start_dashboard.sh
 
-# Create a cron job that runs as developer to start the dashboard on boot
-RUN echo '@reboot developer /home/developer/start_dashboard.sh > /dev/null 2>&1 &' >> /etc/crontab
-
 # Copy application files into the image
 COPY www/ /var/www/html/
 COPY portal/ /var/www/portal/
@@ -132,11 +130,11 @@ RUN echo '#!/bin/bash\n\
     exportfs -ra\n\
     service slapd start\n\
     service ssh start\n\
-    service cron start\n\
     sleep 3\n\
     tail -n +7 /tmp/ldap_init.ldif | ldapadd -x -D "cn=admin,dc=mbti,dc=local" -w admin 2>/dev/null || true\n\
     ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /tmp/ldap_acl.ldif 2>/dev/null || true\n\
-    su - developer -c "/home/developer/start_dashboard.sh &"\n\
+    runuser -u developer -- bash -c "cd /home/developer/internal_app && nohup /usr/bin/python3 app.py > /tmp/dashboard.log 2>&1 &"\n\
+    sleep 2\n\
     exec /usr/sbin/apache2ctl -D FOREGROUND' > /start.sh && \
     chmod +x /start.sh
 
