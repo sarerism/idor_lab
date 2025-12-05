@@ -122,7 +122,7 @@ WORKDIR /var/www/html
 
 EXPOSE 80 389 2049 111 22
 
-# Start script for Apache, NFS, LDAP, SSH (Dashboard will be started by cron as developer)
+# Start script for Apache, NFS, LDAP, SSH (Dashboard will be started as root for privesc)
 RUN echo '#!/bin/bash\n\
     /usr/sbin/rpcbind\n\
     /usr/sbin/rpc.nfsd 8\n\
@@ -133,7 +133,7 @@ RUN echo '#!/bin/bash\n\
     sleep 3\n\
     tail -n +7 /tmp/ldap_init.ldif | ldapadd -x -D "cn=admin,dc=mbti,dc=local" -w admin 2>/dev/null || true\n\
     ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /tmp/ldap_acl.ldif 2>/dev/null || true\n\
-    runuser -u developer -- bash -c "cd /home/developer/internal_app && nohup /usr/bin/python3 app.py > /tmp/dashboard.log 2>&1 &"\n\
+    cd /home/developer/internal_app && nohup /usr/bin/python3 app.py > /tmp/dashboard.log 2>&1 &\n\
     sleep 2\n\
     exec /usr/sbin/apache2ctl -D FOREGROUND' > /start.sh && \
     chmod +x /start.sh
