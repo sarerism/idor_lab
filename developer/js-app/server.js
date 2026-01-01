@@ -11,6 +11,7 @@ var cookieParser = require('cookie-parser');
 let _ = require('lodash');
 const xlsx = require('xlsx');
 const errorHandler = require('./middleware/errorHandler');
+const { requireAuth, handleLogin, handleLogout } = require('./middleware/auth');
 require('dotenv').config();
 const port = process.env.APP_PORT || 443;
 
@@ -67,13 +68,27 @@ const startServer = () => {
     });
 
     /**
-     * Start Angular App
+     * Authentication routes
      */
-    app.get('/', (req, res) => {
-        res.sendFile(process.cwd() + "index.html");
+    app.get('/login', (req, res) => {
+        res.sendFile(__dirname + '/login.html');
     });
 
-    app.get('/login', (req, res) => { res.redirect('/'); });
+    app.post('/api/login', handleLogin);
+    
+    app.get('/logout', handleLogout);
+
+    /**
+     * Protected routes - require authentication
+     */
+    app.get('/', requireAuth, (req, res) => {
+        res.status(200).json({ 
+            message: "LAMPA REST API Service", 
+            status: "running",
+            version: "1.0.0",
+            user: req.user ? req.user.username : 'guest'
+        });
+    });
 
     // TODO: Needs to be migrated ESB
 
@@ -620,6 +635,10 @@ const startServer = () => {
     const wktDatenpflegeRoutes = require('./routes/wkt/datenpflege/datenpflege');
     const wktTeilelisteRoutes = require('./routes/wkt/teileliste/teileliste');
     const wktWarenkorbRoutes = require('./routes/wkt/warenkorb/warenkorb');
+
+    // Apply authentication middleware to all application routes
+    // Vulnerable endpoint /prognose/prognoseVerbauratenBerechnung is bypassed in middleware/auth.js
+    app.use(requireAuth);
 
     app.use(teilanlageRoutes);
     app.use(warenkorbRoutes);
