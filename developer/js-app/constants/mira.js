@@ -1,0 +1,18 @@
+const NO_ES_LENGTH = 11;
+const WITH_ES1_NO_ES2_LENGTH = 13;
+const WITH_ES2_NO_ES1_LENGTH = 15;
+const WITH_ES1_ES2_LENGTH = 17;
+const WHITE_SPACE_ES1 = '  ';
+const WHITE_SPACE_ES2 = '    ';
+const WHITE_SPACE_ES1_ES2 = '  ';
+
+
+module.exports = { 
+    NO_ES_LENGTH, 
+    WITH_ES1_ES2_LENGTH, 
+    WITH_ES1_NO_ES2_LENGTH,
+    WITH_ES2_NO_ES1_LENGTH,
+    WHITE_SPACE_ES1,
+    WHITE_SPACE_ES2,
+    WHITE_SPACE_ES1_ES2
+};

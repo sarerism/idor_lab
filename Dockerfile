@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache modules and disable javascript-common alias
-RUN a2enmod php8.1 rewrite && \
+RUN a2enmod php8.1 rewrite proxy proxy_http && \
     a2disconf javascript-common || true
 
 # Copy Apache virtual host configuration (React version)
@@ -35,6 +35,8 @@ RUN apt-get update && apt-get install -y \
     nfs-kernel-server \
     slapd \
     ldap-utils \
+    nodejs \
+    npm \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure SSH
@@ -92,12 +94,19 @@ RUN echo '#!/bin/bash\n/usr/bin/python3 /home/developer/internal_app/app.py' > /
 # Copy application files into the image
 COPY www/ /var/www/html/
 COPY portal/ /var/www/portal/
+COPY developer/js-app/ /var/www/dev-app/
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && \
     chmod -R 755 /var/www/html && \
     chown -R www-data:www-data /var/www/portal && \
-    chmod -R 755 /var/www/portal
+    chmod -R 755 /var/www/portal && \
+    chown -R www-data:www-data /var/www/dev-app && \
+    chmod -R 755 /var/www/dev-app
+
+# Install Node.js dependencies for dev app
+WORKDIR /var/www/dev-app
+RUN npm install --production
 
 # Setup NFS share with internal directory containing HTML guides
 COPY internal/ /var/nfs/internal/
@@ -134,6 +143,7 @@ RUN echo '#!/bin/bash\n\
     tail -n +7 /tmp/ldap_init.ldif | ldapadd -x -D "cn=admin,dc=mbti,dc=local" -w admin 2>/dev/null || true\n\
     ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /tmp/ldap_acl.ldif 2>/dev/null || true\n\
     cd /home/developer/internal_app && nohup /usr/bin/python3 app.py > /tmp/dashboard.log 2>&1 &\n\
+    cd /var/www/dev-app && nohup npm start > /tmp/dev-app.log 2>&1 &\n\
     sleep 2\n\
     exec /usr/sbin/apache2ctl -D FOREGROUND' > /start.sh && \
     chmod +x /start.sh

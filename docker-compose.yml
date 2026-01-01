@@ -16,6 +16,25 @@ services:
       retries: 5
     restart: unless-stopped
 
+  postgres_db:
+    image: postgres:15.14
+    container_name: lampa_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: lampa_local_password
+      POSTGRES_DB: lampa_db
+    networks:
+      - mbti_net
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./developer/dump.sql:/docker-entrypoint-initdb.d/01-dump.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d lampa_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
   mbti_portal:
     build:
       context: .
@@ -25,13 +44,25 @@ services:
     depends_on:
       mbti_db:
         condition: service_healthy
+      postgres_db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: development
+      APP_PORT: 3000
+      LOCAL_DEVELOPMENT: "true"
+      SKIP_LOGIN: "true"
+      POSTGRES_HOST: postgres_db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: lampa_db
+      POSTGRES_USER: postgres
+      POSTGRES_PW: lampa_local_password
     networks:
       - mbti_net
     ports:
       - "80:80"
       - "389:389"
       - "2049:2049"
-      - "111:111"
+      - "10111:111"
       - "2222:22"
     volumes:
       - nfs_share:/var/nfs/internal
@@ -49,3 +80,4 @@ networks:
 volumes:
   nfs_share:
   mysql_data:
+  postgres_data:
