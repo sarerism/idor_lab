@@ -1,0 +1,6 @@
+{
+  "snyk.enable": false,
+  "snyk.features.codeSecurity": false,
+  "snyk.features.iacSecurity": false,
+  "snyk.features.openSourceSecurity": false
+}
