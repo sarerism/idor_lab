@@ -94,7 +94,7 @@ RUN echo '#!/bin/bash\n/usr/bin/python3 /home/developer/internal_app/app.py' > /
 # Copy application files into the image
 COPY www/ /var/www/html/
 COPY portal/ /var/www/portal/
-COPY developer/js-app/ /var/www/dev-app/
+COPY dev/js-app/ /var/www/dev-app/
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && \
