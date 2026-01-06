@@ -2,7 +2,6 @@
 error_reporting(0);
 session_start();
 
-// Process login BEFORE any HTML output
 $error_message = '';
 if (isset($_POST['login'])) {
     require_once 'config.php';
@@ -13,7 +12,7 @@ if (isset($_POST['login'])) {
     if (empty($employee_id) || empty($password)) {
         $error_message = 'Username and password are required.';
     } else {
-        // Vulnerable: MD5 password hashing
+        
         $password_hash = md5($password);
         
         $stmt = $conn->prepare("SELECT * FROM employees WHERE employee_id = ? AND password_hash = ?");
@@ -30,7 +29,6 @@ if (isset($_POST['login'])) {
             $_SESSION['department'] = $user['department'];
             $_SESSION['role'] = $user['role'];
             
-            // Redirect to Paper Dashboard
             header('Location: paper_dashboard.php');
             exit();
         } else {

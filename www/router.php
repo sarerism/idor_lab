@@ -27,10 +27,10 @@ switch ($request) {
         require 'contact.html';
         break;
     default:
-        // Check if file exists
+
         $file = __DIR__ . $request;
         if (file_exists($file) && is_file($file)) {
-            return false; // Let PHP built-in server handle it
+            return false; 
         } else {
             http_response_code(404);
             echo '404 - Not Found';

@@ -1,10 +1,10 @@
-# MBTI Employee Portal - IDOR Vulnerability Lab
+# MBTI Employee Portal - COPR01 Vulnerability Lab
 
-A deliberately vulnerable web application designed for penetration testing training, featuring **Insecure Direct Object Reference (IDOR)** vulnerabilities.
+A deliberately vulnerable web application designed for penetration testing training, featuring **Insecure Direct Object Reference (COPR01)** vulnerabilities.
 
 ## 🎯 Learning Objectives
 
-- Understand and exploit IDOR vulnerabilities
+- Understand and exploit COPR01 vulnerabilities
 - Practice parameter manipulation and fuzzing techniques
 - Learn proper access control implementation
 - Identify exposed sensitive data in web applications
@@ -79,7 +79,7 @@ docker run -d --name mbti_portal --network mbti_net -p 80:80 sareer/mbti-employe
 
 This lab contains intentional security vulnerabilities for educational purposes:
 
-1. **Primary IDOR**: Report ID enumeration (report_id parameter)
+1. **Primary COPR01**: Report ID enumeration (report_id parameter)
 2. **Information Disclosure**: Default credentials document on landing page
 3. **Weak Authentication**: Default password with brute-forceable Employee ID
 4. **Subdomain Enumeration**: Predictable subdomain structure
@@ -89,7 +89,7 @@ This lab contains intentional security vulnerabilities for educational purposes:
 - Finding default credentials on landing page
 - Discovering portal subdomain via enumeration
 - Brute forcing Employee ID to login
-- Exploiting IDOR on report_id parameter
+- Exploiting COPR01 on report_id parameter
 
 ## 📊 Lab Environment
 
@@ -164,7 +164,7 @@ docker build -f Dockerfile.db -t sareer/mbti-db:latest .
 ## 📝 Lab Structure
 
 ```
-mbti-idor-lab/
+mbti-copr01-lab/
 ├── docker-compose.yml          # Orchestration configuration
 ├── Dockerfile                  # Web portal image
 ├── Dockerfile.db              # Database image

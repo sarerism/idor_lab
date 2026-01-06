@@ -1,6 +1,6 @@
 FROM ubuntu:22.04
 
-# Set environment to non-interactive to avoid prompts during build
+# Set environment to non interactive to avoid prompts during build
 ENV DEBIAN_FRONTEND=noninteractive
 
 # Install Apache, PHP and required extensions
@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     libapache2-mod-php8.1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Enable Apache modules and disable javascript-common alias
+# Enable Apache modules and disable javascript common alias
 RUN a2enmod php8.1 rewrite proxy proxy_http && \
     a2disconf javascript-common || true
 
@@ -56,7 +56,7 @@ RUN useradd -m -s /bin/bash developer && \
     useradd -m -s /bin/bash peter.schneider && \
     echo 'peter.schneider:tekelomuxo' | chpasswd
 
-# Set environment variables in developer's bashrc (only visible to developer)
+# Set environment variables in developers bashrc (only visible to developer)
 RUN echo 'export DEV_USER=developer' >> /home/developer/.bashrc && \
     echo 'export DEV_PASS=cDjv8kFq67C1D1Yuhn8' >> /home/developer/.bashrc && \
     echo 'export INTERNAL_DASHBOARD_PORT=5000' >> /home/developer/.bashrc && \
@@ -79,7 +79,7 @@ RUN echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/log_rotation.py" >> 
     echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/manage_containers.py" >> /etc/sudoers
 
 # Setup internal developer dashboard (SSTI vulnerability for privesc)
-# Make it only accessible to developer user - www-data cannot read or execute
+# Make it only accessible to developer user,  www-data cannot read or execute
 COPY developer/internal_app/ /home/developer/internal_app/
 RUN chown -R developer:developer /home/developer/internal_app && \
     chmod 700 /home/developer/internal_app && \

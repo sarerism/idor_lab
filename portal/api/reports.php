@@ -21,7 +21,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     $report_id = intval($_GET['id']);
     
-    // VULNERABILITY: Direct object reference with no authorization check
+    // Secure: Authorization check enforced
     $stmt = $conn->prepare("
         SELECT id, employee_id, employee_name, report_title, report_content,
                is_confidential, submitted_at, status, reviewed_at
@@ -34,8 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
     
     if ($result->num_rows > 0) {
         $report = $result->fetch_assoc();
+
+        // COPR01: Enforce access control
+        if ($report['employee_id'] !== $_SESSION['employee_id']) {
+            http_response_code(403);
+            echo json_encode([
+                'success' => false,
+                'message' => 'Unauthorized access to report'
+            ]);
+            exit;
+        }
         
-        // Return full report content - NO ACCESS CONTROL!
+        // Return full report content
         echo json_encode([
             'success' => true,
             'data' => [

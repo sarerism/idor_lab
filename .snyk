@@ -1,9 +1,0 @@
-# Snyk (https://snyk.io) policy file
-# This is an intentionally vulnerable training lab - all vulnerabilities are by design
-
-version: v1.25.0
-ignore:
-  '*':
-    - '*':
-        reason: Intentional vulnerabilities for security training
-        expires: 2099-12-31T00:00:00.000Z

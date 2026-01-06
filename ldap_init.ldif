@@ -29,8 +29,8 @@ objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
-userPassword: JDJhJDEyJFBrcHNCalVhempnTXgxSy54ZmpZNGVJS3VrakdKRTFDdVdqcjVUSlJiQ09xM2VQVzk4a2Y2
-description: Backup password hash for recovery - DO NOT SHARE
+userPassword: $2a$12$PkpsBjUazjgMx1K.xfjY4eIKukjGJE1CuWjr5TJRbCOq3ePW98kf6
+description: Backup for recovery
 shadowLastChange: 19692
 shadowMin: 0
 shadowMax: 99999
@@ -72,7 +72,7 @@ objectClass: inetOrgPerson
 objectClass: posixAccount
 objectClass: top
 objectClass: shadowAccount
-userPassword: JDJhJDEyJFBrcHNCalVhempnTXgxSy54ZmpZNGVJS3VrakdKRTFDdVdqcjVUSlJiQ09xM2VQVzk4a2Y2
+userPassword: $2a$12$PkpsBjUazjgMx1K.xfjY4eIKukjGJE1CuWjr5TJRbCOq3ePW98kf6
 shadowLastChange: 19692
 shadowMin: 0
 shadowMax: 99999
