@@ -96,10 +96,12 @@ RUN echo '#!/bin/bash\n/usr/bin/python3 /home/developer/internal_app/app.py' > /
     chmod 700 /home/developer/start_dashboard.sh
 
 # Copy application files into the image
-COPY dev_landing/ /var/www/dev_landing/
 COPY www/ /var/www/html/
 COPY portal/ /var/www/portal/
 COPY dev/js-app/ /var/www/dev-app/
+
+# Create isolated dev landing directory
+RUN mkdir -p /var/www/dev_landing
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html && \
