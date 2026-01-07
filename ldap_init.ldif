@@ -22,7 +22,7 @@ dn: uid=peter.schneider,ou=People,dc=mbti,dc=local
 uid: peter.schneider
 cn: Peter Schneider
 sn: Schneider
-mail: peter.schneider@mbti.local
+mail: peter.schneider@example.com
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
@@ -44,7 +44,7 @@ dn: uid=thomas.mueller,ou=People,dc=mbti,dc=local
 uid: thomas.mueller
 cn: Thomas Müller
 sn: Müller
-mail: thomas.mueller@mbti.local
+mail: thomas.mueller@example.com
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
@@ -65,7 +65,7 @@ dn: uid=peter.schneider,ou=People,dc=mbti,dc=local
 uid: peter.schneider
 cn: Peter Schneider
 sn: Schneider
-mail: peter.schneider@mbti.local
+mail: peter.schneider@example.com
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson
@@ -86,7 +86,7 @@ dn: uid=developer,ou=People,dc=mbti,dc=local
 uid: developer
 cn: Developer Account
 sn: Developer
-mail: developer@mbti.local
+mail: developer@example.com
 objectClass: person
 objectClass: organizationalPerson
 objectClass: inetOrgPerson

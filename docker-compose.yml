@@ -17,7 +17,7 @@ services:
     restart: unless-stopped
 
   postgres_db:
-    image: postgres:15.14
+    image: sareer/mbti-postgres:latest
     container_name: lampa_postgres
     environment:
       POSTGRES_USER: postgres
@@ -27,8 +27,6 @@ services:
       - mbti_net
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./developer/dump.sql:/docker-entrypoint-initdb.d/01-dump.sql:ro
-      - ./developer/init_readonly.sql:/docker-entrypoint-initdb.d/02-init_readonly.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d lampa_db"]
       interval: 10s
@@ -40,8 +38,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: sareer/mbti-portal:latest
+    image: sareer/mbti-employee-portal:latest
     container_name: mbti_portal
+    hostname: mbti
     depends_on:
       mbti_db:
         condition: service_healthy
@@ -65,6 +64,8 @@ services:
       - "2049:2049"
       - "10111:111"
       - "2222:22"
+      - "5001:5000"
+
     volumes:
       - nfs_share:/var/nfs/internal
       - ./portal:/var/www/portal
@@ -77,6 +78,7 @@ services:
 networks:
   mbti_net:
     driver: bridge
+    name: mbti_net
 
 volumes:
   nfs_share:

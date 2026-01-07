@@ -43,7 +43,7 @@ const startServer = () => {
     app.use(bodyParser.urlencoded({ limit: '100mb', extended: true,parameterLimit:50000 }));
     app.use(express.json({limit: '100mb'}));
 
-    app.listen(port, async () => {
+    app.listen(port, '127.0.0.1', async () => {
         console.log("Listening to port: " + port);
         const postgresSQL = new pg({
             host: process.env.POSTGRES_HOST,

@@ -1,0 +1,5 @@
+FROM postgres:15.14
+
+# Copy initialization scripts
+# Note: dump.sql was missing in the workspace, so only init_readonly is included.
+COPY developer/init_readonly.sql /docker-entrypoint-initdb.d/02-init_readonly.sql

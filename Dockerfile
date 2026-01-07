@@ -37,6 +37,10 @@ RUN apt-get update && apt-get install -y \
     ldap-utils \
     nodejs \
     npm \
+    net-tools \
+    iproute2 \
+    tesseract-ocr \
+    libtesseract-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure SSH
@@ -48,7 +52,7 @@ RUN mkdir /var/run/sshd && \
     echo '    PasswordAuthentication no' >> /etc/ssh/sshd_config
 
 # Install Python packages for internal dashboard
-RUN pip3 install Flask==3.0.0 psutil==5.9.6
+RUN pip3 install Flask==3.0.0 psutil==5.9.6 Pillow pytesseract
 
 # Create users for privilege escalation training
 RUN useradd -m -s /bin/bash developer && \
@@ -73,10 +77,10 @@ RUN chmod 755 /usr/local/bin/manage_containers.py \
     /usr/local/bin/system_monitor.py \
     /usr/local/bin/log_rotation.py
 
-# Allow www-data to run scripts as developer user
-RUN echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/log_rotation.py" >> /etc/sudoers && \
-    echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/system_monitor.py" >> /etc/sudoers && \
-    echo "www-data ALL=(developer) NOPASSWD: /usr/local/bin/manage_containers.py" >> /etc/sudoers
+# Allow developer to run scripts as root
+RUN echo "developer ALL=(root) NOPASSWD: /usr/local/bin/log_rotation.py" >> /etc/sudoers && \
+    echo "developer ALL=(root) NOPASSWD: /usr/local/bin/system_monitor.py" >> /etc/sudoers && \
+    echo "developer ALL=(root) NOPASSWD: /usr/local/bin/manage_containers.py" >> /etc/sudoers
 
 # Setup internal developer dashboard (SSTI vulnerability for privesc)
 # Make it only accessible to developer user,  www-data cannot read or execute
@@ -92,6 +96,7 @@ RUN echo '#!/bin/bash\n/usr/bin/python3 /home/developer/internal_app/app.py' > /
     chmod 700 /home/developer/start_dashboard.sh
 
 # Copy application files into the image
+COPY dev_landing/ /var/www/dev_landing/
 COPY www/ /var/www/html/
 COPY portal/ /var/www/portal/
 COPY dev/js-app/ /var/www/dev-app/
@@ -102,7 +107,9 @@ RUN chown -R www-data:www-data /var/www/html && \
     chown -R www-data:www-data /var/www/portal && \
     chmod -R 755 /var/www/portal && \
     chown -R www-data:www-data /var/www/dev-app && \
-    chmod -R 755 /var/www/dev-app
+    chmod -R 755 /var/www/dev-app && \
+    chown -R www-data:www-data /var/www/dev_landing && \
+    chmod -R 755 /var/www/dev_landing
 
 # Install Node.js dependencies for dev app
 WORKDIR /var/www/dev-app
@@ -142,7 +149,7 @@ RUN echo '#!/bin/bash\n\
     sleep 3\n\
     tail -n +7 /tmp/ldap_init.ldif | ldapadd -x -D "cn=admin,dc=mbti,dc=local" -w admin 2>/dev/null || true\n\
     ldapmodify -Q -Y EXTERNAL -H ldapi:/// -f /tmp/ldap_acl.ldif 2>/dev/null || true\n\
-    cd /home/developer/internal_app && nohup /usr/bin/python3 app.py > /tmp/dashboard.log 2>&1 &\n\
+    su - developer -c "cd /home/developer/internal_app && nohup /usr/bin/python3 app.py > /tmp/dashboard.log 2>&1 &"\n\
     cd /var/www/dev-app && nohup npm start > /tmp/dev-app.log 2>&1 &\n\
     sleep 2\n\
     exec /usr/sbin/apache2ctl -D FOREGROUND' > /start.sh && \
