@@ -2,7 +2,7 @@
 session_start();
 require_once '../config.php';
 
-// Check authentication
+
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     http_response_code(401);
     header('Content-Type: application/json');
@@ -10,7 +10,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     exit;
 }
 
-// Get file_id from URL parameter
+
 if (!isset($_GET['file_id'])) {
     http_response_code(400);
     header('Content-Type: application/json');
@@ -20,7 +20,14 @@ if (!isset($_GET['file_id'])) {
 
 $file_id = $_GET['file_id'];
 
-// Lookup file in database
+
+if (!ctype_xdigit($file_id)) {
+     http_response_code(400);
+     header('Content-Type: application/json');
+     echo json_encode(['success' => false, 'message' => 'Invalid File ID format']);
+     exit;
+}
+
 $stmt = $conn->prepare("SELECT employee_id, filename, file_size FROM report_uploads WHERE file_id = ?");
 $stmt->bind_param("s", $file_id);
 $stmt->execute();
@@ -36,7 +43,7 @@ if ($result->num_rows === 0) {
 $file_info = $result->fetch_assoc();
 $stmt->close();
 
-// Authorization check: Users can only view their own reports
+
 if ($file_info['employee_id'] !== $_SESSION['employee_id']) {
     http_response_code(403);
     header('Content-Type: application/json');
@@ -44,23 +51,30 @@ if ($file_info['employee_id'] !== $_SESSION['employee_id']) {
     exit;
 }
 
-$upload_dir = '/var/www/portal/uploads/reports/';
+
+$upload_dir = dirname(__DIR__) . '/uploads/reports/';
 $filepath = $upload_dir . $file_info['filename'];
 
-// Check if file exists
-if (!file_exists($filepath)) {
+
+$real_filepath = realpath($filepath);
+$real_upload_dir = realpath($upload_dir);
+
+
+if ($real_filepath === false || strpos($real_filepath, $real_upload_dir) !== 0 || !file_exists($real_filepath)) {
     http_response_code(404);
     header('Content-Type: application/json');
     echo json_encode(['success' => false, 'message' => 'File not found on disk']);
     exit;
 }
 
-// Serve the PDF file
+
 header('Content-Type: application/pdf');
-header('Content-Disposition: inline; filename="' . basename($file_info['filename']) . '"');
-header('Content-Length: ' . filesize($filepath));
+
+header('Content-Disposition: attachment; filename="' . basename($file_info['filename']) . '"');
+header('Content-Length: ' . filesize($real_filepath));
 header('Cache-Control: private, max-age=0, must-revalidate');
 header('Pragma: public');
 
-readfile($filepath);
+
+readfile($real_filepath);
 exit;

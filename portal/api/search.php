@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 session_start();
 require_once '../config.php';
 
-// Check authentication
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Not authenticated']);
@@ -21,15 +20,10 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['q'])) {
     $search = $_GET['q'];
     
-    // VULNERABILITY: SQL Injection
-    // The search parameter is directly concatenated into the SQL query
-    // Allows UNION-based SQLi to extract data from dev_environment database
     $query = "SELECT employee_id, full_name, email, department, role, manager_name 
               FROM employees 
               WHERE CONCAT(employee_id, ' ', full_name, ' ', email, ' ', department) LIKE '%" . $search . "%'";
     
-    // VULNERABILITY: No error handling - SQL errors cause 500 status
-    // This allows blind SQL injection detection through error responses
     $result = $conn->query($query);
     
     if ($result) {
@@ -46,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['q'])) {
             'message' => count($employees) > 0 ? 'Found ' . count($employees) . ' employee(s)' : 'No results found'
         ]);
     } else {
-        // Query failed - return 500 error
+
         http_response_code(500);
         echo json_encode([
             'success' => false,
@@ -56,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['q'])) {
     exit;
 }
 
-// If no search query provided
 echo json_encode([
     'success' => false,
     'message' => 'Search query parameter "q" is required'

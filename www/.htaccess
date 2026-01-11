@@ -9,3 +9,8 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^about$ about.html [L]
 RewriteRule ^innovation$ innovation.html [L]
 RewriteRule ^contact$ contact.html [L]
+
+# Block access to .DS_Store and other dotfiles
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

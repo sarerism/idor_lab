@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
 
-// Check authentication
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Not authenticated']);
@@ -26,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirm_password = $input['confirm_password'] ?? '';
     $employee_id = $_SESSION['employee_id'];
     
-    // Validate inputs
     if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
         echo json_encode(['success' => false, 'message' => 'All fields are required']);
         exit;
@@ -42,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
     
-    // Get current password hash
     $stmt = $conn->prepare("SELECT password_hash FROM employees WHERE employee_id = ?");
     $stmt->bind_param("s", $employee_id);
     $stmt->execute();
@@ -56,14 +53,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $result->fetch_assoc();
     $stmt->close();
     
-    // Verify current password
     $current_password_hash = md5($current_password);
     if ($current_password_hash !== $user['password_hash']) {
         echo json_encode(['success' => false, 'message' => 'Current password is incorrect']);
         exit;
     }
     
-    // Update password
     $new_password_hash = md5($new_password);
     $stmt = $conn->prepare("UPDATE employees SET password_hash = ? WHERE employee_id = ?");
     $stmt->bind_param("ss", $new_password_hash, $employee_id);

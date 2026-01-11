@@ -18,9 +18,9 @@ LOG_DIRS = [
 
 def check_permissions():
     """Verify script is run with appropriate permissions"""
-    # Allow developer user or root to run this script
+
     if os.geteuid() != 0:
-        # Check if running as developer user
+
         try:
             import pwd
             current_user = pwd.getpwuid(os.getuid()).pw_name
@@ -56,12 +56,12 @@ def rotate_logs(log_dir):
         rotated_path = os.path.join(log_dir, rotated_name)
 
         try:
-            # Compress and rotate
+
             with open(log_path, 'rb') as f_in:
                 with gzip.open(rotated_path, 'wb') as f_out:
                     shutil.copyfileobj(f_in, f_out)
 
-            # Clear original log
+
             open(log_path, 'w').close()
             print(f"  ✓ Rotated: {log_file} -> {rotated_name}")
         except Exception as e:

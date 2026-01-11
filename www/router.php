@@ -1,9 +1,8 @@
 <?php
-// Simple router for development
-$request = $_SERVER['REQUEST_URI'];
-$request = strtok($request, '?'); // Remove query string
 
-// Route handling
+$request = $_SERVER['REQUEST_URI'];
+$request = strtok($request, '?'); 
+
 switch ($request) {
     case '/':
         require 'index.html';

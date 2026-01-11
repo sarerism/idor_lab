@@ -11,7 +11,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 session_start();
 require_once '../config.php';
 
-// Check authentication
 if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
     http_response_code(401);
     echo json_encode(['success' => false, 'message' => 'Not authenticated']);
@@ -21,7 +20,7 @@ if (!isset($_SESSION['logged_in']) || $_SESSION['logged_in'] !== true) {
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
-    // Get all employees
+
     if (!isset($_GET['id'])) {
         $query = "SELECT employee_id, full_name, email, department, role, manager_name FROM employees ORDER BY full_name";
         $result = $conn->query($query);
@@ -35,7 +34,6 @@ if ($method === 'GET') {
         exit;
     }
     
-    // Get specific employee
     $employee_id = $_GET['id'];
     $stmt = $conn->prepare("SELECT employee_id, full_name, email, department, role, manager_name FROM employees WHERE employee_id = ?");
     $stmt->bind_param("s", $employee_id);
