@@ -5,7 +5,7 @@ import argparse
 import subprocess
 import importlib.util
 
-# MBTI Dev - Internal Container Manager v1.4
+# MBTI Dev -- Internal Container Manager v1.4
 
 
 def load_project_config(project_path):

@@ -1,4 +1,3 @@
--- Create employees table
 CREATE TABLE IF NOT EXISTS employees (
     id INT AUTO_INCREMENT PRIMARY KEY,
     employee_id VARCHAR(50) UNIQUE NOT NULL,
@@ -10,8 +9,6 @@ CREATE TABLE IF NOT EXISTS employees (
     manager_name VARCHAR(100),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Insert employee data with MD5 hashed passwords
 
 INSERT INTO employees (employee_id, full_name, email, password_hash, department, role, manager_name) VALUES
 ('MBTI2024001', 'Stefan Müller', 'stefan.mueller@example.com', 'a1b2c3d4e5f6789abcdef1234567890abc', 'CIVA-I', 'Security Engineer', 'Klaus Weber'),
@@ -40,7 +37,6 @@ INSERT INTO employees (employee_id, full_name, email, password_hash, department,
 ('MBTI2024024', 'Mia Krause', 'mia.krause@example.com', 't0u1v2w3x4y56789tuvw0123456789tuvw', 'EPA', 'Cloud Security Engineer', 'Klaus Weber'),
 ('MBTI2024837', 'Peter Schneider', 'peter.schneider@example.com', '29692d4a274c2eab88b593594465644d', 'CIVA-I', 'Junior Security Analyst', 'Klaus Weber');
 
--- Insert manager account (Klaus Weber) who will review reports
 INSERT INTO employees (employee_id, full_name, email, password_hash, department, role, manager_name) VALUES
 ('MBTI2024999', 'Klaus Weber', 'klaus.weber@example.com', '6e5d4c3b2a1098fedcba7654321fedcba', 'Management', 'Chief Security Officer', NULL);
 

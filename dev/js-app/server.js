@@ -35,7 +35,7 @@ const startServer = () => {
     */
     app.use(cookieParser());
     app.use(express.static(process.cwd() + "/", {
-        dotfiles: 'ignore',  // Don't serve dotfiles
+        dotfiles: 'ignore', 
       }));
     app.use(compression());
     app.use(cors(corsOptions));
@@ -114,8 +114,6 @@ const startServer = () => {
     */
     const prognoseRoutes = require('./routes/prognose/prognose');
 
-    // Apply authentication middleware to all application routes
-    // Vulnerable endpoint /prognose/prognoseVerbauratenBerechnung is bypassed in middleware/auth.js
     app.use(requireAuth);
 
     app.use(prognoseRoutes);

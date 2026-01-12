@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const cors = require("cors");
 const compression = require('compression');
 const port = 443;
-// var cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 
@@ -70,7 +69,6 @@ const startServer = () => {
         
     });
     
-    // app.use(cookieParser());
     app.use(express.static(process.cwd() + "/"));
     app.use(compression());
     app.use(cors(corsOptions));
